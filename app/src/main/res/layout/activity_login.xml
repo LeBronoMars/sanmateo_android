@@ -8,28 +8,51 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="65"
+        android:background="@color/colorPrimary"
         android:gravity="center"
-        android:orientation="vertical"
-        android:background="@color/colorPrimary">
+        android:orientation="vertical">
 
         <ImageView
-            android:layout_width="@dimen/_80sdp"
-            android:layout_height="@dimen/_80sdp"
-            android:src="@drawable/san_mateo_logo"/>
+            android:layout_width="@dimen/_100sdp"
+            android:layout_height="@dimen/_100sdp"
+            android:src="@drawable/san_mateo_logo" />
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
-            android:textSize="@dimen/_18sdp"
+            android:text="@string/app_name"
             android:textColor="@android:color/white"
-            android:text="@string/app_name"/>
+            android:textSize="@dimen/_18sdp" />
     </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="35"
-        android:background="@android:color/white"></LinearLayout>
+        android:background="@android:color/white"
+        android:gravity="center"
+        android:orientation="vertical">
+
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_clickable"
+            android:text="@string/login"
+            android:paddingLeft="@dimen/_50sdp"
+            android:paddingRight="@dimen/_50sdp"
+            android:textSize="@dimen/_14sdp"
+            android:textColor="@android:color/white" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/_14sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:textColor="@color/colorPrimary"
+            android:text="@string/create_account"/>
+    </LinearLayout>
 
 </LinearLayout>

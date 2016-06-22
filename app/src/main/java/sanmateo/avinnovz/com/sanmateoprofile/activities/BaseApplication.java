@@ -19,7 +19,7 @@ public class BaseApplication extends Application {
     public void onCreate() {
         super.onCreate();
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
-                .setDefaultFontPath("fonts/Roboto-Thin.ttf")
+                .setDefaultFontPath("fonts/Roboto-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
