@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
@@ -120,5 +121,13 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         return isConnected;
+    }
+
+    public void animateToLeft(Activity activity) {
+        activity.overridePendingTransition(R.anim.in_from_right, R.anim.out_to_left);
+    }
+
+    public static void animateToRight(Activity activity) {
+        activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
     }
 }

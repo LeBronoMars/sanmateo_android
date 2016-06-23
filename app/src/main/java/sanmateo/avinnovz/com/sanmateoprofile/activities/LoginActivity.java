@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
@@ -50,6 +51,12 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
         } else {
             showSnackbar(tvCreateAccount, AppConstants.WARN_CONNECTION);
         }
+    }
+
+    @OnClick(R.id.tvCreateAccount)
+    public void showRegistrationPage() {
+        startActivity(new Intent(this, RegistrationActivity.class));
+        animateToLeft(this);
     }
 
     @Override
