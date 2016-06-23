@@ -1,58 +1,82 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.os.Bundle;
+import android.widget.TextView;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 
 /**
  * Created by rsbulanon on 6/22/16.
  */
 public class LoginActivity extends BaseActivity implements OnApiRequestListener {
 
+    @BindView(R.id.tvCreateAccount) TextView tvCreateAccount;
+    private ApiRequestHelper apiRequestHelper;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        apiRequestHelper = new ApiRequestHelper(this);
     }
 
     @OnClick(R.id.btnLogin)
     public void showLoginDialogFragment() {
-        final LoginDialogFragment loginDialogFragment = LoginDialogFragment.newInstance();
-        loginDialogFragment.setOnLoginListener(new LoginDialogFragment.OnLoginListener() {
-            @Override
-            public void OnLogin(String email, String password) {
-
-            }
-        });
-        loginDialogFragment.show(getFragmentManager(),"login");
+        if (isNetworkAvailable()) {
+            final LoginDialogFragment loginDialogFragment = LoginDialogFragment.newInstance();
+            loginDialogFragment.setOnLoginListener(new LoginDialogFragment.OnLoginListener() {
+                @Override
+                public void OnLogin(String email, String password) {
+                    loginDialogFragment.dismiss();
+                    apiRequestHelper.authenticateUser(email,password);
+                }
+            });
+            loginDialogFragment.show(getFragmentManager(),"login");
+        } else {
+            showSnackbar(tvCreateAccount, AppConstants.WARN_CONNECTION);
+        }
     }
 
     @Override
     public void onApiRequestBegin(String action) {
         if (action.equals(AppConstants.ACTION_LOGIN)) {
-            showCustomProgress("Authenticating your credentials, Please wait...");
+            showCustomProgress("Logging in, Please wait...");
         }
     }
 
     @Override
     public void onApiRequestSuccess(String action, Object result) {
-
+        dismissCustomProgress();
+        if (action.equals(AppConstants.ACTION_LOGIN)) {
+            final AuthResponse authResponse = (AuthResponse)result;
+            showSnackbar(tvCreateAccount, authResponse.getFirstName());
+        }
     }
 
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
-            final ResponseBody body = ((HttpException) t).response().errorBody();
-            
+            if (action.equals(AppConstants.ACTION_LOGIN)) {
+                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
+                showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            }
         }
     }
 }

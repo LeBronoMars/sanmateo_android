@@ -55,6 +55,8 @@ public class LoginDialogFragment extends DialogFragment {
         mDialog.setCanceledOnTouchOutside(true);
         mDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout
                 .LayoutParams.WRAP_CONTENT);
+        etEmail.setText("rsbulanon@gmail.com");
+        etPassword.setText("123");
         return mDialog;
     }
 

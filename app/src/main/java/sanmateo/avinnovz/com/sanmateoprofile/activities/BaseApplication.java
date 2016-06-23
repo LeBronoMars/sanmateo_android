@@ -23,11 +23,14 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        final Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(AppConstants.BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create())
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .build();
-        AppConstants.API_INTERFACE = retrofit.create(ApiInterface.class);
+
+        if (AppConstants.RETROFIT == null && AppConstants.API_INTERFACE == null) {
+            AppConstants.RETROFIT = new Retrofit.Builder()
+                    .baseUrl(AppConstants.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                    .build();
+            AppConstants.API_INTERFACE = AppConstants.RETROFIT.create(ApiInterface.class);
+        }
     }
 }
