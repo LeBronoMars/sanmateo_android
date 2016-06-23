@@ -10,6 +10,9 @@ public class AppConstants {
     public static final String BASE_URL = "http://192.168.1.7:9000";
     public static ApiInterface API_INTERFACE = null;
 
+    /** api actions */
+    public static final String ACTION_LOGIN = "action login";
+
     /** warning messages */
     public static final String WARN_FIELD_REQUIRED = "This field is required";
     public static final String WARN_INVALID_EMAIL_FORMAT = "Invalid email format";

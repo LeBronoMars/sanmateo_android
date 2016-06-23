@@ -4,8 +4,11 @@ import android.os.Bundle;
 
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import okhttp3.ResponseBody;
+import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 
 /**
@@ -34,7 +37,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
 
     @Override
     public void onApiRequestBegin(String action) {
-
+        if (action.equals(AppConstants.ACTION_LOGIN)) {
+            showCustomProgress("Authenticating your credentials, Please wait...");
+        }
     }
 
     @Override
@@ -44,6 +49,10 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
 
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
-
+        dismissCustomProgress();
+        if (t instanceof HttpException) {
+            final ResponseBody body = ((HttpException) t).response().errorBody();
+            
+        }
     }
 }
