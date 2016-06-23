@@ -1,19 +1,18 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import com.rey.material.app.Dialog;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
@@ -56,37 +55,42 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+
     public void showConfirmDialog(final String action, final String header, final String message,
                                   final String positiveText, final String negativeText,
                                   final OnConfirmDialogListener onConfirmDialogListener) {
-        final AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        final View view = getLayoutInflater().inflate(R.layout.dialog_error_confirm,null);
-        dialog.setView(view);
-        ((TextView)view.findViewById(R.id.tvHeader)).setText(header);
-        ((TextView)view.findViewById(R.id.tvMessage)).setText(message);
+        final Dialog dialog = new Dialog(this);
+        dialog.setContentView(R.layout.dialog_error_confirm);
+        ((TextView)dialog.findViewById(R.id.tvHeader)).setText(header);
+        ((TextView)dialog.findViewById(R.id.tvMessage)).setText(message);
         final Display display = getWindowManager().getDefaultDisplay();
         final Point size = new Point();
         display.getSize(size);
-        //view.setLayoutParams((int) (size.x * .70), LinearLayout.LayoutParams.WRAP_CONTENT);
+        dialog.layoutParams((int) (size.x * .70), LinearLayout.LayoutParams.WRAP_CONTENT);
         dialog.setCancelable(false);
+        dialog.setCanceledOnTouchOutside(false);
         if (!positiveText.isEmpty()) {
-            dialog.setPositiveButton(positiveText, new DialogInterface.OnClickListener() {
+            dialog.positiveAction(positiveText);
+            dialog.positiveActionTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+            dialog.positiveActionClickListener(new View.OnClickListener() {
                 @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
+                public void onClick(View v) {
                     if (onConfirmDialogListener != null) {
                         onConfirmDialogListener.onConfirmed(action);
                     }
-                    dialogInterface.dismiss();
+                    dialog.dismiss();
                 }
             });
         }
-        dialog.setNegativeButton(negativeText, new DialogInterface.OnClickListener() {
+        dialog.negativeAction(negativeText);
+        dialog.negativeActionTextColor(ContextCompat.getColor(this, R.color.colorPrimary));
+        dialog.negativeActionClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(DialogInterface dialogInterface, int i) {
+            public void onClick(View v) {
                 if (onConfirmDialogListener != null) {
                     onConfirmDialogListener.onCancelled(action);
                 }
-                dialogInterface.dismiss();
+                dialog.dismiss();
             }
         });
         dialog.show();
