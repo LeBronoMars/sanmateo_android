@@ -2,4 +2,9 @@
     <string name="app_name">San Mateo Profile App</string>
     <string name="login">Login</string>
     <string name="create_account">Create your account now</string>
+
+    <!-- login dialog fragment -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+
 </resources>

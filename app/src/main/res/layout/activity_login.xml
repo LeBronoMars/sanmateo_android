@@ -43,6 +43,7 @@
             android:text="@string/login"
             android:paddingLeft="@dimen/_50sdp"
             android:paddingRight="@dimen/_50sdp"
+            fontPath="fonts/Roboto-Medium.ttf"
             android:textSize="@dimen/_14sdp"
             android:textColor="@android:color/white" />
 
