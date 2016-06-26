@@ -21,4 +21,8 @@
     <string name="confirm_password">Confirm Password</string>
     <string name="create_my_account">Create my account</string>
 
+    <!-- san mateo fragment header -->
+    <string name="welcome_to">Welcome to</string>
+    <string name="san_mateo">San Mateo Rizal</string>
+    <string name="official_mobile_app">Official Mobile App</string>
 </resources>

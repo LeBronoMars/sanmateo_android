@@ -48,7 +48,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
-        amazonS3Helper = new AmazonS3Helper(this);
+        apiRequestHelper = new ApiRequestHelper(this);
     }
 
     @OnClick(R.id.btnLogin)
@@ -86,7 +86,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final AuthResponse authResponse = (AuthResponse)result;
-            showSnackbar(tvCreateAccount, authResponse.getFirstName());
+            startActivity(new Intent(this, MainActivity.class));
         }
     }
 

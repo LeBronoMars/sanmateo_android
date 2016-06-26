@@ -8,7 +8,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ApiInterface;
  */
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.1.8:9000";
+    //public static final String BASE_URL = "http://192.168.1.8:9000";
+    public static final String BASE_URL = "http://192.168.10.4:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
 
