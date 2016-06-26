@@ -18,7 +18,6 @@ public class AuthResponse {
     @SerializedName("contact_no") private String contactNo;
     private String status;
     @SerializedName("user_level") private String userLevel;
-    @SerializedName("is_password_default") private boolean isPasswordDefault;
     private String gender;
     @SerializedName("pic_url") private String picUrl;
 
@@ -64,10 +63,6 @@ public class AuthResponse {
 
     public String getUserLevel() {
         return userLevel;
-    }
-
-    public boolean isPasswordDefault() {
-        return isPasswordDefault;
     }
 
     public String getGender() {

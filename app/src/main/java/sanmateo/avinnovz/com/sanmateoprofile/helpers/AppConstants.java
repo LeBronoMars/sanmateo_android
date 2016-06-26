@@ -12,6 +12,9 @@ public class AppConstants {
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
 
+    /** s3 configs */
+    public static final String AWS_POOL_ID = "us-east-1:66c534a3-218e-4cfc-934c-c5f24b53a88a";
+
     /** api actions */
     public static final String ACTION_LOGIN = "action login";
 
