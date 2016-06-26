@@ -25,4 +25,10 @@
     <string name="welcome_to">Welcome to</string>
     <string name="san_mateo">San Mateo Rizal</string>
     <string name="official_mobile_app">Official Mobile App</string>
+
+    <!-- navigation drawer -->
+    <string name="open_drawer">Open</string>
+    <string name="close_drawer">Close</string>
+    <string name="welcome">Welcome!</string>
+
 </resources>

@@ -31,6 +31,10 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"/>
 
+        <!-- glide config -->
+        <meta-data android:name="sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideConfig" android:value="GlideModule" />
+
+        <!-- amazon s3 config -->
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />

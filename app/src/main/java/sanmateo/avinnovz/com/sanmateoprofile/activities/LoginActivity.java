@@ -31,6 +31,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
  * Created by rsbulanon on 6/22/16.
@@ -85,7 +86,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_LOGIN)) {
+            final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
             final AuthResponse authResponse = (AuthResponse)result;
+            currentUserSingleton.setAuthResponse(authResponse);
             startActivity(new Intent(this, MainActivity.class));
         }
     }
