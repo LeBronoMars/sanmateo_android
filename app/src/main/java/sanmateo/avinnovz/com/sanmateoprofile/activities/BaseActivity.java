@@ -3,6 +3,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.design.widget.Snackbar;
@@ -129,5 +130,9 @@ public class BaseActivity extends AppCompatActivity {
 
     public static void animateToRight(Activity activity) {
         activity.overridePendingTransition(R.anim.in_from_left, R.anim.out_to_right);
+    }
+
+    public Drawable getImageById(final int id) {
+        return ContextCompat.getDrawable(this,id);
     }
 }

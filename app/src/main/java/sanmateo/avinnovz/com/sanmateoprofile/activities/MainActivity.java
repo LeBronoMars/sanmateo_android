@@ -7,6 +7,8 @@ import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
@@ -19,9 +21,11 @@ import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 public class MainActivity extends BaseActivity {
@@ -31,6 +35,7 @@ public class MainActivity extends BaseActivity {
     @BindView(R.id.navigationView) NavigationView navigationView;
     @BindView(R.id.viewPager) AutoScrollViewPager viewPager;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
+    @BindView(R.id.rvHomeMenu) RecyclerView rvHomeMenu;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
 
@@ -39,9 +44,10 @@ public class MainActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+        currentUserSingleton = CurrentUserSingleton.newInstance();
         animateBanners();
-        initSideDrawerMenu();
-        initSideDrawerMenu();
+        initNavigationDrawer();
+        initHomeMenu();
     }
 
     private void animateBanners() {
@@ -71,6 +77,7 @@ public class MainActivity extends BaseActivity {
         };
         drawerLayout.addDrawerListener(actionBarDrawerToggle);
         actionBarDrawerToggle.syncState();
+        initSideDrawerMenu();
     }
 
     private void initSideDrawerMenu() {
@@ -83,4 +90,22 @@ public class MainActivity extends BaseActivity {
         tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
                                     currentUserSingleton.getAuthResponse().getLastName());
     }
+
+    private void initHomeMenu() {
+        final ArrayList<HomeMenu> homeMenus = new ArrayList<>();
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_alarm),"Panic/Emergency"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Incident Report"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_info),"Information"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_locations),"Map"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_directories),"Directories"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_gallery),"Gallery"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_fb),"Social Media"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Disaster Management"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_contact_us),"Contact Us"));
+        final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
+        rvHomeMenu.setAdapter(adapter);
+        rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
+    }
 }
+

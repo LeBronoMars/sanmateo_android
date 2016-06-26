@@ -7,10 +7,10 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
  */
 public class CurrentUserSingleton {
 
-    private static CurrentUserSingleton CURR_USER;
+    private static CurrentUserSingleton CURR_USER = new CurrentUserSingleton();
     private AuthResponse authResponse;
 
-    protected CurrentUserSingleton() {}
+    private CurrentUserSingleton() {}
 
     public static CurrentUserSingleton newInstance() {
         return CURR_USER;

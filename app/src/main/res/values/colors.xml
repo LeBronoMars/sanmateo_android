@@ -5,4 +5,26 @@
     <color name="colorPrimaryDark">#33728b</color>
     <color name="colorAccent">#c76d49</color>
     <color name="gray_bg">#445b63</color>
+    <color name="shade1">@color/colorPrimary</color>
+    <color name="shade2">#4192b3</color>
+    <color name="shade3">#3a829f</color>
+    <color name="shade4">#33728b</color>
+    <color name="shade5">#2b6177</color>
+    <color name="shade6">#245163</color>
+    <color name="shade7">#1d414f</color>
+    <color name="shade8">#15303b</color>
+    <color name="shade9">#0e2027</color>
+    <color name="shade10">#071013</color>
+    <array name="shade_array">
+        <item>@color/shade1</item>
+        <item>@color/shade2</item>
+        <item>@color/shade3</item>
+        <item>@color/shade4</item>
+        <item>@color/shade5</item>
+        <item>@color/shade6</item>
+        <item>@color/shade7</item>
+        <item>@color/shade8</item>
+        <item>@color/shade9</item>
+        <item>@color/shade10</item>
+    </array>
 </resources>
