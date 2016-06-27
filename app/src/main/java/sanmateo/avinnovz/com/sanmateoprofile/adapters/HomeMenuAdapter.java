@@ -1,7 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,6 +26,7 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<HomeMenuAdapter.ViewHo
     private Context context;
     private BaseActivity activity;
     private int[] colorShadeArray;
+    private OnSelectHomeMenuListener onSelectHomeMenuListener;
 
     public HomeMenuAdapter(final Context context,final ArrayList<HomeMenu> homeMenus) {
         this.context = context;
@@ -65,10 +65,26 @@ public class HomeMenuAdapter extends RecyclerView.Adapter<HomeMenuAdapter.ViewHo
         holder.llMenu.setBackgroundColor(colorShadeArray[i]);
         holder.ivMenuIcon.setImageDrawable(menu.getMenuImage());
         holder.tvMenuTitle.setText(menu.getMenuTitle());
+        holder.llMenu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onSelectHomeMenuListener != null) {
+                    onSelectHomeMenuListener.onSelectedMenu(i);
+                }
+            }
+        });
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnSelectHomeMenuListener {
+        void onSelectedMenu(final int position);
+    }
+
+    public void setOnSelectHomeMenuListener(OnSelectHomeMenuListener onSelectHomeMenuListener) {
+        this.onSelectHomeMenuListener = onSelectHomeMenuListener;
     }
 }

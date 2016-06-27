@@ -31,6 +31,9 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.GalleryActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- glide config -->
         <meta-data android:name="sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideConfig" android:value="GlideModule" />
 

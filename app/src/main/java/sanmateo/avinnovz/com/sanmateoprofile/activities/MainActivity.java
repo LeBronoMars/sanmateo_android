@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -104,6 +105,14 @@ public class MainActivity extends BaseActivity {
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Disaster Management"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_contact_us),"Contact Us"));
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
+        adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
+            @Override
+            public void onSelectedMenu(int position) {
+                if (position == 1) {
+                    startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+                }
+            }
+        });
         rvHomeMenu.setAdapter(adapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
     }

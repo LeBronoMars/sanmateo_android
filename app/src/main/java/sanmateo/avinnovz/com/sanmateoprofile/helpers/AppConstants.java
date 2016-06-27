@@ -10,6 +10,7 @@ public class AppConstants {
 
     public static final String BASE_URL = "http://192.168.1.6:9000";
     //public static final String BASE_URL = "http://192.168.10.4:9000";
+    ///public static final String BASE_URL = "http://localhsot:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
 

@@ -118,7 +118,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == SELECT_IMAGE) {
             try {
-                final File file = getFile(data.getData());
+                final File file = getFile(data.getData(),"yoursamplefilename");
                 amazonS3Helper.uploadImage(file).setTransferListener(this);
             } catch (IOException e) {
                 LogHelper.log("s3","error in getting file ---> " + e.getMessage());
@@ -142,7 +142,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
     }
 
-    private File getFile(Uri uri) throws IOException {
+    private File getFile(final Uri uri, final String fileName) throws IOException {
         final ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
         final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
         final Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
@@ -151,7 +151,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
         final byte[] bitmapdata = bos.toByteArray();
 
-        final File f = new File(getCacheDir(), "sample");
+        final File f = new File(getCacheDir(), fileName);
         f.createNewFile();
 
         final FileOutputStream fos = new FileOutputStream(f);
