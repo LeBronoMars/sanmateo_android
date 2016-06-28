@@ -7,7 +7,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 
 /**
  * Created by rsbulanon on 6/28/16.
@@ -16,6 +18,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     @BindView(R.id.rvIncidents) RecyclerView rvIncidents;
     private ApiRequestHelper apiRequestHelper;
+    private IncidentsSingleton incidentsSingleton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,6 +27,12 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         setContentView(R.layout.activity_incidents);
         ButterKnife.bind(this);
         apiRequestHelper = new ApiRequestHelper(this);
+        incidentsSingleton = IncidentsSingleton.getInstance();
+
+        //check if there are new incidents needed to be fetched from api
+        if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
+            
+        }
     }
 
     @Override

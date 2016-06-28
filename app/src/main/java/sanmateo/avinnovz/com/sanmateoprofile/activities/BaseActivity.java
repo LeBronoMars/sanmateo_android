@@ -15,10 +15,19 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.rey.material.app.Dialog;
+import com.squareup.otto.Subscribe;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -143,7 +152,32 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-
+        BusSingleton.getInstance().unregister(this);
         super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        BusSingleton.getInstance().register(this);
+        super.onResume();
+    }
+
+    @Subscribe
+    public void handleBusEvent(final HashMap<String,Object> map) {
+        try {
+            if (map.get("channel").toString().equals("all")) {
+                final JSONObject json = new JSONObject(map.get("data").toString());
+                //new incident reported was created
+                if (json.has("action")) {
+                    final String action = json.getString("action");
+                    if (action.equals("new incident")) {
+                        PrefsHelper.setBoolean(this,"refresh_incidents",true);
+                    }
+                }
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+            LogHelper.log("err","unable to parse json object --> " + e.getMessage());
+        }
     }
 }
