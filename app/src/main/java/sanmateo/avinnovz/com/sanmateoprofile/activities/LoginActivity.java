@@ -90,6 +90,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
             final AuthResponse authResponse = (AuthResponse)result;
             currentUserSingleton.setAuthResponse(authResponse);
             startActivity(new Intent(this, MainActivity.class));
+            animateToLeft(this);
+            finish();
         }
     }
 

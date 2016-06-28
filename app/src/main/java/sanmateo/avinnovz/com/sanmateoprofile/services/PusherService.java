@@ -20,6 +20,7 @@ import java.util.HashMap;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.NotificationHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 
 
@@ -56,6 +57,7 @@ public class PusherService extends Service {
 
                         /** new incident notification */
                         if (action.equals("new incident")) {
+                            PrefsHelper.setBoolean(PusherService.this,"refresh_incidents",true);
                             LogHelper.log("pusher","must show push notification for new incident");
                             final int id = Integer.valueOf(json.getInt("id"));
                             NotificationHelper.displayNotification(id,PusherService.this,

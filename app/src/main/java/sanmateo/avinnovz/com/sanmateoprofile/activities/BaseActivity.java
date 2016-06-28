@@ -10,6 +10,8 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -162,22 +164,21 @@ public class BaseActivity extends AppCompatActivity {
         super.onResume();
     }
 
-    @Subscribe
-    public void handleBusEvent(final HashMap<String,Object> map) {
-        try {
-            if (map.get("channel").toString().equals("all")) {
-                final JSONObject json = new JSONObject(map.get("data").toString());
-                //new incident reported was created
-                if (json.has("action")) {
-                    final String action = json.getString("action");
-                    if (action.equals("new incident")) {
-                        PrefsHelper.setBoolean(this,"refresh_incidents",true);
-                    }
-                }
-            }
-        } catch (JSONException e) {
-            e.printStackTrace();
-            LogHelper.log("err","unable to parse json object --> " + e.getMessage());
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                onBackPressed();
+                break;
         }
+        return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        finish();
+        animateToRight(this);
     }
 }
+
