@@ -8,7 +8,7 @@ import com.squareup.otto.ThreadEnforcer;
  */
 public class BusSingleton {
 
-    private static Bus BUS = new Bus(ThreadEnforcer.MAIN);
+    private static Bus BUS = new Bus(ThreadEnforcer.ANY);
 
     private BusSingleton() {}
 

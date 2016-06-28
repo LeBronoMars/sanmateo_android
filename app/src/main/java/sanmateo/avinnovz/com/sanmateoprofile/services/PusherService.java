@@ -12,9 +12,14 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionStateChange;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 
+import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.NotificationHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 
 
@@ -43,6 +48,25 @@ public class PusherService extends Service {
         channel.bind("san_mateo_event", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
+                /** manage, construct and display local push notification */
+                try {
+                    final JSONObject json = new JSONObject(data);
+                    if (json.has("action")) {
+                        final String action = json.getString("action");
+
+                        /** new incident notification */
+                        if (action.equals("new incident")) {
+                            LogHelper.log("pusher","must show push notification for new incident");
+                            final int id = Integer.valueOf(json.getInt("id"));
+                            NotificationHelper.displayNotification(id,PusherService.this,
+                                    json.getString("title"),json.getString("content"), null);
+                        }
+                    }
+                } catch (JSONException e) {
+                    LogHelper.log("err","unable to manage,construct and display push notification --> " + e);
+                }
+
+                /** broadcast received push notification */
                 final HashMap<String,Object> map = new HashMap<>();
                 map.put("channel",channelName);
                 map.put("eventName",eventName);

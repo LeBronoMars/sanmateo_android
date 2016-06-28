@@ -140,4 +140,10 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+    }
 }
