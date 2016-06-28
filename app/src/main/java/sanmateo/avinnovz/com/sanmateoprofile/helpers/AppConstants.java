@@ -8,9 +8,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ApiInterface;
  */
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.1.6:9000";
+    public static final String BASE_URL = "http://192.168.1.7:9000";
     //public static final String BASE_URL = "http://192.168.10.4:9000";
-    ///public static final String BASE_URL = "http://localhsot:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
 
@@ -19,6 +18,7 @@ public class AppConstants {
 
     /** api actions */
     public static final String ACTION_LOGIN = "action login";
+    public static final String ACTION_GET_INCIDENTS = "get incidents";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

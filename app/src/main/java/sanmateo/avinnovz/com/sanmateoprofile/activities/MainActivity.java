@@ -109,7 +109,7 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onSelectedMenu(int position) {
                 if (position == 1) {
-                    startActivity(new Intent(MainActivity.this, GalleryActivity.class));
+                    startActivity(new Intent(MainActivity.this, IncidentsActivity.class));
                 }
             }
         });

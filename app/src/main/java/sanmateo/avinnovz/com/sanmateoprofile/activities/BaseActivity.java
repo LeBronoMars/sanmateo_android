@@ -135,4 +135,9 @@ public class BaseActivity extends AppCompatActivity {
     public Drawable getImageById(final int id) {
         return ContextCompat.getDrawable(this,id);
     }
+
+    public void setToolbarTitle(final String title) {
+        getSupportActionBar().setTitle(title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    }
 }
