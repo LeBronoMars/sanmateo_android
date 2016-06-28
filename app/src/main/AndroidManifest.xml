@@ -44,6 +44,9 @@
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
             android:enabled="true" />
+
+        <!-- pusher service -->
+        <service android:name=".services.PusherService" />
     </application>
 
 </manifest>

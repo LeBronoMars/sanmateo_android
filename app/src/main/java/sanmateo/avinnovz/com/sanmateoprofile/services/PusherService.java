@@ -12,7 +12,10 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionStateChange;
 
+import java.util.HashMap;
+
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 
 
 /**
@@ -28,19 +31,23 @@ public class PusherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        LogHelper.log("pusher","instantiate request helper");
+        LogHelper.log("pusher","pusher service created");
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
-        final Pusher pusher = new Pusher("f607f300e00b18d5378e",options);
-        final Channel channel = pusher.subscribe("test_channel");
-        channel.bind("my_event", new SubscriptionEventListener() {
+        final Pusher pusher = new Pusher("0301a630c1ca8205aea8",options);
+        final Channel channel = pusher.subscribe("all");
+        channel.bind("san_mateo_event", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
-
+                final HashMap<String,Object> map = new HashMap<>();
+                map.put("channel",channelName);
+                map.put("eventName",eventName);
+                map.put("data",data);
+                BusSingleton.getInstance().post(map);
             }
         });
 

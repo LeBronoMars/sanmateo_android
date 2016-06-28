@@ -27,6 +27,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
+import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 public class MainActivity extends BaseActivity {
@@ -49,6 +50,7 @@ public class MainActivity extends BaseActivity {
         animateBanners();
         initNavigationDrawer();
         initHomeMenu();
+        startService(new Intent(this, PusherService.class));
     }
 
     private void animateBanners() {
