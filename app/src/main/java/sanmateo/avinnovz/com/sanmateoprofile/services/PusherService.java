@@ -38,7 +38,7 @@ public class PusherService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
-        final Pusher pusher = new Pusher("0301a630c1ca8205aea8",options);
+        final Pusher pusher = new Pusher("d37253507ae4d71dee6b",options);
         final Channel channel = pusher.subscribe("all");
         channel.bind("san_mateo_event", new SubscriptionEventListener() {
             @Override
