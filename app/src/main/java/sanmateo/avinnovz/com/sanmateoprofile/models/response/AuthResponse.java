@@ -10,7 +10,6 @@ public class AuthResponse {
     private int id;
     @SerializedName("created_at") private String createdAt;
     @SerializedName("updated_at") private String updatedAt;
-    @SerializedName("deleted_at") private String deletedAt;
     @SerializedName("first_name") private String firstName;
     @SerializedName("last_name") private String lastName;
     private String email;
@@ -20,6 +19,7 @@ public class AuthResponse {
     @SerializedName("user_level") private String userLevel;
     private String gender;
     @SerializedName("pic_url") private String picUrl;
+    private String token;
 
     public int getId() {
         return id;
@@ -31,10 +31,6 @@ public class AuthResponse {
 
     public String getUpdatedAt() {
         return updatedAt;
-    }
-
-    public String getDeletedAt() {
-        return deletedAt;
     }
 
     public String getFirstName() {
@@ -71,5 +67,9 @@ public class AuthResponse {
 
     public String getPicUrl() {
         return picUrl;
+    }
+
+    public String getToken() {
+        return token;
     }
 }

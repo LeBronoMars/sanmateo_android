@@ -19,6 +19,8 @@ public class AppConstants {
     /** api actions */
     public static final String ACTION_LOGIN = "action login";
     public static final String ACTION_GET_INCIDENTS = "get incidents";
+    public static final String ACTION_GET_LATEST_INCIDENTS = "get latest incidents";
+    public static final String ACTION_GET_INCIDENT_BY_ID = "get incident by id";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";
