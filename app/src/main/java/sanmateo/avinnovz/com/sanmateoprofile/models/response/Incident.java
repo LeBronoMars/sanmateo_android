@@ -11,6 +11,8 @@ public class Incident {
     @SerializedName("reporter_name") private String reporterName;
     @SerializedName("reporter_contact_no") private String reporterContactNo;
     @SerializedName("reporter_email") private String reporterEmail;
+    @SerializedName("reporter_address") private String reportedPicAddress;
+    @SerializedName("reporter_pic_url") private String reporterPicUrl;
     @SerializedName("incident_id") private int incidentId;
     private String images;
     private double latitude;

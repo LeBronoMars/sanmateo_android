@@ -7,12 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.github.florent37.materialleanback.MaterialLeanBack;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
 /**
@@ -43,7 +48,11 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.mlbImages) MaterialLeanBack mlbImages;
+        @BindView(R.id.tvDescription) TextView tvDescription;
         @BindView(R.id.tvAddress) TextView tvAddress;
+        @BindView(R.id.tvReportedBy) TextView tvReportedBy;
+        @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
 
         ViewHolder(View view) {
             super(view);
@@ -54,7 +63,22 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     @Override
     public void onBindViewHolder(ViewHolder holder, final int i) {
         final Incident incident = incidents.get(i);
+        holder.tvDescription.setText(incident.getIncidentDescription());
         holder.tvAddress.setText(incident.getIncidentAddress());
+        holder.tvReportedBy.setText(incident.getReporterName());
+        final ArrayList<String> incidentImages = new ArrayList<>();
+        /**
+         * if incident images contains '||' which acts as the delimiter
+         * split incident.getImages() using '||' to get the list of image urls
+         * */
+        if (incident.getImages().contains("||")) {
+            incidentImages.addAll(Arrays.asList(incident.getImages().split("||")));
+        } else {
+            incidentImages.add(incident.getImages());
+        }
+        final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
+        GlideHelper.loadImage(context,incident);
+        //holder.mlbImages.setAdapter(adapter);
     }
 
     @Override

@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +16,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
 /**
  * Created by rsbulanon on 6/29/16.
@@ -35,6 +37,11 @@ public class IncidentImagesAdapter extends MaterialLeanBack.Adapter<IncidentImag
     }
 
     @Override
+    public int getCellsCount(int row) {
+        return imagesUrl.size();
+    }
+
+    @Override
     public ImagesViewHolder onCreateViewHolder(ViewGroup viewGroup, int row) {
         final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R
                                             .layout.row_incident_image_item, viewGroup, false);
@@ -44,8 +51,35 @@ public class IncidentImagesAdapter extends MaterialLeanBack.Adapter<IncidentImag
     @Override
     public void onBindViewHolder(ImagesViewHolder viewHolder, int i) {
         viewHolder.tvIncidentDesc.setText("Image " + (i+1) + "/" + imagesUrl.size());
-        GlideHelper.loadImage(context,imagesUrl.get(i),viewHolder.ivIncidentImage);
+        //GlideHelper.loadImage(context,imagesUrl.get(i),viewHolder.ivIncidentImage);
     }
+
+    @Override
+    public String getTitleForRow(int row) {
+        return "Line " + row;
+    }
+
+    //region customView
+    @Override
+    public RecyclerView.ViewHolder getCustomViewForRow(ViewGroup viewgroup, int row) {
+        if (row == 3) {
+            final View view = LayoutInflater.from(viewgroup.getContext()).inflate(R.layout.row_incident_item_header, viewgroup, false);
+            return new RecyclerView.ViewHolder(view) {
+            };
+        } else
+            return null;
+    }
+
+    @Override
+    public boolean isCustomView(int row) {
+        return row == 3;
+    }
+
+    @Override
+    public void onBindCustomView(RecyclerView.ViewHolder viewHolder, int row) {
+        super.onBindCustomView(viewHolder, row);
+    }
+
 
     public class ImagesViewHolder extends MaterialLeanBack.ViewHolder {
 
