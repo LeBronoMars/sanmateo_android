@@ -18,6 +18,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
 /**
@@ -31,6 +32,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
+        this.context = context;
         this.activity = (BaseActivity) context;
     }
 
@@ -76,8 +78,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         } else {
             incidentImages.add(incident.getImages());
         }
-        final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
         GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
+        //final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
         //holder.mlbImages.setAdapter(adapter);
     }
 
