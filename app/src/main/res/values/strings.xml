@@ -31,4 +31,7 @@
     <string name="close_drawer">Close</string>
     <string name="welcome">Welcome!</string>
 
+    <!-- incident row -->
+    <string name="reported_by">Reported By</string>
+
 </resources>
