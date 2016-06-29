@@ -89,4 +89,12 @@ public class Incident {
     public String getStatus() {
         return status;
     }
+
+    public String getReportedPicAddress() {
+        return reportedPicAddress;
+    }
+
+    public String getReporterPicUrl() {
+        return reporterPicUrl;
+    }
 }

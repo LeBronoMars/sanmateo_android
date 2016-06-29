@@ -77,7 +77,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             incidentImages.add(incident.getImages());
         }
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
-        GlideHelper.loadImage(context,incident);
+        GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
         //holder.mlbImages.setAdapter(adapter);
     }
 
