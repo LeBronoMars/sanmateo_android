@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,8 @@ import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.ImageFullViewActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
@@ -31,12 +34,12 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
     private ArrayList<Incident> incidents;
     private Context context;
-    private BaseActivity activity;
+    private IncidentsActivity activity;
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
         this.context = context;
-        this.activity = (BaseActivity) context;
+        this.activity = (IncidentsActivity) context;
     }
 
     @Override
@@ -101,6 +104,16 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
         GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
+        adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
+            @Override
+            public void onSelectedImage(int position) {
+                final Intent intent = new Intent(context, ImageFullViewActivity.class);
+                intent.putExtra("incident",incident);
+                intent.putExtra("selectedImagePosition",position);
+                activity.startActivity(intent);
+                activity.animateToLeft(activity);
+            }
+        });
         holder.rvImages.setAdapter(adapter);
     }
 

@@ -29,6 +29,7 @@ public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAd
 
     private ArrayList<String> imageUrls;
     private Context context;
+    private OnSelectImageListener onSelectImageListener;
 
     public IncidentImagesAdapter(final Context context,final ArrayList<String> imageUrls) {
         this.imageUrls = imageUrls;
@@ -43,8 +44,16 @@ public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAd
     }
 
     @Override
-    public void onBindViewHolder(final ImageViewHolder holder, int position) {
+    public void onBindViewHolder(final ImageViewHolder holder, final int position) {
         GlideHelper.loadImage(context,imageUrls.get(position),holder.ivGallery);
+        holder.ivGallery.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onSelectImageListener != null) {
+                    onSelectImageListener.onSelectedImage(position);
+                }
+            }
+        });
     }
 
     @Override
@@ -60,5 +69,13 @@ public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAd
             super(view);
             ButterKnife.bind(this,view);
         }
+    }
+
+    public interface OnSelectImageListener {
+        void onSelectedImage(final int position);
+    }
+
+    public void setOnSelectImageListener(OnSelectImageListener onSelectImageListener) {
+        this.onSelectImageListener = onSelectImageListener;
     }
 }

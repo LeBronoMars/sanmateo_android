@@ -154,6 +154,10 @@ public class BaseActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
+    public void updateToolbarTitle(final String title) {
+        getSupportActionBar().setTitle(title);
+    }
+
     @Override
     protected void onPause() {
         BusSingleton.getInstance().unregister(this);
