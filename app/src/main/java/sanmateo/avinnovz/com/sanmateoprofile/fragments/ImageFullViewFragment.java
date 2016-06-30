@@ -12,6 +12,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 /**
  * Created by rsbulanon on 6/30/16.
