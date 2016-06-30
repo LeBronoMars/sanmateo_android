@@ -56,6 +56,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         @BindView(R.id.tvDescription) TextView tvDescription;
         @BindView(R.id.tvAddress) TextView tvAddress;
         @BindView(R.id.tvDateReported) TextView tvDateReported;
+        @BindView(R.id.tvTimeAgo) TextView tvTimeAgo;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
@@ -77,8 +78,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             final Calendar calendar = Calendar.getInstance();
             calendar.setTime(dateReported);
             calendar.add(Calendar.HOUR_OF_DAY,8);
-            holder.tvDateReported.setText(activity.getSDF().format(calendar.getTime()) + " - " +
-                        activity.getPrettyTime().format(calendar.getTime()));
+            holder.tvDateReported.setText(activity.getSDF().format(calendar.getTime()));
+            holder.tvTimeAgo.setText(activity.getPrettyTime().format(calendar.getTime()));
         } catch (ParseException e) {
             e.printStackTrace();
             LogHelper.log("err","error in parsing date --> " + e.getMessage());
