@@ -34,4 +34,10 @@
     <!-- incident row -->
     <string name="reported_by">Reported By</string>
 
+    <!-- file incident report dialog fragment -->
+    <string name="file_incident_report_header">File incident report</string>
+    <string name="incident_description">Write something about the incident</string>
+    <string name="incident_address">Location of incident</string>
+    <string name="select_incident_type">Select incident type</string>
+
 </resources>

@@ -14,9 +14,11 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -126,5 +128,11 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         } catch (JSONException e) {
             e.printStackTrace();
         }
+    }
+
+    @OnClick(R.id.btnAdd)
+    public void fileIncidentReport() {
+        final FileIncidentReportDialogFragment fragment = FileIncidentReportDialogFragment.newInstance();
+        fragment.show(getFragmentManager(),"file incident report");
     }
 }
