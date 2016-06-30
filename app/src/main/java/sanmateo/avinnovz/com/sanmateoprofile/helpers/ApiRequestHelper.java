@@ -108,4 +108,29 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void fileIncidentReport(final String token, final String address, final String description,
+                                   final String incidentType, final double latitude, final double longitude,
+                                   final int reportedBy, final String images) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_INCIDENT_REPORT);
+        Observable<Incident> observable = AppConstants.API_INTERFACE.fileNewIncidentReport(token,address,
+                                        description,incidentType,latitude,longitude,reportedBy,images);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Incident>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_INCIDENT_REPORT, e);
+                    }
+
+                    @Override
+                    public void onNext(Incident incident) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_INCIDENT_REPORT, incident);
+                    }
+                });
+    }
 }

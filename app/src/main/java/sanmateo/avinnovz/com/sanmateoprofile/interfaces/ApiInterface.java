@@ -2,6 +2,8 @@ package sanmateo.avinnovz.com.sanmateoprofile.interfaces;
 
 import java.util.List;
 
+import okhttp3.Response;
+import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -71,4 +73,29 @@ public interface ApiInterface {
     @GET("/api/v1/incidents/show/{incident_id}")
     Observable<Incident> getIncidentById(@Header("Authorization") String token,
                                          @Path("incident_id") int incidentId);
+
+    /**
+     * file new incident report
+     *
+     * @param token represents the user that trying to make the request
+     * @param address location of the incident
+     * @param description a brief description or details of the incident
+     * @param incidentType classification of incident
+     * @param latitude x coordinate of incident
+     * @param longitude y coordinate of incident
+     * @param reportedBy id of the user who reported the incident
+     * @param images url of uploaded images of the incident
+     *
+     * @return Incident model which contains the full detail of the newly created incident report
+     * */
+    @POST("/api/v1/incident")
+    Observable<Incident> fileNewIncidentReport(@Header("Authorization") String token,
+                                                   @Path("address") String address,
+                                                   @Path("description") String description,
+                                                   @Path("incident_type") String incidentType,
+                                                   @Path("latitude") double latitude,
+                                                   @Path("longitude") double longitude,
+                                                   @Path("reported_by") int reportedBy,
+                                                   @Path("images") String images);
 }
+

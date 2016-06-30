@@ -140,7 +140,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                                      String incidentType, ArrayList<Bitmap> images) {
                 fragment.dismiss();
                 if (images.size() > 0) {
-                    
+
                 }
             }
         });
