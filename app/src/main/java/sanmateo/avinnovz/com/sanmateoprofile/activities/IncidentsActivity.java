@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -133,6 +134,16 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     @OnClick(R.id.btnAdd)
     public void fileIncidentReport() {
         final FileIncidentReportDialogFragment fragment = FileIncidentReportDialogFragment.newInstance();
+        fragment.setOnFileIncidentReportListener(new FileIncidentReportDialogFragment.OnFileIncidentReportListener() {
+            @Override
+            public void onFileReport(String incidentDescription, String incidentLocation,
+                                     String incidentType, ArrayList<Bitmap> images) {
+                fragment.dismiss();
+                if (images.size() > 0) {
+                    
+                }
+            }
+        });
         fragment.show(getFragmentManager(),"file incident report");
     }
 }

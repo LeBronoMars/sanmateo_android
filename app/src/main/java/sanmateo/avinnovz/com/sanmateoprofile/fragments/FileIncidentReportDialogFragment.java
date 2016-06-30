@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ArrayAdapter;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 
 import com.cocosw.bottomsheet.BottomSheet;
@@ -40,6 +41,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
  */
 public class FileIncidentReportDialogFragment extends DialogFragment {
 
+    @BindView(R.id.etIncidentDescription) EditText etIncidentDescription;
+    @BindView(R.id.etIncidentLocation) EditText etIncidentLocation;
     @BindView(R.id.spnrIncidentType) Spinner spnrIncidentType;
     @BindView(R.id.rvImages) RecyclerView rvImages;
     @BindView(R.id.llAddPhoto) LinearLayout llAddPhoto;
@@ -49,6 +52,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
     private static final int SELECT_IMAGE = 1;
     private static final int CAPTURE_IMAGE = 2;
     private ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    private OnFileIncidentReportListener onFileIncidentReportListener;
 
     public static FileIncidentReportDialogFragment newInstance() {
         final FileIncidentReportDialogFragment fragment = new FileIncidentReportDialogFragment();
@@ -131,8 +135,11 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         if (resultCode == activity.RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
                 bitmaps.add(activity.getBitmapFromURI(data.getData()));
-                rvImages.getAdapter().notifyDataSetChanged();
+            } else {
+                final Bitmap photo = (Bitmap) data.getExtras().get("data");
+                bitmaps.add(photo);
             }
+            rvImages.getAdapter().notifyDataSetChanged();
         }
     }
 
@@ -146,5 +153,31 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
             }
         });
         rvImages.setAdapter(adapter);
+    }
+
+    @OnClick(R.id.btnFileIncidentReport)
+    public void fileIncidentReport() {
+        final String incidentDescription = etIncidentDescription.getText().toString().trim();
+        final String incidentLocation = etIncidentLocation.getText().toString().trim();
+
+        if (incidentDescription.isEmpty()) {
+            activity.setError(etIncidentDescription, AppConstants.WARN_FIELD_REQUIRED);
+        } else if (incidentLocation.isEmpty()) {
+            activity.setError(etIncidentLocation, AppConstants.WARN_FIELD_REQUIRED);
+        } else {
+            if (onFileIncidentReportListener != null) {
+                onFileIncidentReportListener.onFileReport(incidentDescription,incidentLocation,
+                        spnrIncidentType.getSelectedItem().toString(),bitmaps);
+            }
+        }
+    }
+
+    public interface OnFileIncidentReportListener {
+        void onFileReport(final String incidentDescription, final String incidentLocation,
+                          final String incidentType, final ArrayList<Bitmap> images);
+    }
+
+    public void setOnFileIncidentReportListener(OnFileIncidentReportListener onFileIncidentReportListener) {
+        this.onFileIncidentReportListener = onFileIncidentReportListener;
     }
 }
