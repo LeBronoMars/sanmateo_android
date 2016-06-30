@@ -2,7 +2,13 @@ package sanmateo.avinnovz.com.sanmateoprofile.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,8 +19,11 @@ import android.view.WindowManager;
 import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 
+import com.cocosw.bottomsheet.BottomSheet;
 import com.rey.material.widget.Spinner;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 
 import butterknife.BindView;
@@ -22,6 +31,9 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.FileToUploadAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
 /**
  * Created by rsbulanon on 6/30/16.
@@ -30,9 +42,13 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
 
     @BindView(R.id.spnrIncidentType) Spinner spnrIncidentType;
     @BindView(R.id.rvImages) RecyclerView rvImages;
+    @BindView(R.id.llAddPhoto) LinearLayout llAddPhoto;
     private View view;
     private Dialog mDialog;
     private BaseActivity activity;
+    private static final int SELECT_IMAGE = 1;
+    private static final int CAPTURE_IMAGE = 2;
+    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
 
     public static FileIncidentReportDialogFragment newInstance() {
         final FileIncidentReportDialogFragment fragment = new FileIncidentReportDialogFragment();
@@ -52,6 +68,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_file_incident_report, null);
         ButterKnife.bind(this, view);
         initIncidentTypeList();
+        initRecyclerView();
         activity = (BaseActivity) getActivity();
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -82,6 +99,52 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
 
     @OnClick(R.id.llAddPhoto)
     public void addPhoto() {
+        if (bitmaps.size() < 3) {
+            new BottomSheet.Builder(getActivity())
+                    .title("Upload Photo").sheet(R.menu.menu_upload_image)
+                    .listener(new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            switch (which) {
+                                case R.id.open_gallery:
+                                    final Intent intent = new Intent();
+                                    intent.setType("image/*");
+                                    intent.setAction(Intent.ACTION_GET_CONTENT);//
+                                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
+                                    break;
+                                case R.id.open_camera:
+                                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                    startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                                    break;
+                            }
+                        }
+                    }).show();
+        } else {
+            activity.showConfirmDialog("","Upload Photo","Sorry, but you have already reached the maximum " +
+                    " no of photos for upload.","Close","",null);
+        }
+    }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == activity.RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
+                bitmaps.add(activity.getBitmapFromURI(data.getData()));
+                rvImages.getAdapter().notifyDataSetChanged();
+            }
+        }
+    }
+
+    private void initRecyclerView() {
+        final FileToUploadAdapter adapter = new FileToUploadAdapter(getActivity(),bitmaps);
+        adapter.setOnSelectImageListener(new FileToUploadAdapter.OnSelectImageListener() {
+            @Override
+            public void onSelectedImage(int position) {
+                bitmaps.remove(position);
+                rvImages.getAdapter().notifyDataSetChanged();
+            }
+        });
+        rvImages.setAdapter(adapter);
     }
 }
