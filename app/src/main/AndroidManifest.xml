@@ -37,6 +37,9 @@
         <activity android:name=".activities.IncidentsActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.ImageFullViewActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- glide config -->
         <meta-data android:name="sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideConfig" android:value="GlideModule" />
 
