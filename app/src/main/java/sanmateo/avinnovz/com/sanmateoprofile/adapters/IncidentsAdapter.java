@@ -7,8 +7,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import org.ocpsoft.prettytime.PrettyTime;
+
+import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,6 +55,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
         @BindView(R.id.tvDescription) TextView tvDescription;
         @BindView(R.id.tvAddress) TextView tvAddress;
+        @BindView(R.id.tvDateReported) TextView tvDateReported;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
@@ -66,6 +72,17 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         holder.tvDescription.setText(incident.getIncidentDescription());
         holder.tvAddress.setText(incident.getIncidentAddress());
         holder.tvReportedBy.setText(incident.getReporterName());
+        try {
+            final Date dateReported = activity.getDateFormatter().parse(incident.getIncidentDateReported());
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateReported);
+            calendar.add(Calendar.HOUR_OF_DAY,8);
+            holder.tvDateReported.setText(activity.getSDF().format(calendar.getTime()) + " - " +
+                        activity.getPrettyTime().format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            LogHelper.log("err","error in parsing date --> " + e.getMessage());
+        }
         final ArrayList<String> incidentImages = new ArrayList<>();
         /**
          * if incident images contains '||' which acts as the delimiter

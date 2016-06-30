@@ -21,7 +21,9 @@ import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.ocpsoft.prettytime.PrettyTime;
 
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
@@ -180,5 +182,14 @@ public class BaseActivity extends AppCompatActivity {
         finish();
         animateToRight(this);
     }
+
+    public SimpleDateFormat getDateFormatter() { return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss"); }
+
+    public SimpleDateFormat getSDF() { return  new SimpleDateFormat("EEE, yyyy-MM-dd hh:mm a"); }
+
+    public PrettyTime getPrettyTime() {
+        return new PrettyTime();
+    }
+
 }
 

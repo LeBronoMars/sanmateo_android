@@ -46,6 +46,7 @@ dependencies {
     compile 'com.pusher:pusher-java-client:0.3.3'
     compile 'com.squareup:otto:1.3.8'
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     compile ('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
