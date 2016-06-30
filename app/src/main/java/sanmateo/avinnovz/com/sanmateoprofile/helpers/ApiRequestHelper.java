@@ -9,6 +9,7 @@ import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 
 /**
  * Created by rsbulanon on 6/23/16.
@@ -130,6 +131,33 @@ public class ApiRequestHelper {
                     @Override
                     public void onNext(Incident incident) {
                         onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_INCIDENT_REPORT, incident);
+                    }
+                });
+    }
+
+    public void createUser(final String firstName, final String lastName, final String contactNo,
+                           final String gender, final String email, final String address,
+                           final String userLevel, final String password) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_CREATE_USER);
+        Observable<User> observable = AppConstants.API_INTERFACE.createUser(firstName, lastName,
+                contactNo, gender, email, address, userLevel, password);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<User>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_CREATE_USER,
+                                e);
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_CREATE_USER,
+                                user);
                     }
                 });
     }

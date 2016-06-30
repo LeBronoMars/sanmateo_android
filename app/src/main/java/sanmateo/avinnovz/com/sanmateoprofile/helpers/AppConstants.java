@@ -22,10 +22,12 @@ public class AppConstants {
     public static final String ACTION_GET_LATEST_INCIDENTS = "get latest incidents";
     public static final String ACTION_GET_INCIDENT_BY_ID = "get incident by id";
     public static final String ACTION_POST_INCIDENT_REPORT = "create new incident report";
+    public static final String ACTION_POST_CREATE_USER = "create new user account";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";
     public static final String WARN_FIELD_REQUIRED = "This field is required";
+    public static final String WARN_PASSWORD_NOT_MATCH = "Passwod did not match";
     public static final String WARN_INVALID_EMAIL_FORMAT = "Invalid email format";
     public static final String WARN_CANT_GET_IMAGE = "We can't get your image. Please try again.";
 }

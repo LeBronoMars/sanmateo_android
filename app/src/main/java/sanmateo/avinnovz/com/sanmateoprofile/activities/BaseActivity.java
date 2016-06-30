@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.rey.material.app.Dialog;
 import com.squareup.otto.Subscribe;
@@ -58,6 +59,10 @@ public class BaseActivity extends AppCompatActivity {
     public void setError(final TextView textView, final String message) {
         textView.setError(message);
         textView.requestFocus();
+    }
+
+    public void showToast(String message) {
+        Toast.makeText(this,message,Toast.LENGTH_SHORT).show();
     }
 
     public boolean isValidEmail(final String email) {

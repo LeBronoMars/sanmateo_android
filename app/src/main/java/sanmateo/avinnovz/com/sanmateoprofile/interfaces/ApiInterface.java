@@ -14,6 +14,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 
 /**
  * Created by rsbulanon on 6/22/16.
@@ -97,5 +98,19 @@ public interface ApiInterface {
                                                    @Path("longitude") double longitude,
                                                    @Path("reported_by") int reportedBy,
                                                    @Path("images") String images);
+
+    /**
+     * create user
+     * */
+    @POST("/api/v1/user")
+    @FormUrlEncoded
+    Observable<User> createUser(@Field("first_name") String firstName,
+                                @Field("last_name") String lastName,
+                                @Field("contact_no") String contactNo,
+                                @Field("gender") String gender,
+                                @Field("email") String email,
+                                @Field("address") String address,
+                                @Field("user_level") String userLevel,
+                                @Field("password") String password);
 }
 
