@@ -38,7 +38,7 @@ public class ImageFullViewActivity extends BaseActivity {
         } else {
             incidentImages.add(incident.getImages());
         }
-        setToolbarTitle(selectedImagePosition + "/"+incidentImages.size());
+        setToolbarTitle("Selected Image " + (selectedImagePosition+1) + "/"+incidentImages.size());
 
         /** initialize view pager */
         final ArrayList<Fragment> fragments = new ArrayList<>();
@@ -48,6 +48,7 @@ public class ImageFullViewActivity extends BaseActivity {
         final FullImageViewAdapter adapter = new FullImageViewAdapter(getSupportFragmentManager(),fragments);
         viewPager.setAdapter(adapter);
         viewPager.setOffscreenPageLimit(fragments.size());
+        viewPager.setCurrentItem(selectedImagePosition);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
