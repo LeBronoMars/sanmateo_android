@@ -7,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.github.florent37.materialleanback.MaterialLeanBack;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -50,11 +48,11 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.mlbImages) MaterialLeanBack mlbImages;
         @BindView(R.id.tvDescription) TextView tvDescription;
         @BindView(R.id.tvAddress) TextView tvAddress;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
+        @BindView(R.id.rvImages) RecyclerView rvImages;
 
         ViewHolder(View view) {
             super(view);
@@ -73,14 +71,19 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
          * if incident images contains '||' which acts as the delimiter
          * split incident.getImages() using '||' to get the list of image urls
          * */
-        if (incident.getImages().contains("||")) {
-            incidentImages.addAll(Arrays.asList(incident.getImages().split("||")));
+        if (incident.getImages().contains("###")) {
+            incidentImages.addAll(Arrays.asList(incident.getImages().split("###")));
         } else {
             incidentImages.add(incident.getImages());
         }
+
+        for (String s : incidentImages) {
+            LogHelper.log("img","URLS ---> " + s);
+        }
+
         GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
-        //final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
-        //holder.mlbImages.setAdapter(adapter);
+        final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
+        holder.rvImages.setAdapter(adapter);
     }
 
     @Override

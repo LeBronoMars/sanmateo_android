@@ -1,70 +1,81 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
+    android:layout_margin="@dimen/_10sdp"
     android:elevation="@dimen/_10sdp"
-    app:cardCornerRadius="@dimen/_10sdp"
+    android:orientation="vertical"
     android:padding="@dimen/_5sdp">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:padding="@dimen/_5sdp"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_5sdp">
 
         <!-- fire incident image gallery -->
-        <com.github.florent37.materialleanback.MaterialLeanBack
-            android:id="@+id/mlbImages"
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rvImages"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
-            app:mlb_animateCards="true"
-            app:mlb_cardElevationEnlarged="10"
-            app:mlb_cardElevationReduced="5">
-
-        </com.github.florent37.materialleanback.MaterialLeanBack>
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layoutManager="LinearLayoutManager" />
 
         <!-- incident reporter profile picture -->
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/civReporterImage"
             android:layout_width="@dimen/_50sdp"
+            android:layout_height="@dimen/_50sdp"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/mlbImages"
-            android:layout_height="@dimen/_50sdp" />
+            android:layout_below="@id/rvImages" />
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/mlbImages"
+            android:layout_below="@id/rvImages"
             android:layout_marginLeft="@dimen/_5sdp"
             android:layout_toRightOf="@id/civReporterImage"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvDescription"
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:text="@string/app_name"
                 android:textColor="@android:color/black"
+                android:textSize="@dimen/_14sdp" />
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                fontPath="fonts/Roboto-Medium.ttf"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="@dimen/_13sdp"
+                    android:layout_height="@dimen/_13sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:src="@drawable/pin"/>
+
+                <TextView
+                    android:id="@+id/tvAddress"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name" />
+            </LinearLayout>
 
             <TextView
-                android:id="@+id/tvAddress"
-                android:text="@string/app_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-            <TextView
-                android:layout_marginTop="@dimen/_10sdp"
-                android:text="@string/reported_by"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:text="@string/reported_by" />
 
             <TextView
                 android:id="@+id/tvReportedBy"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/app_name"/>
+                android:text="@string/app_name" />
         </LinearLayout>
 
 

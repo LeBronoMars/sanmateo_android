@@ -6,9 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.ProgressBar;
 
-import com.github.florent37.materialleanback.MaterialLeanBack;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 
@@ -18,75 +21,42 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
-/**
- * Created by rsbulanon on 6/29/16.
- */
-public class IncidentImagesAdapter extends MaterialLeanBack.Adapter<IncidentImagesAdapter.ImagesViewHolder> {
 
-    private ArrayList<String> imagesUrl;
+/**
+ * Created by rsbulanon on 6/30/16.
+ */
+public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAdapter.ImageViewHolder> {
+
+    private ArrayList<String> imageUrls;
     private Context context;
 
-    public IncidentImagesAdapter(final Context context, final ArrayList<String> imagesUrl) {
-        this.imagesUrl = imagesUrl;
+    public IncidentImagesAdapter(final Context context,final ArrayList<String> imageUrls) {
+        this.imageUrls = imageUrls;
         this.context = context;
     }
 
     @Override
-    public int getLineCount() {
-        return imagesUrl.size();
+    public ImageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_incident_image_item, parent, false);
+        ImageViewHolder holder = new ImageViewHolder(v);
+        return holder;
     }
 
     @Override
-    public int getCellsCount(int row) {
-        return imagesUrl.size();
+    public void onBindViewHolder(final ImageViewHolder holder, int position) {
+        GlideHelper.loadImage(context,imageUrls.get(position),holder.ivGallery);
     }
 
     @Override
-    public ImagesViewHolder onCreateViewHolder(ViewGroup viewGroup, int row) {
-        final View view = LayoutInflater.from(viewGroup.getContext()).inflate(R
-                                            .layout.row_incident_image_item, viewGroup, false);
-        return new ImagesViewHolder(view);
+    public int getItemCount() {
+        return imageUrls.size();
     }
 
-    @Override
-    public void onBindViewHolder(ImagesViewHolder viewHolder, int i) {
-        viewHolder.tvIncidentDesc.setText("Image " + (i+1) + "/" + imagesUrl.size());
-        //GlideHelper.loadImage(context,imagesUrl.get(i),viewHolder.ivIncidentImage);
-    }
+    public class ImageViewHolder extends RecyclerView.ViewHolder {
 
-    @Override
-    public String getTitleForRow(int row) {
-        return "Line " + row;
-    }
+        @BindView(R.id.ivGallery) ImageView ivGallery;
 
-    //region customView
-    @Override
-    public RecyclerView.ViewHolder getCustomViewForRow(ViewGroup viewgroup, int row) {
-        if (row == 3) {
-            final View view = LayoutInflater.from(viewgroup.getContext()).inflate(R.layout.row_incident_item_header, viewgroup, false);
-            return new RecyclerView.ViewHolder(view) {
-            };
-        } else
-            return null;
-    }
-
-    @Override
-    public boolean isCustomView(int row) {
-        return row == 3;
-    }
-
-    @Override
-    public void onBindCustomView(RecyclerView.ViewHolder viewHolder, int row) {
-        super.onBindCustomView(viewHolder, row);
-    }
-
-
-    public class ImagesViewHolder extends MaterialLeanBack.ViewHolder {
-
-        @BindView(R.id.ivIncidentImage) ImageView ivIncidentImage;
-        @BindView(R.id.tvIncidentDesc) TextView tvIncidentDesc;
-
-        public ImagesViewHolder(final View view) {
+        public ImageViewHolder(View view) {
             super(view);
             ButterKnife.bind(this,view);
         }
