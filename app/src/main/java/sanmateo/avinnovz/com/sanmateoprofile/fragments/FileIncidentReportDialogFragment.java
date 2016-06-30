@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +19,7 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 
@@ -27,6 +29,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 public class FileIncidentReportDialogFragment extends DialogFragment {
 
     @BindView(R.id.spnrIncidentType) Spinner spnrIncidentType;
+    @BindView(R.id.rvImages) RecyclerView rvImages;
     private View view;
     private Dialog mDialog;
     private BaseActivity activity;
@@ -75,5 +78,10 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         final ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.row_spinner, items);
         adapter.setDropDownViewResource(R.layout.row_spinner_dropdown);
         spinner.setAdapter(adapter);
+    }
+
+    @OnClick(R.id.llAddPhoto)
+    public void addPhoto() {
+
     }
 }
