@@ -1,15 +1,17 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +22,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -41,6 +44,11 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
     private String token;
+    private Bundle bundle = new Bundle();
+    private AmazonS3Helper amazonS3Helper;
+    private int filesToUploadCtr = 0;
+    private ArrayList<File> filesToUpload = new ArrayList<>();
+    private StringBuilder uploadedFilesUrl = new StringBuilder();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +56,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         setToolbarTitle("Incidents");
         setContentView(R.layout.activity_incidents);
         ButterKnife.bind(this);
+        amazonS3Helper = new AmazonS3Helper(this);
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
@@ -137,13 +146,49 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         fragment.setOnFileIncidentReportListener(new FileIncidentReportDialogFragment.OnFileIncidentReportListener() {
             @Override
             public void onFileReport(String incidentDescription, String incidentLocation,
-                                     String incidentType, ArrayList<Bitmap> images) {
+                                     String incidentType, final ArrayList<File> files) {
                 fragment.dismiss();
-                if (images.size() > 0) {
-
+                bundle.putString("incidentDescription",incidentDescription);
+                bundle.putString("incidentLocation",incidentLocation);
+                bundle.putString("incidentType",incidentType);
+                if (files.size() > 0) {
+                    filesToUpload.clear();
+                    filesToUpload.addAll(files);
+                    uploadImageToS3();
                 }
             }
         });
         fragment.show(getFragmentManager(),"file incident report");
+    }
+
+    private void uploadImageToS3() {
+        amazonS3Helper.uploadImage(filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
+            @Override
+            public void onStateChanged(int id, TransferState state) {
+                if (state.name().equals("COMPLETED")) {
+                    LogHelper.log("s3","ctr ---> "+ filesToUploadCtr + " upload image --> " + state.name()+
+                        "     " + filesToUpload.get(filesToUploadCtr).getName());
+                    filesToUploadCtr++;
+                    uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
+                    if (filesToUploadCtr < filesToUpload.size()) {
+                        uploadImageToS3();
+                    } else {
+                        dismissCustomProgress();
+                        LogHelper.log("s3","uploading of all files successfully finished!");
+                    }
+                }
+            }
+
+            @Override
+            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
+                        + filesToUpload.size() + "  " + bytesCurrent + "/" + bytesTotal);
+            }
+
+            @Override
+            public void onError(int id, Exception ex) {
+
+            }
+        });
     }
 }

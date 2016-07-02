@@ -26,6 +26,7 @@ import com.rey.material.widget.Spinner;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -52,6 +53,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
     private static final int SELECT_IMAGE = 1;
     private static final int CAPTURE_IMAGE = 2;
     private ArrayList<Bitmap> bitmaps = new ArrayList<>();
+    private ArrayList<File> filesToUpload = new ArrayList<>();
     private OnFileIncidentReportListener onFileIncidentReportListener;
 
     public static FileIncidentReportDialogFragment newInstance() {
@@ -134,8 +136,11 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == activity.RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
+                final String fileName = "incident_image_"+ activity.getSDF().format(Calendar.getInstance().getTime());
+                filesToUpload.add(activity.getFile(data.getData(),fileName));
                 bitmaps.add(activity.getBitmapFromURI(data.getData()));
             } else {
+                filesToUpload.add(activity.rotateBitmap(data.getData().getPath()));
                 final Bitmap photo = (Bitmap) data.getExtras().get("data");
                 bitmaps.add(photo);
             }
@@ -149,6 +154,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
             @Override
             public void onSelectedImage(int position) {
                 bitmaps.remove(position);
+                filesToUpload.remove(position);
                 rvImages.getAdapter().notifyDataSetChanged();
             }
         });
@@ -167,14 +173,14 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         } else {
             if (onFileIncidentReportListener != null) {
                 onFileIncidentReportListener.onFileReport(incidentDescription,incidentLocation,
-                        spnrIncidentType.getSelectedItem().toString(),bitmaps);
+                        spnrIncidentType.getSelectedItem().toString(),filesToUpload);
             }
         }
     }
 
     public interface OnFileIncidentReportListener {
         void onFileReport(final String incidentDescription, final String incidentLocation,
-                          final String incidentType, final ArrayList<Bitmap> images);
+                          final String incidentType, final ArrayList<File> filesToUpload);
     }
 
     public void setOnFileIncidentReportListener(OnFileIncidentReportListener onFileIncidentReportListener) {

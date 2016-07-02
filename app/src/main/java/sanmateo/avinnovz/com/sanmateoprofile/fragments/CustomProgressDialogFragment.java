@@ -51,9 +51,16 @@ public class CustomProgressDialogFragment extends DialogFragment {
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(view);
-        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
         mDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT,
                                     LinearLayout.LayoutParams.WRAP_CONTENT);
         return mDialog;
+    }
+
+    public void updateMessage(final String message) {
+        if (tvLoadingMessage != null) {
+            tvLoadingMessage.setText(message);
+        }
     }
 }
