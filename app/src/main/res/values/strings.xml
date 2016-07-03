@@ -44,4 +44,8 @@
     <string name="open_gallery">Open Gallery</string>
     <string name="file">File</string>
     <string name="cancel">Cancel</string>
+    <string name="note_before_filing_of_report"><b>NOTE : </b><i>Please be advised that reports
+                having malicious contents or false reports are subjected for deletion and you may
+                also be banned from the Community.</i></string>
+    <string name="i_understand">I Understand</string>
 </resources>
