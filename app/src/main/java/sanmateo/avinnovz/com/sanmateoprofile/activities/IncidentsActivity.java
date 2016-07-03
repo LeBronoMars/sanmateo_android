@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
@@ -7,6 +9,12 @@ import android.support.v7.widget.RecyclerView;
 
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
 import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
@@ -51,6 +59,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     private int filesToUploadCtr = 0;
     private ArrayList<File> filesToUpload = new ArrayList<>();
     private StringBuilder uploadedFilesUrl = new StringBuilder();
+    private CallbackManager shareCallBackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +72,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getAuthResponse().getToken();
+        shareCallBackManager = CallbackManager.Factory.create();
 
         //check if there are new incidents needed to be fetched from api
         if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
@@ -118,6 +128,50 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     private void initIncidents() {
         final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents());
+        adapter.setOnShareAndReportListner(new IncidentsAdapter.OnShareAndReportListner() {
+            @Override
+            public void onShare(int position) {
+                if (isNetworkAvailable()) {
+                    final Incident incident = incidentsSingleton.getIncidents().get(position);
+                    final String imageUrl = incident.getImages().contains("###") ?
+                            incident.getImages().split("###")[0] : "";
+                    final ShareDialog shareDialog = new ShareDialog(IncidentsActivity.this);
+                    shareDialog.registerCallback(shareCallBackManager, new FacebookCallback<Sharer.Result>() {
+                        @Override
+                        public void onSuccess(Sharer.Result result) {
+                            LogHelper.log("fb","Successfully shared in facebook ---> " + result.getPostId());
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            LogHelper.log("fb","Unable to share with error --> " + error.getMessage());
+                        }
+                    });
+                    if (ShareDialog.canShow(ShareLinkContent.class)) {
+                        final ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                .setContentTitle(incident.getIncidentDescription())
+                                .setImageUrl(Uri.parse(imageUrl))
+                                .setContentUrl(Uri.parse("www.google.com"))
+                                .setContentDescription(incident.getIncidentAddress())
+                                .build();
+                        shareDialog.show(linkContent, AppConstants.IS_FACEBOOK_APP_INSTALLED
+                                ? ShareDialog.Mode.NATIVE : ShareDialog.Mode.FEED);
+                    }
+                } else {
+                    showSnackbar(btnAdd, AppConstants.WARN_CONNECTION);
+                }
+            }
+
+            @Override
+            public void onReport(int position) {
+
+            }
+        });
         rvIncidents.setLayoutManager(new LinearLayoutManager(this));
         rvIncidents.setAdapter(adapter);
     }
@@ -219,5 +273,11 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                     1,1,currentUserSingleton.getAuthResponse().getId(),
                     uploadedFilesUrl.toString());
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        shareCallBackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

@@ -3,6 +3,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -314,6 +315,15 @@ public class BaseActivity extends AppCompatActivity {
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
                 imageFileName);
         return mediaStorageDir;
+    }
+
+    public boolean isFacebookInstalled() {
+        try {
+            getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
     }
 }
 

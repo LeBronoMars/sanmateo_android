@@ -17,6 +17,7 @@ public class AppConstants {
     public static final String BASE_URL = "http://192.168.10.5:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
+    public static boolean IS_FACEBOOK_APP_INSTALLED = false;
 
     /** s3 configs */
     public static final String AWS_POOL_ID = "us-east-1:66c534a3-218e-4cfc-934c-c5f24b53a88a";

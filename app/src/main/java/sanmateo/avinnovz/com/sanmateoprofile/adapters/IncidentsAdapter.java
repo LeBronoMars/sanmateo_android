@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -32,6 +33,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     private ArrayList<Incident> incidents;
     private Context context;
     private IncidentsActivity activity;
+    private OnShareAndReportListner onShareAndReportListner;
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
@@ -60,6 +62,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
+        @BindView(R.id.llShareViaFb) LinearLayout llShareViaFb;
+        @BindView(R.id.llReport) LinearLayout llReport;
 
         ViewHolder(View view) {
             super(view);
@@ -112,11 +116,40 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
                 activity.animateToLeft(activity);
             }
         });
+
+        /** share via facebook */
+        holder.llShareViaFb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onShareAndReportListner != null) {
+                    onShareAndReportListner.onShare(i);
+                }
+            }
+        });
+
+        /** report */
+        holder.llReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onShareAndReportListner != null) {
+                    onShareAndReportListner.onReport(i);
+                }
+            }
+        });
         holder.rvImages.setAdapter(adapter);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnShareAndReportListner {
+        void onShare(final int position);
+        void onReport(final int position);
+    }
+
+    public void setOnShareAndReportListner(OnShareAndReportListner onShareAndReportListner) {
+        this.onShareAndReportListner = onShareAndReportListner;
     }
 }

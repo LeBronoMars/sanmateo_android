@@ -2,6 +2,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Application;
 
+import com.facebook.FacebookSdk;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -36,6 +37,9 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        /** initialize facebook sdk */
+        FacebookSdk.sdkInitialize(this);
+
         if (AppConstants.RETROFIT == null && AppConstants.API_INTERFACE == null && AppConstants.PICASSO == null) {
 
             File cacheDir = getExternalCacheDir();

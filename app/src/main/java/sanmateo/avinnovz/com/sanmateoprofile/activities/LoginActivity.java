@@ -32,6 +32,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         ButterKnife.bind(this);
+        AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
         apiRequestHelper = new ApiRequestHelper(this);
     }
 
