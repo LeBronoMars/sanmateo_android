@@ -1,6 +1,5 @@
 package sanmateo.avinnovz.com.sanmateoprofile.fragments;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -19,12 +18,10 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 public class ImageFullViewFragment extends Fragment {
 
     @BindView(R.id.ivFullImage) ImageView ivFullImage;
-    private Context context;
     private String url;
 
-    public static ImageFullViewFragment newInstance(final Context context,final String url) {
+    public static ImageFullViewFragment newInstance(final String url) {
         final ImageFullViewFragment fragment = new ImageFullViewFragment();
-        fragment.context = context;
         fragment.url = url;
         return fragment;
     }
@@ -33,7 +30,8 @@ public class ImageFullViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_image_full_view,container,false);
         ButterKnife.bind(this,view);
-        AppConstants.PICASSO.load(url).centerCrop().fit().into(ivFullImage);
+        AppConstants.PICASSO.load(url).placeholder(R.drawable.placeholder_image)
+                .centerCrop().fit().into(ivFullImage);
         return view;
     }
 }

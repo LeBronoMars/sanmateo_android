@@ -89,13 +89,14 @@ public interface ApiInterface {
      * @return Incident model which contains the full detail of the newly created incident report
      * */
     @POST("/api/v1/incident")
+    @FormUrlEncoded
     Observable<Incident> fileNewIncidentReport(@Header("Authorization") String token,
-                                                   @Path("address") String address,
-                                                   @Path("description") String description,
-                                                   @Path("incident_type") String incidentType,
-                                                   @Path("latitude") double latitude,
-                                                   @Path("longitude") double longitude,
-                                                   @Path("reported_by") int reportedBy,
-                                                   @Path("images") String images);
+                                               @Field("address") String address,
+                                               @Field("description") String description,
+                                               @Field("incident_type") String incidentType,
+                                               @Field("latitude") double latitude,
+                                               @Field("longitude") double longitude,
+                                               @Field("reported_by") int reportedBy,
+                                               @Field("images") String images);
 }
 

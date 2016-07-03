@@ -95,11 +95,12 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             incidentImages.add(incident.getImages());
         }
 
-        for (String s : incidentImages) {
-            LogHelper.log("img","URLS ---> " + s);
-        }
-        AppConstants.PICASSO.load(incident.getReporterPicUrl()).placeholder(R.drawable.placeholder_image)
-                .centerCrop().fit().into(holder.civReporterImage);
+        AppConstants.PICASSO.load(incident.getReporterPicUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .centerCrop()
+                .fit()
+                .into(holder.civReporterImage);
+
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
         adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
             @Override

@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
@@ -40,6 +41,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 public class IncidentsActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.rvIncidents) RecyclerView rvIncidents;
+    @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
     private ApiRequestHelper apiRequestHelper;
     private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
@@ -80,6 +82,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             showCustomProgress("Fetching all incident reports, Please wait...");
         } else if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
             showCustomProgress("Fetching latest incident reports, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+            showCustomProgress("Filing your incident report, Please wait...");
         }
     }
 
@@ -94,6 +98,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+            showSnackbar(btnAdd,"Your report was successfully created!");
         }
     }
 
@@ -155,6 +161,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                 if (files.size() > 0) {
                     filesToUpload.clear();
                     filesToUpload.addAll(files);
+                    filesToUploadCtr = 0;
+                    uploadedFilesUrl.setLength(0);
                     showCustomProgress("Processing Images, Please wait...");
                     uploadImageToS3();
                 }
@@ -167,43 +175,49 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                         f.delete();
                     }
                 }
+                fragment.dismiss();
             }
         });
+        fragment.setCancelable(false);
         fragment.show(getFragmentManager(),"file incident report");
     }
 
     private void uploadImageToS3() {
-        amazonS3Helper.uploadImage(filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
-            @Override
-            public void onStateChanged(int id, TransferState state) {
-                if (state.name().equals("COMPLETED")) {
-                    LogHelper.log("s3","ctr ---> "+ filesToUploadCtr + " upload image --> " + state.name()+
-                        "     " + filesToUpload.get(filesToUploadCtr).getName());
-                    uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
-                    filesToUploadCtr++;
-                    if (filesToUploadCtr < filesToUpload.size()) {
-                        uploadImageToS3();
-                    } else {
-                        for (File f : filesToUpload) {
-                            f.delete();
+        if (filesToUploadCtr < filesToUpload.size()) {
+            amazonS3Helper.uploadImage(filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (state.name().equals("COMPLETED")) {
+                        uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
+                        if (filesToUploadCtr < filesToUpload.size()) {
+                            filesToUploadCtr++;
+                            uploadImageToS3();
                         }
-                        dismissCustomProgress();
-                        LogHelper.log("s3","uploading of all files successfully finished!");
-                        LogHelper.log("s3","FINAL URL --->  " + uploadedFilesUrl.toString());
                     }
                 }
-            }
 
-            @Override
-            public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
-                        + filesToUpload.size() + " - " + bytesCurrent + "/" + bytesTotal);
-            }
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
+                            + filesToUpload.size() + " - " + bytesCurrent + "/" + bytesTotal);
+                }
 
-            @Override
-            public void onError(int id, Exception ex) {
+                @Override
+                public void onError(int id, Exception ex) {
 
+                }
+            });
+        } else {
+            for (File f : filesToUpload) {
+                f.delete();
             }
-        });
+            dismissCustomProgress();
+            LogHelper.log("s3","uploading of all files successfully finished!");
+            LogHelper.log("s3","FINAL URL --->  " + uploadedFilesUrl.toString());
+            apiRequestHelper.fileIncidentReport(token,bundle.getString("incidentLocation"),
+                    bundle.getString("incidentDescription"),bundle.getString("incidentType"),
+                    1,1,currentUserSingleton.getAuthResponse().getId(),
+                    uploadedFilesUrl.toString());
+        }
     }
 }

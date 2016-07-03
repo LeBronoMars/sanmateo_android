@@ -190,8 +190,26 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
 
     @OnClick(R.id.btnCancelReport)
     public void cancelReport() {
-        if (onFileIncidentReportListener != null) {
-            onFileIncidentReportListener.onCancelReport(filesToUpload);
+        if (filesToUpload.size() > 0 || !etIncidentDescription.getText().toString().trim().isEmpty()
+                || !etIncidentLocation.getText().toString().trim().isEmpty()) {
+            activity.showConfirmDialog("", "Incident Report", "Are you sure you want to discard your " +
+                    " report?", "Yes", "No", new OnConfirmDialogListener() {
+                @Override
+                public void onConfirmed(String action) {
+                    if (onFileIncidentReportListener != null) {
+                        onFileIncidentReportListener.onCancelReport(filesToUpload);
+                    }
+                }
+
+                @Override
+                public void onCancelled(String action) {
+
+                }
+            });
+        } else {
+            if (onFileIncidentReportListener != null) {
+                onFileIncidentReportListener.onCancelReport(filesToUpload);
+            }
         }
     }
 
