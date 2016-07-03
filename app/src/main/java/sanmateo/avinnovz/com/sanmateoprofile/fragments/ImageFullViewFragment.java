@@ -11,7 +11,7 @@ import android.widget.ImageView;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 
 /**
  * Created by rsbulanon on 6/30/16.
@@ -33,7 +33,7 @@ public class ImageFullViewFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_image_full_view,container,false);
         ButterKnife.bind(this,view);
-        GlideHelper.loadImage(context,url,ivFullImage);
+        AppConstants.PICASSO.load(url).centerCrop().fit().into(ivFullImage);
         return view;
     }
 }

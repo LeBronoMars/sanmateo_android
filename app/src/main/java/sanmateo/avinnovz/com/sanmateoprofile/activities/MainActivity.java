@@ -25,7 +25,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -89,7 +89,8 @@ public class MainActivity extends BaseActivity {
         final TextView tvProfileName = (TextView)view.findViewById(R.id.tvProfileName);
         navigationView.addHeaderView(view);
         navigationView.inflateMenu(R.menu.menu_side_drawer);
-        GlideHelper.loadImage(this, currentUserSingleton.getAuthResponse().getPicUrl(),ivProfileImage);
+        AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
+                .fit().centerCrop().into(ivProfileImage);
         tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
                                     currentUserSingleton.getAuthResponse().getLastName());
     }

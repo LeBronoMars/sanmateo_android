@@ -147,6 +147,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             @Override
             public void onFileReport(String incidentDescription, String incidentLocation,
                                      String incidentType, final ArrayList<File> files) {
+                LogHelper.log("s3","MUST UPLOAD FILES TO AWS S3 --> " + files.size());
                 fragment.dismiss();
                 bundle.putString("incidentDescription",incidentDescription);
                 bundle.putString("incidentLocation",incidentLocation);

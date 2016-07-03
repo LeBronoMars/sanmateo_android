@@ -306,5 +306,14 @@ public class BaseActivity extends AppCompatActivity {
         } catch (Exception ex) {}
     }
 
+    public File createImageFile() {
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        final String imageFileName =  "incident_image_" + timeStamp + ".jpg";
+
+        final File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                imageFileName);
+        return mediaStorageDir;
+    }
 }
 

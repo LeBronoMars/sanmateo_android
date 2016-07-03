@@ -6,20 +6,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.ProgressBar;
-
-import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.resource.drawable.GlideDrawable;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 
 
 /**
@@ -45,7 +38,7 @@ public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAd
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
-        GlideHelper.loadImage(context,imageUrls.get(position),holder.ivGallery);
+        AppConstants.PICASSO.load(imageUrls.get(position)).fit().centerCrop().into(holder.ivGallery);
         holder.ivGallery.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

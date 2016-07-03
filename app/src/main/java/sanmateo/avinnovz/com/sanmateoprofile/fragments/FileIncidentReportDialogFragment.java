@@ -52,9 +52,10 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
     private BaseActivity activity;
     private static final int SELECT_IMAGE = 1;
     private static final int CAPTURE_IMAGE = 2;
-    private ArrayList<Bitmap> bitmaps = new ArrayList<>();
     private ArrayList<File> filesToUpload = new ArrayList<>();
     private OnFileIncidentReportListener onFileIncidentReportListener;
+    private Uri fileUri;
+    private File fileToUpload;
 
     public static FileIncidentReportDialogFragment newInstance() {
         final FileIncidentReportDialogFragment fragment = new FileIncidentReportDialogFragment();
@@ -105,7 +106,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
 
     @OnClick(R.id.llAddPhoto)
     public void addPhoto() {
-        if (bitmaps.size() < 3) {
+        if (filesToUpload.size() < 3) {
             new BottomSheet.Builder(getActivity())
                     .title("Upload Photo").sheet(R.menu.menu_upload_image)
                     .listener(new DialogInterface.OnClickListener() {
@@ -119,8 +120,16 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
                                     startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
                                     break;
                                 case R.id.open_camera:
-                                    Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                    startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                                    final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+                                    try {
+                                        fileToUpload = activity.createImageFile();
+                                        fileUri = Uri.fromFile(fileToUpload);
+                                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                        startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                                    } catch (Exception ex) {
+                                        activity.showConfirmDialog("","Capture Image",
+                                                "We can't get your image. Please try again.","Close","",null);
+                                    }
                                     break;
                             }
                         }
@@ -138,22 +147,19 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
             if (requestCode == SELECT_IMAGE) {
                 final String fileName = "incident_image_"+ activity.getSDF().format(Calendar.getInstance().getTime());
                 filesToUpload.add(activity.getFile(data.getData(),fileName));
-                bitmaps.add(activity.getBitmapFromURI(data.getData()));
             } else {
-                filesToUpload.add(activity.rotateBitmap(data.getData().getPath()));
-                final Bitmap photo = (Bitmap) data.getExtras().get("data");
-                bitmaps.add(photo);
+                LogHelper.log("s3","captured image absolute file --> " + fileToUpload.getAbsolutePath());
+                filesToUpload.add(activity.rotateBitmap(fileUri.getPath()));
             }
             rvImages.getAdapter().notifyDataSetChanged();
         }
     }
 
     private void initRecyclerView() {
-        final FileToUploadAdapter adapter = new FileToUploadAdapter(getActivity(),bitmaps);
+        final FileToUploadAdapter adapter = new FileToUploadAdapter(getActivity(),filesToUpload);
         adapter.setOnSelectImageListener(new FileToUploadAdapter.OnSelectImageListener() {
             @Override
             public void onSelectedImage(int position) {
-                bitmaps.remove(position);
                 filesToUpload.remove(position);
                 rvImages.getAdapter().notifyDataSetChanged();
             }

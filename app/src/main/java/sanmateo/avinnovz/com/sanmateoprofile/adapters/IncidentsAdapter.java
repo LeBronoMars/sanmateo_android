@@ -8,8 +8,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import org.ocpsoft.prettytime.PrettyTime;
-
 import java.text.ParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,10 +18,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.ImageFullViewActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
@@ -101,8 +98,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         for (String s : incidentImages) {
             LogHelper.log("img","URLS ---> " + s);
         }
-
-        GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
+        AppConstants.PICASSO.load(incident.getReporterPicUrl()).centerCrop().fit().into(holder.civReporterImage);
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
         adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
             @Override
