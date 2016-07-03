@@ -50,6 +50,18 @@
 
         <!-- pusher service -->
         <service android:name=".services.PusherService" />
+
+        <!-- facebook config -->
+        <provider android:authorities="com.facebook.app.FacebookContentProvider1183940438317855"
+            android:name="com.facebook.FacebookContentProvider"
+            android:exported="true"/>
+
+        <!-- facebook activity -->
+        <activity android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar"
+            android:label="@string/app_name" />
+
     </application>
 
 </manifest>

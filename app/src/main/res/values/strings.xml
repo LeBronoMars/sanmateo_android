@@ -51,4 +51,7 @@
                 also be banned from the Community.</i></string>
     <string name="i_understand">I Understand</string>
 
+
+    <!-- facebook config -->
+    <string name="fb_app_id">1183940438317855</string>
 </resources>
