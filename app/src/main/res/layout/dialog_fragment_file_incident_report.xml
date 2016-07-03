@@ -118,18 +118,48 @@
             app:layoutManager="LinearLayoutManager" />
     </LinearLayout>
 
-    <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnFileIncidentReport"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginBottom="@dimen/_10sdp"
         android:layout_marginTop="@dimen/_20sdp"
-        android:clickable="true"
-        android:src="@drawable/next"
-        app:backgroundTint="@color/colorPrimary"
-        app:elevation="@dimen/_10sdp"
-        app:rippleColor="@color/colorPrimaryDark" />
+        android:layout_marginBottom="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnFileReport"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/file"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimary"
+            android:textColor="@android:color/white"
+            app:rd_rippleType="touch"
+            android:textSize="@dimen/_14sdp"
+            app:rd_maxRippleRadius="match_view"
+            fontPath="fonts/Roboto-Light.ttf"
+            app:rd_enable="true"/>
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnCancelReport"
+            android:layout_width="0dp"
+            android:layout_weight="50"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:text="@string/cancel"
+            android:layout_gravity="center_horizontal"
+            android:layout_alignParentBottom="true"
+            android:background="@color/colorPrimaryDark"
+            android:textColor="@android:color/white"
+            app:rd_rippleType="touch"
+            android:textSize="@dimen/_14sdp"
+            app:rd_maxRippleRadius="match_view"
+            fontPath="fonts/Roboto-Light.ttf"
+            app:rd_enable="true"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 

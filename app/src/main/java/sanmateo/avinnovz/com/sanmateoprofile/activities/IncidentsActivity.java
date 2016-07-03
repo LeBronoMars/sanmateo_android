@@ -155,7 +155,17 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                 if (files.size() > 0) {
                     filesToUpload.clear();
                     filesToUpload.addAll(files);
+                    showCustomProgress("Processing Images, Please wait...");
                     uploadImageToS3();
+                }
+            }
+
+            @Override
+            public void onCancelReport(ArrayList<File> filesToUpload) {
+                if (filesToUpload.size() > 0) {
+                    for (File f : filesToUpload) {
+                        f.delete();
+                    }
                 }
             }
         });
@@ -169,13 +179,17 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                 if (state.name().equals("COMPLETED")) {
                     LogHelper.log("s3","ctr ---> "+ filesToUploadCtr + " upload image --> " + state.name()+
                         "     " + filesToUpload.get(filesToUploadCtr).getName());
-                    filesToUploadCtr++;
                     uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
+                    filesToUploadCtr++;
                     if (filesToUploadCtr < filesToUpload.size()) {
                         uploadImageToS3();
                     } else {
+                        for (File f : filesToUpload) {
+                            f.delete();
+                        }
                         dismissCustomProgress();
                         LogHelper.log("s3","uploading of all files successfully finished!");
+                        LogHelper.log("s3","FINAL URL --->  " + uploadedFilesUrl.toString());
                     }
                 }
             }
@@ -183,7 +197,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             @Override
             public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
                 updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
-                        + filesToUpload.size() + "  " + bytesCurrent + "/" + bytesTotal);
+                        + filesToUpload.size() + " - " + bytesCurrent + "/" + bytesTotal);
             }
 
             @Override

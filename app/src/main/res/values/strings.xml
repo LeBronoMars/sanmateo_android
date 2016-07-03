@@ -42,4 +42,6 @@
     <string name="add_photo">+\nAdd Photo</string>
     <string name="open_camera">Open Camera</string>
     <string name="open_gallery">Open Gallery</string>
+    <string name="file">File</string>
+    <string name="cancel">Cancel</string>
 </resources>

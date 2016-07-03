@@ -36,6 +36,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.FileToUploadAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 
 /**
  * Created by rsbulanon on 6/30/16.
@@ -80,7 +81,8 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(view);
-        mDialog.setCanceledOnTouchOutside(true);
+        mDialog.setCanceledOnTouchOutside(false);
+        mDialog.setCancelable(false);
         mDialog.getWindow().setLayout(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout
                 .LayoutParams.WRAP_CONTENT);
         return mDialog;
@@ -160,6 +162,8 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         adapter.setOnSelectImageListener(new FileToUploadAdapter.OnSelectImageListener() {
             @Override
             public void onSelectedImage(int position) {
+                final File file = filesToUpload.get(position);
+                file.delete();
                 filesToUpload.remove(position);
                 rvImages.getAdapter().notifyDataSetChanged();
             }
@@ -167,7 +171,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         rvImages.setAdapter(adapter);
     }
 
-    @OnClick(R.id.btnFileIncidentReport)
+    @OnClick(R.id.btnFileReport)
     public void fileIncidentReport() {
         final String incidentDescription = etIncidentDescription.getText().toString().trim();
         final String incidentLocation = etIncidentLocation.getText().toString().trim();
@@ -184,9 +188,17 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.btnCancelReport)
+    public void cancelReport() {
+        if (onFileIncidentReportListener != null) {
+            onFileIncidentReportListener.onCancelReport(filesToUpload);
+        }
+    }
+
     public interface OnFileIncidentReportListener {
         void onFileReport(final String incidentDescription, final String incidentLocation,
                           final String incidentType, final ArrayList<File> filesToUpload);
+        void onCancelReport(final ArrayList<File> filesToUpload);
     }
 
     public void setOnFileIncidentReportListener(OnFileIncidentReportListener onFileIncidentReportListener) {
