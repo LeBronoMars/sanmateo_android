@@ -33,6 +33,8 @@
 
     <!-- incident row -->
     <string name="reported_by">Reported By</string>
+    <string name="share_via_fb">Share</string>
+    <string name="report_this">Report</string>
 
     <!-- file incident report dialog fragment -->
     <string name="file_incident_report_header">File incident report</string>
@@ -48,4 +50,5 @@
                 having malicious contents or false reports are subjected for deletion and you may
                 also be banned from the Community.</i></string>
     <string name="i_understand">I Understand</string>
+
 </resources>
