@@ -20,6 +20,7 @@
     <string name="address">Address</string>
     <string name="confirm_password">Confirm Password</string>
     <string name="create_my_account">Create my account</string>
+    <string name="select_gender">Select Gender</string>
 
     <!-- san mateo fragment header -->
     <string name="welcome_to">Welcome to</string>
@@ -33,6 +34,8 @@
 
     <!-- incident row -->
     <string name="reported_by">Reported By</string>
+    <string name="share_via_fb">Share</string>
+    <string name="report_this">Report</string>
 
     <!-- file incident report dialog fragment -->
     <string name="file_incident_report_header">File incident report</string>
@@ -42,4 +45,14 @@
     <string name="add_photo">+\nAdd Photo</string>
     <string name="open_camera">Open Camera</string>
     <string name="open_gallery">Open Gallery</string>
+    <string name="file">File</string>
+    <string name="cancel">Cancel</string>
+    <string name="note_before_filing_of_report"><b>NOTE : </b><i>Please be advised that reports
+                having malicious contents or false reports are subjected for deletion and you may
+                also be banned from the Community.</i></string>
+    <string name="i_understand">I Understand</string>
+
+
+    <!-- facebook config -->
+    <string name="fb_app_id">1183940438317855</string>
 </resources>

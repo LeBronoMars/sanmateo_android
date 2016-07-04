@@ -1,15 +1,26 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.graphics.Bitmap;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -20,6 +31,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -37,10 +49,17 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 public class IncidentsActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.rvIncidents) RecyclerView rvIncidents;
+    @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
     private ApiRequestHelper apiRequestHelper;
     private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
     private String token;
+    private Bundle bundle = new Bundle();
+    private AmazonS3Helper amazonS3Helper;
+    private int filesToUploadCtr = 0;
+    private ArrayList<File> filesToUpload = new ArrayList<>();
+    private StringBuilder uploadedFilesUrl = new StringBuilder();
+    private CallbackManager shareCallBackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,10 +67,12 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         setToolbarTitle("Incidents");
         setContentView(R.layout.activity_incidents);
         ButterKnife.bind(this);
+        amazonS3Helper = new AmazonS3Helper(this);
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getAuthResponse().getToken();
+        shareCallBackManager = CallbackManager.Factory.create();
 
         //check if there are new incidents needed to be fetched from api
         if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
@@ -71,6 +92,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             showCustomProgress("Fetching all incident reports, Please wait...");
         } else if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
             showCustomProgress("Fetching latest incident reports, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+            showCustomProgress("Filing your incident report, Please wait...");
         }
     }
 
@@ -85,6 +108,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+            showSnackbar(btnAdd,"Your report was successfully created!");
         }
     }
 
@@ -103,6 +128,50 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     private void initIncidents() {
         final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents());
+        adapter.setOnShareAndReportListner(new IncidentsAdapter.OnShareAndReportListner() {
+            @Override
+            public void onShare(int position) {
+                if (isNetworkAvailable()) {
+                    final Incident incident = incidentsSingleton.getIncidents().get(position);
+                    final String imageUrl = incident.getImages().contains("###") ?
+                            incident.getImages().split("###")[0] : "";
+                    final ShareDialog shareDialog = new ShareDialog(IncidentsActivity.this);
+                    shareDialog.registerCallback(shareCallBackManager, new FacebookCallback<Sharer.Result>() {
+                        @Override
+                        public void onSuccess(Sharer.Result result) {
+                            LogHelper.log("fb","Successfully shared in facebook ---> " + result.getPostId());
+                        }
+
+                        @Override
+                        public void onCancel() {
+
+                        }
+
+                        @Override
+                        public void onError(FacebookException error) {
+                            LogHelper.log("fb","Unable to share with error --> " + error.getMessage());
+                        }
+                    });
+                    if (ShareDialog.canShow(ShareLinkContent.class)) {
+                        final ShareLinkContent linkContent = new ShareLinkContent.Builder()
+                                .setContentTitle(incident.getIncidentDescription())
+                                .setImageUrl(Uri.parse(imageUrl))
+                                .setContentUrl(Uri.parse("www.google.com"))
+                                .setContentDescription(incident.getIncidentAddress())
+                                .build();
+                        shareDialog.show(linkContent, AppConstants.IS_FACEBOOK_APP_INSTALLED
+                                ? ShareDialog.Mode.NATIVE : ShareDialog.Mode.FEED);
+                    }
+                } else {
+                    showSnackbar(btnAdd, AppConstants.WARN_CONNECTION);
+                }
+            }
+
+            @Override
+            public void onReport(int position) {
+
+            }
+        });
         rvIncidents.setLayoutManager(new LinearLayoutManager(this));
         rvIncidents.setAdapter(adapter);
     }
@@ -137,13 +206,78 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         fragment.setOnFileIncidentReportListener(new FileIncidentReportDialogFragment.OnFileIncidentReportListener() {
             @Override
             public void onFileReport(String incidentDescription, String incidentLocation,
-                                     String incidentType, ArrayList<Bitmap> images) {
+                                     String incidentType, final ArrayList<File> files) {
+                LogHelper.log("s3","MUST UPLOAD FILES TO AWS S3 --> " + files.size());
                 fragment.dismiss();
-                if (images.size() > 0) {
-
+                bundle.putString("incidentDescription",incidentDescription);
+                bundle.putString("incidentLocation",incidentLocation);
+                bundle.putString("incidentType",incidentType);
+                if (files.size() > 0) {
+                    filesToUpload.clear();
+                    filesToUpload.addAll(files);
+                    filesToUploadCtr = 0;
+                    uploadedFilesUrl.setLength(0);
+                    showCustomProgress("Processing Images, Please wait...");
+                    uploadImageToS3();
                 }
             }
+
+            @Override
+            public void onCancelReport(ArrayList<File> filesToUpload) {
+                if (filesToUpload.size() > 0) {
+                    for (File f : filesToUpload) {
+                        f.delete();
+                    }
+                }
+                fragment.dismiss();
+            }
         });
+        fragment.setCancelable(false);
         fragment.show(getFragmentManager(),"file incident report");
+    }
+
+    private void uploadImageToS3() {
+        if (filesToUploadCtr < filesToUpload.size()) {
+            amazonS3Helper.uploadImage(filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (state.name().equals("COMPLETED")) {
+                        uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
+                        if (filesToUploadCtr < filesToUpload.size()) {
+                            filesToUploadCtr++;
+                            uploadImageToS3();
+                        }
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
+                            + filesToUpload.size() + " - " + bytesCurrent + "/" + bytesTotal);
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+
+                }
+            });
+        } else {
+            for (File f : filesToUpload) {
+                f.delete();
+            }
+            dismissCustomProgress();
+            LogHelper.log("s3","uploading of all files successfully finished!");
+            LogHelper.log("s3","FINAL URL --->  " + uploadedFilesUrl.toString());
+            apiRequestHelper.fileIncidentReport(token,bundle.getString("incidentLocation"),
+                    bundle.getString("incidentDescription"),bundle.getString("incidentType"),
+                    1,1,currentUserSingleton.getAuthResponse().getId(),
+                    uploadedFilesUrl.toString());
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        shareCallBackManager.onActivityResult(requestCode, resultCode, data);
+        super.onActivityResult(requestCode, resultCode, data);
     }
 }

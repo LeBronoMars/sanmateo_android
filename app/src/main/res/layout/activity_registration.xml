@@ -165,6 +165,25 @@
                     android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
+            <com.rey.material.widget.Spinner
+                android:id="@+id/spnrGender"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_15sdp"
+                android:dropDownWidth="match_parent"
+                app:rd_style="@style/Material.Drawable.Ripple.Wave"
+                app:spn_arrowAnimDuration="@android:integer/config_shortAnimTime"
+                app:spn_arrowColor="@color/colorPrimary"
+                app:spn_arrowInterpolator="@android:anim/decelerate_interpolator"
+                app:spn_arrowPadding="@dimen/_5sdp"
+                app:spn_arrowSize="@dimen/_5sdp"
+                app:spn_arrowSwitchMode="true"
+                app:spn_label="@string/select_gender"
+                app:spn_labelEnable="true"
+                app:spn_labelTextColor="@color/colorPrimary"
+                app:spn_popupItemAnimOffset="60"
+                app:spn_popupItemAnimation="@anim/abc_grow_fade_in_from_bottom" />
+
             <!-- user account info -->
             <TextView
                 fontPath="fonts/Roboto-Medium.ttf"
@@ -234,6 +253,7 @@
                 android:orientation="horizontal"
                 android:theme="@style/FieldsStyle"
                 android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_35sdp"
                 app:hintTextAppearance="@style/FloatingLabelStyle">
 
                 <EditText

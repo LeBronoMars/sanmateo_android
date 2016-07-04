@@ -1,18 +1,19 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import java.io.File;
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 
 
 /**
@@ -20,12 +21,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
  */
 public class FileToUploadAdapter extends RecyclerView.Adapter<FileToUploadAdapter.ImageViewHolder> {
 
-    private ArrayList<Bitmap> bitmaps;
+    private ArrayList<File> files;
     private Context context;
     private OnSelectImageListener onSelectImageListener;
 
-    public FileToUploadAdapter(final Context context, final ArrayList<Bitmap> bitmaps) {
-        this.bitmaps = bitmaps;
+    public FileToUploadAdapter(final Context context, final ArrayList<File> files) {
+        this.files = files;
         this.context = context;
     }
 
@@ -38,7 +39,7 @@ public class FileToUploadAdapter extends RecyclerView.Adapter<FileToUploadAdapte
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
-        holder.ivImage.setImageBitmap(bitmaps.get(position));
+        AppConstants.PICASSO.load(files.get(position)).fit().centerCrop().into(holder.ivImage);
         holder.ivRemove.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -51,7 +52,7 @@ public class FileToUploadAdapter extends RecyclerView.Adapter<FileToUploadAdapte
 
     @Override
     public int getItemCount() {
-        return bitmaps.size();
+        return files.size();
     }
 
     public class ImageViewHolder extends RecyclerView.ViewHolder {

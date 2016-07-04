@@ -3,14 +3,18 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
@@ -31,11 +35,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.ocpsoft.prettytime.PrettyTime;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileDescriptor;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
@@ -76,6 +84,12 @@ public class BaseActivity extends AppCompatActivity {
             customProgressDialogFragment = CustomProgressDialogFragment.newInstance(message);
             customProgressDialogFragment.setCancelable(false);
             customProgressDialogFragment.show(getFragmentManager(),"progress");
+        }
+    }
+
+    public void updateCustomProgress(final String message) {
+        if (customProgressDialogFragment != null) {
+            customProgressDialogFragment.updateMessage(message);
         }
     }
 
@@ -240,5 +254,81 @@ public class BaseActivity extends AppCompatActivity {
         return null;
     }
 
+    public File getFile(final Uri uri, final String fileName) {
+        try {
+            final ParcelFileDescriptor parcelFileDescriptor = getContentResolver().openFileDescriptor(uri, "r");
+            final FileDescriptor fileDescriptor = parcelFileDescriptor.getFileDescriptor();
+            final Bitmap bitmap = BitmapFactory.decodeFileDescriptor(fileDescriptor);
+            parcelFileDescriptor.close();
+            final ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 0 /*ignored for PNG*/, bos);
+            final byte[] bitmapdata = bos.toByteArray();
+
+            final File f = new File(getCacheDir(), fileName);
+            final FileOutputStream fos = new FileOutputStream(f);
+            fos.write(bitmapdata);
+            fos.flush();
+            fos.close();
+            return f;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public File rotateBitmap(String path) {
+        final File file = new File(path);
+
+        try {
+            final ExifInterface ei = new ExifInterface(path);
+            int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            int rotation = 0;
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    rotation = 90;
+                    break;
+                case ExifInterface.ORIENTATION_ROTATE_180:
+                    rotation = 180;
+                    break;
+            }
+
+            final Matrix matrix = new Matrix();
+            matrix.postRotate(rotation);
+            resizeImage(file, matrix);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        return file;
+    }
+
+    private void resizeImage(final File file,final Matrix matrix) {
+        try {
+            final BitmapFactory.Options options = new BitmapFactory.Options();
+            options.inSampleSize = 0; //try to decrease decoded image
+            Bitmap bitmap = BitmapFactory.decodeStream(new FileInputStream(file), null, options);
+            FileOutputStream fos = new FileOutputStream(file);
+            bitmap = Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), matrix, true);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, fos);
+        } catch (Exception ex) {}
+    }
+
+    public File createImageFile() {
+        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        final String imageFileName =  "incident_image_" + timeStamp + ".jpg";
+
+        final File mediaStorageDir = new File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                imageFileName);
+        return mediaStorageDir;
+    }
+
+    public boolean isFacebookInstalled() {
+        try {
+            getPackageManager().getApplicationInfo("com.facebook.katana", 0);
+            return true;
+        } catch (PackageManager.NameNotFoundException e) {
+            return false;
+        }
+    }
 }
 

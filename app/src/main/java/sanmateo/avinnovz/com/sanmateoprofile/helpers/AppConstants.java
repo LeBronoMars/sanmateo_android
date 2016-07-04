@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 
+import com.squareup.picasso.Picasso;
+
 import retrofit2.Retrofit;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ApiInterface;
 
@@ -8,10 +10,15 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ApiInterface;
  */
 public class AppConstants {
 
-    public static final String BASE_URL = "http://192.168.1.7:9000";
-    //public static final String BASE_URL = "http://192.168.10.4:9000";
+    /** static instance of Picasso */
+    public static Picasso PICASSO = null;
+
+    //public static final String BASE_URL = "http://192.168.1.7:9000";
+    //public static final String BASE_URL = "http://192.168.10.5:9000";
+    public static final String BASE_URL = "http://54.169.153.164:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
+    public static boolean IS_FACEBOOK_APP_INSTALLED = false;
 
     /** s3 configs */
     public static final String AWS_POOL_ID = "us-east-1:66c534a3-218e-4cfc-934c-c5f24b53a88a";

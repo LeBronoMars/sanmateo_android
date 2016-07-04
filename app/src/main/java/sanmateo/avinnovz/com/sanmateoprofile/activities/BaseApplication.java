@@ -2,8 +2,15 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Application;
 
-import java.io.IOException;
+import com.facebook.FacebookSdk;
+import com.jakewharton.picasso.OkHttp3Downloader;
+import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.concurrent.Executors;
+
+import okhttp3.Cache;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
@@ -30,7 +37,16 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        if (AppConstants.RETROFIT == null && AppConstants.API_INTERFACE == null) {
+        /** initialize facebook sdk */
+        FacebookSdk.sdkInitialize(this);
+
+        if (AppConstants.RETROFIT == null && AppConstants.API_INTERFACE == null && AppConstants.PICASSO == null) {
+
+            File cacheDir = getExternalCacheDir();
+            if (cacheDir == null) {
+                cacheDir = getCacheDir();
+            }
+            final Cache cache = new Cache(cacheDir, 10 * 1024 * 1024);
 
             final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(
@@ -41,13 +57,24 @@ public class BaseApplication extends Application {
                                     LogHelper.log("api","performing url --> " + request.url());
                                     return chain.proceed(request);
                                 }
-                            }).build();
+                            })
+                    .cache(cache)
+                    .build();
+
+            /** initialize picasso */
+            AppConstants.PICASSO = new Picasso.Builder(this)
+                    .executor(Executors.newSingleThreadExecutor())
+                    .downloader(new OkHttp3Downloader(okHttpClient)).build();
+
+            /** initialize retrofit */
             AppConstants.RETROFIT = new Retrofit.Builder()
                     .baseUrl(AppConstants.BASE_URL)
                     .client(okHttpClient)
                     .addConverterFactory(GsonConverterFactory.create())
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .build();
+
+            /** initialize retrofit interface */
             AppConstants.API_INTERFACE = AppConstants.RETROFIT.create(ApiInterface.class);
         }
     }

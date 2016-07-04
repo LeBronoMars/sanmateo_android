@@ -6,9 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
-
-import org.ocpsoft.prettytime.PrettyTime;
 
 import java.text.ParseException;
 import java.util.ArrayList;
@@ -20,10 +19,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.ImageFullViewActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.GlideHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
@@ -35,6 +33,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     private ArrayList<Incident> incidents;
     private Context context;
     private IncidentsActivity activity;
+    private OnShareAndReportListner onShareAndReportListner;
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
@@ -63,6 +62,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
+        @BindView(R.id.llShareViaFb) LinearLayout llShareViaFb;
+        @BindView(R.id.llReport) LinearLayout llReport;
 
         ViewHolder(View view) {
             super(view);
@@ -98,11 +99,12 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             incidentImages.add(incident.getImages());
         }
 
-        for (String s : incidentImages) {
-            LogHelper.log("img","URLS ---> " + s);
-        }
+        AppConstants.PICASSO.load(incident.getReporterPicUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .centerCrop()
+                .fit()
+                .into(holder.civReporterImage);
 
-        GlideHelper.loadImage(context,incident.getReporterPicUrl(),holder.civReporterImage);
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
         adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
             @Override
@@ -114,11 +116,40 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
                 activity.animateToLeft(activity);
             }
         });
+
+        /** share via facebook */
+        holder.llShareViaFb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onShareAndReportListner != null) {
+                    onShareAndReportListner.onShare(i);
+                }
+            }
+        });
+
+        /** report */
+        holder.llReport.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onShareAndReportListner != null) {
+                    onShareAndReportListner.onReport(i);
+                }
+            }
+        });
         holder.rvImages.setAdapter(adapter);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnShareAndReportListner {
+        void onShare(final int position);
+        void onReport(final int position);
+    }
+
+    public void setOnShareAndReportListner(OnShareAndReportListner onShareAndReportListner) {
+        this.onShareAndReportListner = onShareAndReportListner;
     }
 }

@@ -139,10 +139,10 @@ public class ApiRequestHelper {
                            final String gender, final String email, final String address,
                            final String userLevel, final String password) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_CREATE_USER);
-        Observable<User> observable = AppConstants.API_INTERFACE.createUser(firstName, lastName,
+        Observable<AuthResponse> observable = AppConstants.API_INTERFACE.createUser(firstName, lastName,
                 contactNo, gender, email, address, userLevel, password);
         observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<User>() {
+                .subscribe(new Subscriber<AuthResponse>() {
                     @Override
                     public void onCompleted() {
 
@@ -150,14 +150,13 @@ public class ApiRequestHelper {
 
                     @Override
                     public void onError(Throwable e) {
-                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_CREATE_USER,
-                                e);
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_CREATE_USER, e);
                     }
 
                     @Override
-                    public void onNext(User user) {
+                    public void onNext(AuthResponse authResponse) {
                         onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_CREATE_USER,
-                                user);
+                                authResponse);
                     }
                 });
     }

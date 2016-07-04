@@ -90,6 +90,7 @@ public interface ApiInterface {
      * @return Incident model which contains the full detail of the newly created incident report
      * */
     @POST("/api/v1/incident")
+    @FormUrlEncoded
     Observable<Incident> fileNewIncidentReport(@Header("Authorization") String token,
                                                    @Path("address") String address,
                                                    @Path("description") String description,
@@ -104,7 +105,7 @@ public interface ApiInterface {
      * */
     @POST("/api/v1/user")
     @FormUrlEncoded
-    Observable<User> createUser(@Field("first_name") String firstName,
+    Observable<AuthResponse> createUser(@Field("first_name") String firstName,
                                 @Field("last_name") String lastName,
                                 @Field("contact_no") String contactNo,
                                 @Field("gender") String gender,

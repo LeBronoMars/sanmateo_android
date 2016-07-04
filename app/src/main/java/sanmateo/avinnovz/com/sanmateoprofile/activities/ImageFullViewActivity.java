@@ -43,7 +43,7 @@ public class ImageFullViewActivity extends BaseActivity {
         /** initialize view pager */
         final ArrayList<Fragment> fragments = new ArrayList<>();
         for (String  s : incidentImages) {
-            fragments.add(ImageFullViewFragment.newInstance(this,s));
+            fragments.add(ImageFullViewFragment.newInstance(s));
         }
         final FullImageViewAdapter adapter = new FullImageViewAdapter(getSupportFragmentManager(),fragments);
         viewPager.setAdapter(adapter);
