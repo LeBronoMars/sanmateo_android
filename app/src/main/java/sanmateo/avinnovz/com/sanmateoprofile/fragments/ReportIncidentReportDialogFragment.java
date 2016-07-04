@@ -71,8 +71,16 @@ public class ReportIncidentReportDialogFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.btnCancelReport)
+    public void cancel() {
+        if (onReportIncidentListener != null) {
+            onReportIncidentListener.onReportCancel();
+        }
+    }
+
     public interface OnReportIncidentListener {
         void onReportIncident(final String remarks);
+        void onReportCancel();
     }
 
     public void setOnReportIncidentListener(OnReportIncidentListener onReportIncidentListener) {

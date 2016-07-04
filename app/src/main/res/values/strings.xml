@@ -59,7 +59,7 @@
     <string name="report_incident_report_header">Report this Incident</string>
     <string name="remarks">Remarks</string>
     <string name="submit">Submit</string>
-    <string name="note_before_reporting_incident"></string>
-
+    <string name="note_before_reporting_incident"><b>NOTE : </b><i>Please be advised that your report
+         for this incident report is still be reviewed by the admins.</i></string>
 
 </resources>

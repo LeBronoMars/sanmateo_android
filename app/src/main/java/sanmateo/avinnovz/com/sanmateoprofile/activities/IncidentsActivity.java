@@ -174,7 +174,13 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                 fragment.setOnReportIncidentListener(new ReportIncidentReportDialogFragment.OnReportIncidentListener() {
                     @Override
                     public void onReportIncident(String remarks) {
-                        
+                        fragment.dismiss();
+
+                    }
+
+                    @Override
+                    public void onReportCancel() {
+                        fragment.dismiss();
                     }
                 });
                 fragment.show(getFragmentManager(),"report incident");

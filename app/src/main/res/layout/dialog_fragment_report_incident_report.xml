@@ -37,17 +37,16 @@
             android:paddingBottom="@dimen/_20sdp"
             android:paddingLeft="@dimen/_5sdp"
             android:paddingRight="@dimen/_5sdp"
-            android:singleLine="true"
             android:textColor="@android:color/black"
             android:textSize="@dimen/_10sdp" />
 
-        <!-- accept agreement -->
+        <!-- note -->
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_10sdp"
             android:textSize="@dimen/_8sdp"
-            android:text="@string/note_before_filing_of_report"/>
+            android:text="@string/note_before_reporting_incident"/>
 
     </LinearLayout>
 
