@@ -31,6 +31,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.ReportIncidentReportDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -169,7 +170,14 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
             @Override
             public void onReport(int position) {
-
+                final ReportIncidentReportDialogFragment fragment = ReportIncidentReportDialogFragment.newInstance();
+                fragment.setOnReportIncidentListener(new ReportIncidentReportDialogFragment.OnReportIncidentListener() {
+                    @Override
+                    public void onReportIncident(String remarks) {
+                        
+                    }
+                });
+                fragment.show(getFragmentManager(),"report incident");
             }
         });
         rvIncidents.setLayoutManager(new LinearLayoutManager(this));

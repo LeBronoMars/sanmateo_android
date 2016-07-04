@@ -29,4 +29,6 @@
     </array>
     <color name="fb_button_bg">#3b589d</color>
     <color name="report_button_bg">#be0d0d</color>
+    <color name="report_button_bg_dark">#720707</color>
+
 </resources>
