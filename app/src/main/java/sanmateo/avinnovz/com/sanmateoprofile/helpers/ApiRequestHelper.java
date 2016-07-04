@@ -2,6 +2,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import rx.Observable;
 import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
@@ -130,6 +131,30 @@ public class ApiRequestHelper {
                     @Override
                     public void onNext(Incident incident) {
                         onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_INCIDENT_REPORT, incident);
+                    }
+                });
+    }
+
+    public void reportMaliciousIncidentReport(final String token, final int incidentId, final int postedBy,
+                                              final int reportedBy, final String remarks) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT);
+        Observable<ResponseBody> observable = AppConstants.API_INTERFACE
+                .reportMaliciousIncidentReport(token,incidentId,postedBy,reportedBy,remarks);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<ResponseBody>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT, e);
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT, responseBody);
                     }
                 });
     }

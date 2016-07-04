@@ -98,5 +98,24 @@ public interface ApiInterface {
                                                @Field("longitude") double longitude,
                                                @Field("reported_by") int reportedBy,
                                                @Field("images") String images);
+
+    /**
+     * report malicious or improper incident report
+     *
+     * @param token represents the user that trying to make the request
+     * @param incidentId unique identification of posted incident report
+     * @param postedBy user who posted the incident report
+     * @param reportedBy user who is reported the possible malicious incident report
+     * @param remarks brief description or explanation of the case
+     *
+     * */
+    @POST("/api/v1/report")
+    @FormUrlEncoded
+    Observable<ResponseBody> reportMaliciousIncidentReport(@Header("Authorization") String token,
+                                                           @Field("incident_id") int incidentId,
+                                                           @Field("posted_by") int postedBy,
+                                                           @Field("reported_by") int reportedBy,
+                                                           @Field("remarks") String remarks);
+
 }
 

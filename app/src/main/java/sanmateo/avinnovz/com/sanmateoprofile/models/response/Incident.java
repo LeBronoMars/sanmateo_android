@@ -10,7 +10,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Incident implements Parcelable {
 
-    @SerializedName("reporter_id") private int reportedId;
+    @SerializedName("reporter_id") private int reporterId;
     @SerializedName("reporter_name") private String reporterName;
     @SerializedName("reporter_contact_no") private String reporterContactNo;
     @SerializedName("reporter_email") private String reporterEmail;
@@ -29,8 +29,8 @@ public class Incident implements Parcelable {
     @SerializedName("incident_date_updated") private String incidentDateUpdated;
     private String status;
 
-    public int getReportedId() {
-        return reportedId;
+    public int getReporterId() {
+        return reporterId;
     }
 
     public String getReporterName() {
@@ -108,7 +108,7 @@ public class Incident implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeInt(this.reportedId);
+        parcel.writeInt(this.reporterId);
         parcel.writeString(this.reporterName);
         parcel.writeString(this.reporterContactNo);
         parcel.writeString(this.reporterEmail);
@@ -129,7 +129,7 @@ public class Incident implements Parcelable {
     }
 
     public Incident(Parcel in) {
-        this.reportedId = in.readInt();
+        this.reporterId = in.readInt();
         this.reporterName = in.readString();
         this.reporterContactNo = in.readString();
         this.reporterEmail = in.readString();

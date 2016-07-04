@@ -33,7 +33,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     private ArrayList<Incident> incidents;
     private Context context;
     private IncidentsActivity activity;
-    private OnShareAndReportListner onShareAndReportListner;
+    private OnShareAndReportListener onShareAndReportListener;
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
@@ -121,8 +121,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         holder.llShareViaFb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onShareAndReportListner != null) {
-                    onShareAndReportListner.onShare(i);
+                if (onShareAndReportListener != null) {
+                    onShareAndReportListener.onShare(i);
                 }
             }
         });
@@ -131,8 +131,8 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         holder.llReport.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (onShareAndReportListner != null) {
-                    onShareAndReportListner.onReport(i);
+                if (onShareAndReportListener != null) {
+                    onShareAndReportListener.onReport(i);
                 }
             }
         });
@@ -144,12 +144,12 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public interface OnShareAndReportListner {
+    public interface OnShareAndReportListener {
         void onShare(final int position);
         void onReport(final int position);
     }
 
-    public void setOnShareAndReportListner(OnShareAndReportListner onShareAndReportListner) {
-        this.onShareAndReportListner = onShareAndReportListner;
+    public void setOnShareAndReportListener(OnShareAndReportListener onShareAndReportListener) {
+        this.onShareAndReportListener = onShareAndReportListener;
     }
 }
