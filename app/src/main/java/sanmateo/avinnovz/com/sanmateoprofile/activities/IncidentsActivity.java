@@ -31,6 +31,7 @@ import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.ReportIncidentReportDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -94,6 +95,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             showCustomProgress("Fetching latest incident reports, Please wait...");
         } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
             showCustomProgress("Filing your incident report, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
+            showCustomProgress("Submiting your report, Please wait...");
         }
     }
 
@@ -108,14 +111,14 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
-        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT) ||
+                action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
             showSnackbar(btnAdd,"Your report was successfully created!");
         }
     }
 
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
-        LogHelper.log("api","failed --> " + action);
         dismissCustomProgress();
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
@@ -128,7 +131,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     private void initIncidents() {
         final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents());
-        adapter.setOnShareAndReportListner(new IncidentsAdapter.OnShareAndReportListner() {
+        adapter.setOnShareAndReportListener(new IncidentsAdapter.OnShareAndReportListener() {
             @Override
             public void onShare(int position) {
                 if (isNetworkAvailable()) {
@@ -169,7 +172,23 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
             @Override
             public void onReport(int position) {
+                final Incident incident = incidentsSingleton.getIncidents().get(position);
+                final ReportIncidentReportDialogFragment fragment = ReportIncidentReportDialogFragment.newInstance();
+                fragment.setOnReportIncidentListener(new ReportIncidentReportDialogFragment.OnReportIncidentListener() {
+                    @Override
+                    public void onReportIncident(String remarks) {
+                        fragment.dismiss();
+                        apiRequestHelper.reportMaliciousIncidentReport(token,incident.getIncidentId(),
+                                incident.getReporterId(),currentUserSingleton.getAuthResponse().getId(),
+                                remarks);
+                    }
 
+                    @Override
+                    public void onReportCancel() {
+                        fragment.dismiss();
+                    }
+                });
+                fragment.show(getFragmentManager(),"report incident");
             }
         });
         rvIncidents.setLayoutManager(new LinearLayoutManager(this));

@@ -13,9 +13,9 @@ public class AppConstants {
     /** static instance of Picasso */
     public static Picasso PICASSO = null;
 
-    //public static final String BASE_URL = "http://192.168.1.7:9000";
+    public static final String BASE_URL = "http://192.168.1.5:9000";
     //public static final String BASE_URL = "http://192.168.10.5:9000";
-    public static final String BASE_URL = "http://54.169.153.164:9000";
+    //public static final String BASE_URL = "http://54.169.153.164:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
     public static boolean IS_FACEBOOK_APP_INSTALLED = false;
@@ -30,6 +30,7 @@ public class AppConstants {
     public static final String ACTION_GET_INCIDENT_BY_ID = "get incident by id";
     public static final String ACTION_POST_INCIDENT_REPORT = "create new incident report";
     public static final String ACTION_POST_CREATE_USER = "create new user account";
+    public static final String ACTION_POST_REPORT_MALICIOUS_INCIDENT = "report malicious incident";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";
