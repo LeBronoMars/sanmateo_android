@@ -64,4 +64,5 @@
 
     <!-- review incident report -->
     <string name="block_this_report">Block this report</string>
+    <string name="block">Block</string>
 </resources>
