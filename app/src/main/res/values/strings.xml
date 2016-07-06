@@ -1,5 +1,4 @@
 <resources>
-    <string name="app_name">San Mateo Profile App</string>
     <string name="login">Login</string>
     <string name="create_account">Create your account now</string>
 
