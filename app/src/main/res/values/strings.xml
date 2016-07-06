@@ -62,4 +62,6 @@
     <string name="note_before_reporting_incident"><b>NOTE : </b><i>Please be advised that your report
          for this incident report is still be reviewed by the admins.</i></string>
 
+    <!-- review incident report -->
+    <string name="block_this_report">Block this report</string>
 </resources>

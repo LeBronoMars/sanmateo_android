@@ -81,7 +81,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         } else if (incidentsSingleton.getIncidents().size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,null);
+            apiRequestHelper.getAllIncidents(token,0,null,"active");
         }
         initIncidents();
     }
@@ -197,26 +197,32 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     @Subscribe
     public void handleApiResponse(final HashMap<String,Object> map) {
-        try {
-            final JSONObject json = new JSONObject(map.get("data").toString());
-            if (json.has("action")) {
-                final String action = json.getString("action");
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    final JSONObject json = new JSONObject(map.get("data").toString());
+                    if (json.has("action")) {
+                        final String action = json.getString("action");
 
-                /** new incident notification */
-                if (action.equals("new incident")) {
-                    LogHelper.log("api","must fetch latest incident reports");
-                    if (incidentsSingleton.getIncidents().size() == 0) {
-                        //if incidents is empty, fetch it from api
-                        LogHelper.log("api","must get all");
-                        apiRequestHelper.getAllIncidents(token,0,null,null);
-                    } else {
-                        apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
+                        /** new incident notification */
+                        if (action.equals("new incident")) {
+                            LogHelper.log("api","must fetch latest incident reports");
+                            if (incidentsSingleton.getIncidents().size() == 0) {
+                                //if incidents is empty, fetch it from api
+                                LogHelper.log("api","must get all");
+                                apiRequestHelper.getAllIncidents(token,0,null,null);
+                            } else {
+                                apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
+                            }
+                        }
+                        rvIncidents.getAdapter().notifyDataSetChanged();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        });
     }
 
     @OnClick(R.id.btnAdd)
