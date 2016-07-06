@@ -1,39 +1,23 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.ShareLinkContent;
-import com.facebook.share.widget.ShareDialog;
 import com.squareup.otto.Subscribe;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentsAdapter;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.FileIncidentReportDialogFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.ReportIncidentReportDialogFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.admin.ReviewIncidentsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -50,18 +34,11 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
  */
 public class ReviewIncidentsActivity extends BaseActivity implements OnApiRequestListener {
 
-    @BindView(R.id.rvIncidents) RecyclerView rvIncidents;
-    @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
+    @BindView(R.id.rvReviewIncidents) RecyclerView rvReviewIncidents;
     private ApiRequestHelper apiRequestHelper;
     private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
     private String token;
-    private Bundle bundle = new Bundle();
-    private AmazonS3Helper amazonS3Helper;
-    private int filesToUploadCtr = 0;
-    private ArrayList<File> filesToUpload = new ArrayList<>();
-    private StringBuilder uploadedFilesUrl = new StringBuilder();
-    private CallbackManager shareCallBackManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,12 +46,10 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
         setToolbarTitle("Incidents");
         setContentView(R.layout.activity_review_incidents);
         ButterKnife.bind(this);
-        amazonS3Helper = new AmazonS3Helper(this);
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getAuthResponse().getToken();
-        shareCallBackManager = CallbackManager.Factory.create();
 
         //check if there are new incidents needed to be fetched from api
         if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
@@ -94,10 +69,6 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             showCustomProgress("Fetching all incident reports, Please wait...");
         } else if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
             showCustomProgress("Fetching latest incident reports, Please wait...");
-        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
-            showCustomProgress("Filing your incident report, Please wait...");
-        } else if (action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
-            showCustomProgress("Submiting your report, Please wait...");
         }
     }
 
@@ -108,13 +79,10 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             final ArrayList<Incident> incidents = (ArrayList<Incident>)result;
             LogHelper.log("api","success size --> " + incidents);
             incidentsSingleton.getIncidents().addAll(0,incidents);
-            rvIncidents.getAdapter().notifyDataSetChanged();
+            rvReviewIncidents.getAdapter().notifyDataSetChanged();
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
-        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT) ||
-                action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
-            showSnackbar(btnAdd,"Your report was successfully created!");
         }
     }
 
@@ -131,9 +99,15 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
     }
 
     private void initIncidents() {
-        final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents());
-        rvIncidents.setLayoutManager(new LinearLayoutManager(this));
-        rvIncidents.setAdapter(adapter);
+        final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(this,incidentsSingleton.getIncidents());
+        adapter.setOnBlockReportListener(new ReviewIncidentsAdapter.OnBlockReportListener() {
+            @Override
+            public void onBlockReport(int index) {
+
+            }
+        });
+        rvReviewIncidents.setLayoutManager(new LinearLayoutManager(this));
+        rvReviewIncidents.setAdapter(adapter);
     }
 
     @Subscribe

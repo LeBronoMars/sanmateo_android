@@ -35,6 +35,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
     private ArrayList<Incident> incidents;
     private Context context;
     private BaseActivity activity;
+    private OnBlockReportListener onBlockReportListener;
 
     public ReviewIncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
@@ -63,6 +64,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
+        @BindView(R.id.llBlock) LinearLayout llBlock;
 
         ViewHolder(View view) {
             super(view);
@@ -115,11 +117,27 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
                 activity.animateToLeft(activity);
             }
         });
+        holder.llBlock.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onBlockReportListener != null) {
+                    onBlockReportListener.onBlockReport(i);
+                }
+            }
+        });
         holder.rvImages.setAdapter(adapter);
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnBlockReportListener {
+        void onBlockReport(int index);
+    }
+
+    public void setOnBlockReportListener(OnBlockReportListener onBlockReportListener) {
+        this.onBlockReportListener = onBlockReportListener;
     }
 }
