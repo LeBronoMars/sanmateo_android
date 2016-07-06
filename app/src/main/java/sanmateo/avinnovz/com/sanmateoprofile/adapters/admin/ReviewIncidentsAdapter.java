@@ -50,7 +50,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_incident, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_review_incident, parent, false);
         final ViewHolder holder = new ViewHolder(v);
         return holder;
     }
