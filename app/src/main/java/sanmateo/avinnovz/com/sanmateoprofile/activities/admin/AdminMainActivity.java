@@ -107,13 +107,17 @@ public class AdminMainActivity extends BaseActivity {
     private void initHomeMenu() {
         final ArrayList<HomeMenu> homeMenus = new ArrayList<>();
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Review Incidents"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
             @Override
             public void onSelectedMenu(int position) {
                 if (position == 0) {
                     startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
+                } else if (position == 1) {
+                    startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
                 }
+                animateToLeft(AdminMainActivity.this);
             }
         });
         rvHomeMenu.setAdapter(adapter);

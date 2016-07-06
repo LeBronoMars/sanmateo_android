@@ -131,6 +131,7 @@ public class MainActivity extends BaseActivity {
                 } else if (position == 4) {
                     startActivity(new Intent(MainActivity.this, DirectoriesActivity.class));
                 }
+                animateToLeft(MainActivity.this);
             }
         });
         rvHomeMenu.setAdapter(adapter);
