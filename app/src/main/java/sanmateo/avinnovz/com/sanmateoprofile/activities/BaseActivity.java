@@ -28,6 +28,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.rey.material.app.Dialog;
 import com.squareup.otto.Subscribe;
 
@@ -336,6 +340,13 @@ public class BaseActivity extends AppCompatActivity {
         Point size = new Point();
         display.getSize(size);
         return what.equals("height") ? size.y : size.x;
+    }
+
+    public void addMapMarker(GoogleMap map, double lat, double longi, String title,
+                             String snippet, int marker) {
+        map.addMarker(new MarkerOptions().position(new LatLng(lat, longi)).
+                title(title).snippet(snippet).icon(
+                marker == -1 ? null : BitmapDescriptorFactory.fromResource(marker))).showInfoWindow();
     }
 }
 

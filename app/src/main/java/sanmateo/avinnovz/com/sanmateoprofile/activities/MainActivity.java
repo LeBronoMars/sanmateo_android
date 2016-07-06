@@ -27,6 +27,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -52,6 +53,7 @@ public class MainActivity extends BaseActivity {
         initNavigationDrawer();
         initHomeMenu();
         startService(new Intent(this, PusherService.class));
+        LogHelper.log("token", currentUserSingleton.getAuthResponse().getToken());
     }
 
     private void animateBanners() {
@@ -122,6 +124,12 @@ public class MainActivity extends BaseActivity {
             public void onSelectedMenu(int position) {
                 if (position == 1) {
                     startActivity(new Intent(MainActivity.this, IncidentsActivity.class));
+                } else if (position == 2) {
+                    startActivity(new Intent(MainActivity.this, InformationActivity.class));
+                } else if (position == 3) {
+                    startActivity(new Intent(MainActivity.this, MapActivity.class));
+                } else if (position == 4) {
+                    startActivity(new Intent(MainActivity.this, DirectoriesActivity.class));
                 }
             }
         });

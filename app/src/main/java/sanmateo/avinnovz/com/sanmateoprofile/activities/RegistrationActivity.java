@@ -124,7 +124,7 @@ public class RegistrationActivity extends BaseActivity implements OnApiRequestLi
         LogHelper.log("registration", "failed >>> " + action);
         LogHelper.log("registration", "failed >>> " + t);
         if (t instanceof HttpException) {
-            if (action.equals(AppConstants.ACTION_LOGIN)) {
+            if (action.equals(AppConstants.ACTION_POST_CREATE_USER)) {
                 final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
                 showConfirmDialog("","Registration Failed", apiError.getMessage(),"Ok","",null);
             }
