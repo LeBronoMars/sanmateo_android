@@ -70,12 +70,17 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_LOGIN)) {
-            final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
             final AuthResponse authResponse = (AuthResponse)result;
-            currentUserSingleton.setAuthResponse(authResponse);
-            startActivity(new Intent(this, MainActivity.class));
-            animateToLeft(this);
-            finish();
+            if (authResponse.getUserLevel().equals("superadmin") ||
+                    authResponse.getUserLevel().equals("admin")) {
+                final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
+                currentUserSingleton.setAuthResponse(authResponse);
+                startActivity(new Intent(this, MainActivity.class));
+                animateToLeft(this);
+                finish();
+            } else {
+                showSnackbar(tvCreateAccount, AppConstants.WARN_INVALID_ACCOUNT);
+            }
         }
     }
 

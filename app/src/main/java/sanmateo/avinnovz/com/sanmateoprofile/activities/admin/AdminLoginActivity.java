@@ -2,7 +2,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.widget.Button;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -10,8 +10,6 @@ import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.MainActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.RegistrationActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -27,7 +25,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
  */
 public class AdminLoginActivity extends BaseActivity implements OnApiRequestListener {
 
-    @BindView(R.id.tvCreateAccount) TextView tvCreateAccount;
+    @BindView(R.id.btnLogin) Button btnLogin;
     private ApiRequestHelper apiRequestHelper;
 
     @Override
@@ -52,14 +50,8 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
             });
             loginDialogFragment.show(getFragmentManager(),"login");
         } else {
-            showSnackbar(tvCreateAccount, AppConstants.WARN_CONNECTION);
+            showSnackbar(btnLogin, AppConstants.WARN_CONNECTION);
         }
-    }
-
-    @OnClick(R.id.tvCreateAccount)
-    public void showRegistrationPage() {
-        startActivity(new Intent(this, RegistrationActivity.class));
-        animateToLeft(this);
     }
 
     @Override
