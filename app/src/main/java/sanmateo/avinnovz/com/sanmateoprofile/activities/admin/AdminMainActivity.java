@@ -23,7 +23,6 @@ import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
@@ -107,21 +106,12 @@ public class AdminMainActivity extends BaseActivity {
 
     private void initHomeMenu() {
         final ArrayList<HomeMenu> homeMenus = new ArrayList<>();
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_alarm),"Panic/Emergency"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Incident Report"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_info),"Information"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_locations),"Map"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_directories),"Directories"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_gallery),"Gallery"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_fb),"Social Media"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Disaster Management"));
-        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_contact_us),"Contact Us"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Review Incidents"));
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
             @Override
             public void onSelectedMenu(int position) {
-                if (position == 1) {
+                if (position == 0) {
                     startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
                 }
             }

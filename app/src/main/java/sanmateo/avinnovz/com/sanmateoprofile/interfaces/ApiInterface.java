@@ -9,6 +9,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
@@ -131,5 +132,19 @@ public interface ApiInterface {
                                         @Field("address") String address,
                                         @Field("user_level") String userLevel,
                                         @Field("password") String password);
+
+    /**
+     * block a malicious incident report
+     *
+     * @param token represents the user that trying to make the request
+     * @param incidentId identification of incident report
+     * @param remarks brief description why the incident report must be blocked
+     *
+     * */
+    @PUT("/api/v1/incidents/block/{incident_id}")
+    @FormUrlEncoded
+    Observable<Incident> blockReport(@Header("Authorization") String token,
+                                     @Path("incident_id") int incidentId,
+                                     @Field("remarks") String remarks);
 }
 

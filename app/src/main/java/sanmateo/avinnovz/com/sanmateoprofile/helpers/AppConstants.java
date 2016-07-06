@@ -31,6 +31,7 @@ public class AppConstants {
     public static final String ACTION_POST_INCIDENT_REPORT = "create new incident report";
     public static final String ACTION_POST_CREATE_USER = "create new user account";
     public static final String ACTION_POST_REPORT_MALICIOUS_INCIDENT = "report malicious incident";
+    public static final String ACTION_PUT_BLOCK_REPORT = "block malicious report";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

@@ -184,4 +184,28 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void blockMaliciousReport(final String token, final int incidentId, final String remarks) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_BLOCK_REPORT);
+        Observable<Incident> observable = AppConstants.API_INTERFACE.blockReport(token,incidentId,remarks);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Incident>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_PUT_BLOCK_REPORT, e);
+                    }
+
+                    @Override
+                    public void onNext(Incident incident) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_PUT_BLOCK_REPORT, incident);
+                    }
+                });
+    }
+
+
 }
