@@ -1,4 +1,4 @@
-package sanmateo.avinnovz.com.sanmateoprofile.fragments;
+package sanmateo.avinnovz.com.sanmateoprofile.fragments.admin;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
