@@ -17,17 +17,22 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.NotificationHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 
 
 /**
  * Created by rsbulanon on 6/28/16.
  */
 public class PusherService extends Service {
+
+    private CurrentUserSingleton currentUserSingleton;
+    private IncidentsSingleton incidentsSingleton;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -37,6 +42,8 @@ public class PusherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        currentUserSingleton = CurrentUserSingleton.newInstance();
+        incidentsSingleton = IncidentsSingleton.getInstance();
         LogHelper.log("pusher","pusher service created");
     }
 
@@ -54,14 +61,34 @@ public class PusherService extends Service {
                     final JSONObject json = new JSONObject(data);
                     if (json.has("action")) {
                         final String action = json.getString("action");
+                        final int id = Integer.valueOf(json.getInt("id"));
 
-                        /** new incident notification */
                         if (action.equals("new incident")) {
+                            /** new incident notification */
                             PrefsHelper.setBoolean(PusherService.this,"refresh_incidents",true);
                             LogHelper.log("pusher","must show push notification for new incident");
-                            final int id = Integer.valueOf(json.getInt("id"));
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     json.getString("title"),json.getString("content"), null);
+                        } else if (action.equals("block report")) {
+                            /** new incident notification */
+                            LogHelper.log("pusher","must delete incident report");
+                            final int reportedBy = Integer.valueOf(json.getString("reported_by"));
+                            if (currentUserSingleton.getAuthResponse().getId() == reportedBy) {
+                                LogHelper.log("pusher","Show notification for blocked report");
+                                NotificationHelper.displayNotification(id,PusherService.this,
+                                        "Your report was blocked by the admin",json.getString("remarks"),null);
+
+                                /** removed blocked incident from incidents singleton */
+                                final int toRemoveIncidentId = Integer.valueOf(json.getString("id"));
+                                for (int i = 0 ; i < incidentsSingleton.getIncidents().size(); i++) {
+                                    final Incident incident = incidentsSingleton.getIncidents().get(i);
+                                    if (incident.getIncidentId() == toRemoveIncidentId) {
+                                        incidentsSingleton.getIncidents().remove(i);
+                                    }
+                                }
+                            } else {
+                                LogHelper.log("pusher","must delete only blocked report");
+                            }
                         }
                     }
                 } catch (JSONException e) {
@@ -71,7 +98,6 @@ public class PusherService extends Service {
                 /** broadcast received push notification */
                 final HashMap<String,Object> map = new HashMap<>();
                 map.put("channel",channelName);
-                map.put("eventName",eventName);
                 map.put("data",data);
                 BusSingleton.getInstance().post(map);
             }
