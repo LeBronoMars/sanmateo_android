@@ -13,6 +13,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -87,7 +88,15 @@ public class MainActivity extends BaseActivity {
         final View view = getLayoutInflater().inflate(R.layout.navigation_header,null,false);
         final ImageView ivProfileImage = (ImageView)view.findViewById(R.id.ivProfileImage);
         final TextView tvProfileName = (TextView)view.findViewById(R.id.tvProfileName);
+
+        final int screenHeight = getScreenDimension("height");
+        final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
+                ((int)(screenHeight * .4)));
+
         navigationView.addHeaderView(view);
+        navigationView.inflateMenu(R.menu.menu_side_drawer);
+        navigationView.getHeaderView(0).setLayoutParams(params);
+
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);

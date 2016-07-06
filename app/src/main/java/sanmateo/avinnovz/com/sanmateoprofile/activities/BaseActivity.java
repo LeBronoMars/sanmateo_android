@@ -330,5 +330,12 @@ public class BaseActivity extends AppCompatActivity {
             return false;
         }
     }
+
+    public int getScreenDimension(final String what) {
+        final Display display = getWindowManager().getDefaultDisplay();
+        Point size = new Point();
+        display.getSize(size);
+        return what.equals("height") ? size.y : size.x;
+    }
 }
 

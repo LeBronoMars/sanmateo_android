@@ -27,6 +27,7 @@
 
         <!-- admin main activity -->
         <activity android:name=".activities.admin.AdminMainActivity"
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"/>
 
         <!-- amazon s3 config -->
