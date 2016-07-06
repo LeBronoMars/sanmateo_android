@@ -122,7 +122,7 @@ public class AdminMainActivity extends BaseActivity {
             @Override
             public void onSelectedMenu(int position) {
                 if (position == 1) {
-                    startActivity(new Intent(AdminMainActivity.this, IncidentsActivity.class));
+                    startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
                 }
             }
         });
