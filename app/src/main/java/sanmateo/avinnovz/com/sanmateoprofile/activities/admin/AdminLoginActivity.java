@@ -33,7 +33,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_admin_login);
         ButterKnife.bind(this);
         AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
         apiRequestHelper = new ApiRequestHelper(this);
@@ -76,7 +76,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
             final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
             final AuthResponse authResponse = (AuthResponse)result;
             currentUserSingleton.setAuthResponse(authResponse);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, AdminMainActivity.class));
             animateToLeft(this);
             finish();
         }

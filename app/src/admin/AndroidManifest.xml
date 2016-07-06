@@ -15,7 +15,7 @@
         android:name=".activities.BaseApplication"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.LoginActivity"
+        <activity android:name=".activities.admin.AdminLoginActivity"
             android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.NoActionBar">
             <intent-filter>
@@ -25,6 +25,9 @@
             </intent-filter>
         </activity>
 
+        <!-- admin main activity -->
+        <activity android:name=".activities.admin.AdminMainActivity"
+            android:screenOrientation="portrait"/>
 
         <!-- amazon s3 config -->
         <service
