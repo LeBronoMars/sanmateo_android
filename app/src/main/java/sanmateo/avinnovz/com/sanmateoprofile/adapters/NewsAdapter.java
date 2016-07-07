@@ -6,6 +6,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -56,15 +57,10 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
-        @BindView(R.id.tvDescription) TextView tvDescription;
-        @BindView(R.id.tvAddress) TextView tvAddress;
-        @BindView(R.id.tvDateReported) TextView tvDateReported;
-        @BindView(R.id.tvTimeAgo) TextView tvTimeAgo;
+        @BindView(R.id.ivImageUrl) ImageView ivImageUrl;
+        @BindView(R.id.tvTitle) TextView tvTitle;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
-        @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
-        @BindView(R.id.rvImages) RecyclerView rvImages;
-        @BindView(R.id.llShareViaFb) LinearLayout llShareViaFb;
-        @BindView(R.id.llReport) LinearLayout llReport;
+        @BindView(R.id.tvDateReported) TextView tvDateReported;
 
         ViewHolder(View view) {
             super(view);
@@ -75,13 +71,24 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(ViewHolder holder, final int i) {
         final News n = news.get(i);
-
-
-        AppConstants.PICASSO.load(n.get)
+        holder.tvTitle.setText(n.getTitle());
+        holder.tvReportedBy.setText(n.getReportedBy());
+        try {
+            final Date dateReported = activity.getDateFormatter().parse(n.getCreatedAt());
+            final Calendar calendar = Calendar.getInstance();
+            calendar.setTime(dateReported);
+            calendar.add(Calendar.HOUR_OF_DAY,8);
+            holder.tvDateReported.setText(activity.getSDF().format(calendar.getTime()));
+            holder.tvDateReported.setText(activity.getPrettyTime().format(calendar.getTime()));
+        } catch (ParseException e) {
+            e.printStackTrace();
+            LogHelper.log("err","error in parsing date --> " + e.getMessage());
+        }
+        AppConstants.PICASSO.load(n.getImageUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .fit()
-                .into(holder.civReporterImage);
+                .into(holder.ivImageUrl);
     }
 
     @Override
