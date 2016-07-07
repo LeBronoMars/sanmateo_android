@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 
 /**
@@ -146,5 +147,22 @@ public interface ApiInterface {
     Observable<Incident> blockReport(@Header("Authorization") String token,
                                      @Path("incident_id") int incidentId,
                                      @Field("remarks") String remarks);
+
+    /**
+     * get all news
+     *
+     * @param token represents the user that trying to make the request
+     * @param start defines the offset of query (for pagination)
+     * @param limit size of expected result
+     * @param status filter news by their status
+     * @param when to segregate news for today and previous
+     *
+     * */
+    @GET("/api/v1/news")
+    Observable<List<News>> getNews(@Header("Authorization") String token,
+                                   @Query("start") int start,
+                                   @Query("limit") int limit,
+                                   @Query("status") String status,
+                                   @Query("when") String when);
 }
 

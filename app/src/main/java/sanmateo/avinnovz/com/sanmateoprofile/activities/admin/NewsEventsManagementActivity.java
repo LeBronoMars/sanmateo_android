@@ -13,11 +13,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.NewsEventsFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 
 /**
  * Created by rsbulanon on 7/6/16.
  */
-public class NewsEventsManagementActivity extends BaseActivity {
+public class NewsEventsManagementActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
@@ -44,5 +45,20 @@ public class NewsEventsManagementActivity extends BaseActivity {
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setOffscreenPageLimit(2);
+    }
+
+    @Override
+    public void onApiRequestBegin(String action) {
+
+    }
+
+    @Override
+    public void onApiRequestSuccess(String action, Object result) {
+
+    }
+
+    @Override
+    public void onApiRequestFailed(String action, Throwable t) {
+
     }
 }
