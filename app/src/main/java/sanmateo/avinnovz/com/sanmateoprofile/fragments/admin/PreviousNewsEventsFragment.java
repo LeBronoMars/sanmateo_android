@@ -24,14 +24,14 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 /**
  * Created by rsbulanon on 7/6/16.
  */
-public class NewsEventsFragment extends Fragment {
+public class PreviousNewsEventsFragment extends Fragment {
 
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rvNews) RecyclerView rvNews;
     private ArrayList<News> news;
 
-    public static NewsEventsFragment newInstance(final ArrayList<News> news) {
-        final NewsEventsFragment fragment = new NewsEventsFragment();
+    public static PreviousNewsEventsFragment newInstance(final ArrayList<News> news) {
+        final PreviousNewsEventsFragment fragment = new PreviousNewsEventsFragment();
         fragment.news = news;
         return fragment;
     }
@@ -60,7 +60,7 @@ public class NewsEventsFragment extends Fragment {
 
     @Subscribe
     public void handleBusEvent(final HashMap<String,Object> map) {
-        if (map.get("action").equals("today")) {
+        if (map.get("action").equals("previous")) {
             final ArrayList<News> news = (ArrayList<News>)map.get("result");
             this.news.addAll(news);
             rvNews.getAdapter().notifyDataSetChanged();

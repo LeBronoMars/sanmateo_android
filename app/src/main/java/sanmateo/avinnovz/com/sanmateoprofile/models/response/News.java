@@ -16,14 +16,23 @@ public class News implements Parcelable {
     @SerializedName("deleted_at") private String deletedAt;
     private String title;
     private String body;
+    @SerializedName("source_url") private String sourceUrl;
+    @SerializedName("image_url") private String imageUrl;
+    @SerializedName("reported_by") private String reportedBy;
+    private String status;
 
-    public News(int id, String createdAt, String updatedAt, String deletedAt, String title, String body) {
+    public News(int id, String createdAt, String updatedAt, String deletedAt, String title,
+                String body, String sourceUrl, String imageUrl, String reportedBy, String status) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.deletedAt = deletedAt;
         this.title = title;
         this.body = body;
+        this.sourceUrl = sourceUrl;
+        this.imageUrl = imageUrl;
+        this.reportedBy = reportedBy;
+        this.status = status;
     }
 
     public int getId() {
@@ -50,6 +59,22 @@ public class News implements Parcelable {
         return body;
     }
 
+    public String getSourceUrl() {
+        return sourceUrl;
+    }
+
+    public String getImageUrl() {
+        return imageUrl;
+    }
+
+    public String getReportedBy() {
+        return reportedBy;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -63,6 +88,10 @@ public class News implements Parcelable {
         parcel.writeString(this.deletedAt);
         parcel.writeString(this.title);
         parcel.writeString(this.body);
+        parcel.writeString(this.sourceUrl);
+        parcel.writeString(this.imageUrl);
+        parcel.writeString(this.reportedBy);
+        parcel.writeString(this.status);
     }
 
     public News(Parcel parcel) {
@@ -72,6 +101,10 @@ public class News implements Parcelable {
         this.deletedAt = parcel.readString();
         this.title = parcel.readString();
         this.body = parcel.readString();
+        this.sourceUrl = parcel.readString();
+        this.imageUrl = parcel.readString();
+        this.reportedBy = parcel.readString();
+        this.status = parcel.readString();
     }
 
     public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
