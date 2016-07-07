@@ -31,7 +31,7 @@ public class InformationActivity extends BaseActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = null;
-                /*if (i == 0) {
+                if (i == 0) {
                     intent = new Intent(InformationActivity.this, HistoryActivity.class);
                 } else if (i == 1) {
                     intent = new Intent(InformationActivity.this, OfficialsActivity.class);
@@ -39,7 +39,7 @@ public class InformationActivity extends BaseActivity {
                     intent = new Intent(InformationActivity.this, GovtInfoActivity.class);
                 }
                 startActivity(intent);
-                animateToLeft(InformationActivity.this);*/
+                animateToLeft(InformationActivity.this);
             }
         });
     }
