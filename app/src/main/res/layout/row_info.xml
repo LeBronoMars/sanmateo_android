@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:text="@string/app_name"
         android:textColor="@color/colorPrimary"
-        android:textSize="@dimen/_20sdp"
+        android:textSize="@dimen/_15sdp"
         android:layout_marginLeft="10dp"
         fontPath="fonts/Roboto-Thin.ttf"/>
 
