@@ -41,6 +41,10 @@
         <activity android:name=".activities.ImageFullViewActivity"
             android:screenOrientation="portrait"/>
 
+        <!-- news full preview -->
+        <activity android:name=".activities.NewsFullPreviewActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- amazon s3 config -->
         <service
             android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"

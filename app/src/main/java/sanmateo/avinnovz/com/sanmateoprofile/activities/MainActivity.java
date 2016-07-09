@@ -52,7 +52,12 @@ public class MainActivity extends BaseActivity {
         animateBanners();
         initNavigationDrawer();
         initHomeMenu();
-        startService(new Intent(this, PusherService.class));
+        if (!isMyServiceRunning(PusherService.class)) {
+            LogHelper.log("pusher","service not yet running");
+            startService(new Intent(this, PusherService.class));
+        } else {
+            LogHelper.log("pusher","service already running");
+        }
         LogHelper.log("token", currentUserSingleton.getAuthResponse().getToken());
     }
 

@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -347,6 +348,16 @@ public class BaseActivity extends AppCompatActivity {
         map.addMarker(new MarkerOptions().position(new LatLng(lat, longi)).
                 title(title).snippet(snippet).icon(
                 marker == -1 ? null : BitmapDescriptorFactory.fromResource(marker))).showInfoWindow();
+    }
+
+    public boolean isMyServiceRunning(Class<?> serviceClass) {
+        final ActivityManager manager = (ActivityManager) getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
     }
 }
 

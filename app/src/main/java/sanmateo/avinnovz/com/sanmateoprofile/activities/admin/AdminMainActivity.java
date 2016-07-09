@@ -28,6 +28,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -52,7 +53,13 @@ public class AdminMainActivity extends BaseActivity {
         animateBanners();
         initNavigationDrawer();
         initHomeMenu();
-        startService(new Intent(this, PusherService.class));
+
+        if (!isMyServiceRunning(PusherService.class)) {
+            LogHelper.log("pusher","service not yet running");
+            startService(new Intent(this, PusherService.class));
+        } else {
+            LogHelper.log("pusher","service already running");
+        }
     }
 
     private void animateBanners() {

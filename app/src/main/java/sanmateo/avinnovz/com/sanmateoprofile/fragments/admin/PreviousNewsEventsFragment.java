@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.fragments.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -17,8 +18,9 @@ import java.util.HashMap;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.NewsFullPreviewActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 
@@ -30,6 +32,7 @@ public class PreviousNewsEventsFragment extends Fragment {
     @BindView(R.id.swipeRefreshLayout) SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rvNews) RecyclerView rvNews;
     private ArrayList<News> news;
+    private BaseActivity activity;
 
     public static PreviousNewsEventsFragment newInstance(final ArrayList<News> news) {
         final PreviousNewsEventsFragment fragment = new PreviousNewsEventsFragment();
@@ -42,7 +45,17 @@ public class PreviousNewsEventsFragment extends Fragment {
         final View view = inflater.inflate(R.layout.fragment_news_events_mgmt,container,false);
         ButterKnife.bind(this,view);
         final NewsAdapter newsAdapter = new NewsAdapter(getActivity(),news);
+        activity = (BaseActivity)getActivity();
         rvNews.setAdapter(newsAdapter);
+        newsAdapter.setOnSelectNewsListener(new NewsAdapter.OnSelectNewsListener() {
+            @Override
+            public void onSelectedNews(News n) {
+                final Intent intent = new Intent(getActivity(), NewsFullPreviewActivity.class);
+                intent.putExtra("news",n);
+                startActivity(intent);
+                activity.animateToLeft(activity);
+            }
+        });
         rvNews.setLayoutManager(new LinearLayoutManager(getActivity()));
         return view;
     }
@@ -61,15 +74,12 @@ public class PreviousNewsEventsFragment extends Fragment {
 
     @Subscribe
     public void handleBusEvent(final HashMap<String,Object> map) {
-        LogHelper.log("news","MUST HANDLE PREVIOUS ---> " + map.get("action").toString());
-        if (map.get("action").equals("previous")) {
-            LogHelper.log("news","AAAAA");
-            final ArrayList<News> news = (ArrayList<News>)map.get("result");
-            this.news.addAll(news);
-            LogHelper.log("news","PREVIOUS ----> " + news.size());
-            rvNews.getAdapter().notifyDataSetChanged();
-        } else {
-            LogHelper.log("news","BBBB");
+        if (map.containsKey("action")) {
+            if (map.get("action").equals("previous")) {
+                final ArrayList<News> news = (ArrayList<News>)map.get("result");
+                this.news.addAll(news);
+                rvNews.getAdapter().notifyDataSetChanged();
+            }
         }
     }
 }

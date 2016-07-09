@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import retrofit2.http.Field;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -83,14 +84,14 @@ public class CreateNewsDialogFragment extends DialogFragment {
             activity.setError(etReportedBy, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onCreateNewsListener != null) {
-                onCreateNewsListener.onCreateNews(title,body,reportedBy,sourceUrl,imageUrl);
+                onCreateNewsListener.onCreateNews(title,body,sourceUrl,imageUrl,reportedBy);
             }
         }
     }
 
     public interface OnCreateNewsListener {
-        void onCreateNews(final String title, final String body, final String reportedBy,
-                          final String imageUrl, final String sourceUrl);
+        void onCreateNews(final String title, final String body, final String sourceUrl,
+                          final String imageUrl, final String reportedBy);
         void onCancel();
     }
 

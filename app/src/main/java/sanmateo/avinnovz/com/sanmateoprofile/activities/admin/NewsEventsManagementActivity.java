@@ -101,6 +101,7 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_POST_NEWS)) {
+            LogHelper.log("news","new created!");
             final News n = (News)result;
             if (!newsSingleton.isNewsExisting(n.getId())) {
                 newsSingleton.getNewsToday().add(0,n);
@@ -125,9 +126,11 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         dismissCustomProgress();
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
+            final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
             if (action.equals(AppConstants.ACTION_LOGIN)) {
-                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
                 showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            } else {
+                showConfirmDialog(action,"Unable to create news", apiError.getMessage(),"Close","",null);
             }
         }
     }
@@ -144,8 +147,9 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     public void createNews() {
         final CreateNewsDialogFragment fragment = CreateNewsDialogFragment.newInstance();
         fragment.setOnCreateNewsListener(new CreateNewsDialogFragment.OnCreateNewsListener() {
+
             @Override
-            public void onCreateNews(String title, String body, String reportedBy, String imageUrl, String sourceUrl) {
+            public void onCreateNews(String title, String body, String sourceUrl, String imageUrl, String reportedBy) {
                 fragment.dismiss();
                 if (isNetworkAvailable()) {
                     apiRequestHelper.createNews(token,title,body,sourceUrl,imageUrl,reportedBy);

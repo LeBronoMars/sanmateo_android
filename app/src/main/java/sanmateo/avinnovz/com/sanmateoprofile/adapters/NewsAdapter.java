@@ -36,6 +36,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
     private ArrayList<News> news;
     private Context context;
     private BaseActivity activity;
+    private OnSelectNewsListener onSelectNewsListener;
 
     public NewsAdapter(final Context context, final ArrayList<News> news) {
         this.news = news;
@@ -57,6 +58,7 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
 
+        @BindView(R.id.llNews) LinearLayout llNews;
         @BindView(R.id.ivImageUrl) ImageView ivImageUrl;
         @BindView(R.id.tvTitle) TextView tvTitle;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
@@ -89,10 +91,27 @@ public class NewsAdapter extends RecyclerView.Adapter<NewsAdapter.ViewHolder> {
                 .centerCrop()
                 .fit()
                 .into(holder.ivImageUrl);
+
+        holder.llNews.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (onSelectNewsListener != null) {
+                    onSelectNewsListener.onSelectedNews(n);
+                }
+            }
+        });
     }
 
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    public interface OnSelectNewsListener {
+        void onSelectedNews(final News n);
+    }
+
+    public void setOnSelectNewsListener(OnSelectNewsListener onSelectNewsListener) {
+        this.onSelectNewsListener = onSelectNewsListener;
     }
 }
