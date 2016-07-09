@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
@@ -36,6 +37,7 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
 
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.btnCreateNews) FloatingActionButton btnCreateNews;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private ArrayList<String> tabNames = new ArrayList<>();
     private ApiRequestHelper apiRequestHelper;
@@ -90,19 +92,32 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         LogHelper.log("news","start to fetch ---> " + action);
         if (action.equals("today") || action.equals("today")) {
             showCustomProgress("Fetching news, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_NEWS)) {
+            showCustomProgress("Creating news, Please wait...");
         }
     }
 
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
-        final ArrayList<News> n = (ArrayList<News>)result;
-        if (action.equals("today")) {
-            newsSingleton.getNewsToday().addAll(n);
+        if (action.equals(AppConstants.ACTION_POST_NEWS)) {
+            final News n = (News)result;
+            if (!newsSingleton.isNewsExisting(n.getId())) {
+                newsSingleton.getNewsToday().add(0,n);
+            }
+            final HashMap<String,Object> map = new HashMap<>();
+            map.put("action",action);
+            map.put("result",n);
+            BusSingleton.getInstance().post(map);
         } else {
-            newsSingleton.getNewsPrevious().addAll(n);
+            final ArrayList<News> n = (ArrayList<News>)result;
+            if (action.equals("today")) {
+                newsSingleton.getNewsToday().addAll(n);
+            } else if (action.equals("previous")) {
+                newsSingleton.getNewsPrevious().addAll(n);
+            }
+            broadcastUpdate(action,n);
         }
-        broadcastUpdate(action,n);
     }
 
     @Override
@@ -128,6 +143,22 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     @OnClick(R.id.btnCreateNews)
     public void createNews() {
         final CreateNewsDialogFragment fragment = CreateNewsDialogFragment.newInstance();
+        fragment.setOnCreateNewsListener(new CreateNewsDialogFragment.OnCreateNewsListener() {
+            @Override
+            public void onCreateNews(String title, String body, String reportedBy, String imageUrl, String sourceUrl) {
+                fragment.dismiss();
+                if (isNetworkAvailable()) {
+                    apiRequestHelper.createNews(token,title,body,sourceUrl,imageUrl,reportedBy);
+                } else {
+                    showSnackbar(btnCreateNews, AppConstants.WARN_CONNECTION);
+                }
+            }
+
+            @Override
+            public void onCancel() {
+                fragment.dismiss();
+            }
+        });
         fragment.show(getFragmentManager(),"create news");
     }
 }

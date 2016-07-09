@@ -93,7 +93,7 @@
     <string name="news_title">Title</string>
     <string name="news_body">Content</string>
     <string name="source_url">Source URL (Optional)</string>
-    <string name="image_url">News banner image (Optional)</string>
+    <string name="image_url">News banner image url (Optional)</string>
     <string name="create">Create</string>
 
 

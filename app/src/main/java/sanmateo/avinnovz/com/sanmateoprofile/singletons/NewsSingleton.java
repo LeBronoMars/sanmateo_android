@@ -38,4 +38,18 @@ public class NewsSingleton {
         this.newsPrevious.clear();
         this.newsPrevious.addAll(news);
     }
+
+    public boolean isNewsExisting(final int id) {
+        for (News n : getNewsToday()) {
+            if (n.getId() == id) {
+                return true;
+            }
+        }
+        for (News n : getNewsPrevious()) {
+            if (n.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

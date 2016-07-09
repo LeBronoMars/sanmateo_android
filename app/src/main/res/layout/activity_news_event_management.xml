@@ -25,7 +25,7 @@
         android:layout_below="@id/tabLayout" />
 
     <android.support.design.widget.FloatingActionButton
-        android:id="@+id/btnAdd"
+        android:id="@+id/btnCreateNews"
         android:layout_width="wrap_content"
         app:elevation="@dimen/_10sdp"
         android:clickable="true"

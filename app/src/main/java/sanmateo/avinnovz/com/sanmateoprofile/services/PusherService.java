@@ -24,6 +24,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 
 
 /**
@@ -33,6 +34,7 @@ public class PusherService extends Service {
 
     private CurrentUserSingleton currentUserSingleton;
     private IncidentsSingleton incidentsSingleton;
+    private NewsSingleton newsSingleton;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,6 +46,7 @@ public class PusherService extends Service {
         super.onCreate();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         incidentsSingleton = IncidentsSingleton.getInstance();
+        newsSingleton = NewsSingleton.getInstance();
         LogHelper.log("pusher","pusher service created");
     }
 
@@ -89,6 +92,10 @@ public class PusherService extends Service {
                             } else {
                                 LogHelper.log("pusher","must delete only blocked report");
                             }
+                        } else if (action.equals("news created")) {
+                            LogHelper.log("pusher","news created");
+                            NotificationHelper.displayNotification(id,PusherService.this,
+                                    json.getString("title"),json.getString("reported_by"),null);
                         }
                     }
                 } catch (JSONException e) {
