@@ -8,6 +8,7 @@ import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -251,6 +252,28 @@ public class ApiRequestHelper {
                     @Override
                     public void onNext(News news) {
                         onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_NEWS, news);
+                    }
+                });
+    }
+
+    public void getAllNews(final String token, final int start, final int limit) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_ANNOUNCEMENTS);
+        Observable<List<Announcement>> observable = AppConstants.API_INTERFACE.getAnnouncements(token,start,limit);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<Announcement>>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_ANNOUNCEMENTS, e);
+                    }
+
+                    @Override
+                    public void onNext(List<Announcement> news) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_ANNOUNCEMENTS, news);
                     }
                 });
     }

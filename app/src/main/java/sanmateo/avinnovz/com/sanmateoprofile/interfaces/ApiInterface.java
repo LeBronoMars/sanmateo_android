@@ -13,6 +13,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -183,6 +184,19 @@ public interface ApiInterface {
                                 @Field("source_url") String sourceUrl,
                                 @Field("image_url") String imageUrl,
                                 @Field("reported_by") String reportedBy);
+
+
+    /**
+     * get all announcements
+     *
+     * @param token represents the user that trying to make the request
+     * @param start defines the offset of query (for pagination)
+     * @param limit size of expected result
+     * */
+    @GET("/api/v1/announcements")
+    Observable<List<Announcement>> getAnnouncements(@Header("Authorization") String token,
+                                                    @Query("start") int start,
+                                                    @Query("limit") int limit);
 
 }
 
