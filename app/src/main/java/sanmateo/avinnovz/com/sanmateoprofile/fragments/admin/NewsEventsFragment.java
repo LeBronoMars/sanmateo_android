@@ -18,6 +18,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 
@@ -63,6 +64,7 @@ public class NewsEventsFragment extends Fragment {
         if (map.get("action").equals("today")) {
             final ArrayList<News> news = (ArrayList<News>)map.get("result");
             this.news.addAll(news);
+            LogHelper.log("news","MUST DISPLAY SIZE TODAY --> " + news.size());
             rvNews.getAdapter().notifyDataSetChanged();
         }
     }

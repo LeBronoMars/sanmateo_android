@@ -13,8 +13,8 @@ public class AppConstants {
     /** static instance of Picasso */
     public static Picasso PICASSO = null;
 
-    public static final String BASE_URL = "http://192.168.1.5:9000";
-    //public static final String BASE_URL = "http://192.168.10.5:9000";
+    //public static final String BASE_URL = "http://192.168.1.5:9000";
+    public static final String BASE_URL = "http://192.168.10.5:9000";
     //public static final String BASE_URL = "http://54.169.153.164:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;

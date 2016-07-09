@@ -15,6 +15,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.NewsEventsFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.PreviousNewsEventsFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -51,20 +52,22 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
         token = currentUserSingleton.getAuthResponse().getToken();
+        initViewPager();
 
         if (newsSingleton.getNewsToday().size() == 0) {
-            apiRequestHelper.getNews(token,0,0,"active","today");
+            apiRequestHelper.getNews(token,0,10,"active","today");
         } else {
             newsToday.addAll(newsSingleton.getNewsToday());
+            broadcastUpdate("today",newsToday);
         }
 
         if (newsSingleton.getNewsPrevious().size() == 0) {
-            apiRequestHelper.getNews(token,0,0,"active","previous");
+            apiRequestHelper.getNews(token,0,10,"active","previous");
         } else {
             newPrevious.addAll(newsSingleton.getNewsPrevious());
+            broadcastUpdate("previous",newPrevious);
         }
-        initViewPager();
-        setToolbarTitle("News & Events Management");
+        setToolbarTitle("News & Events");
     }
 
     private void initViewPager() {
@@ -73,7 +76,7 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         tabNames.add("Previous");
 
         fragments.add(NewsEventsFragment.newInstance(newsToday));
-        fragments.add(NewsEventsFragment.newInstance(newPrevious));
+        fragments.add(PreviousNewsEventsFragment.newInstance(newPrevious));
 
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);
@@ -82,7 +85,8 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
 
     @Override
     public void onApiRequestBegin(String action) {
-        if (action.equals("Today") || action.equals("Previous")) {
+        LogHelper.log("news","start to fetch ---> " + action);
+        if (action.equals("today") || action.equals("today")) {
             showCustomProgress("Fetching news, Please wait...");
         }
     }
@@ -90,10 +94,13 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
-        final HashMap<String,Object> map = new HashMap<>();
-        map.put("action",action);
-        map.put("result",result);
-        BusSingleton.getInstance().post(map);
+        final ArrayList<News> n = (ArrayList<News>)result;
+        if (action.equals("today")) {
+            newsSingleton.getNewsToday().addAll(n);
+        } else {
+            newsSingleton.getNewsPrevious().addAll(n);
+        }
+        broadcastUpdate(action,n);
     }
 
     @Override
@@ -106,5 +113,13 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
                 showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
             }
         }
+    }
+
+    private void broadcastUpdate(final String action, final ArrayList<News> news) {
+        LogHelper.log("news","must broadcast ---> " + action + " size --> " + news.size());
+        final HashMap<String,Object> map = new HashMap<>();
+        map.put("action",action);
+        map.put("result",news);
+        BusSingleton.getInstance().post(map);
     }
 }

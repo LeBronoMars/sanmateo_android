@@ -17,7 +17,7 @@
         <ImageView
             android:id="@+id/ivImageUrl"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/_100sdp"
+            android:layout_height="@dimen/_150sdp"
             android:src="@drawable/placeholder_image"/>
 
         <TextView
