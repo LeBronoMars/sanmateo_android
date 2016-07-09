@@ -198,5 +198,17 @@ public interface ApiInterface {
                                                     @Query("start") int start,
                                                     @Query("limit") int limit);
 
+    /**
+     * create announcement
+     *
+     * @param token represents the user that trying to make the request
+     * @param title title of the announcement
+     * @param message message of the announcement
+     * */
+    @POST("/api/v1/announcements")
+    @FormUrlEncoded
+    Observable<Announcement> createAnnouncement(@Header("Authorization") String token,
+                                                @Field("title") String title,
+                                                @Field("message") String message);
 }
 

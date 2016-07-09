@@ -34,6 +34,7 @@ public class AppConstants {
     public static final String ACTION_PUT_BLOCK_REPORT = "block malicious report";
     public static final String ACTION_POST_NEWS = "create news";
     public static final String ACTION_GET_ANNOUNCEMENTS = "get all announcements";
+    public static final String ACTION_POST_ANNOUNCEMENTS = "create announcement";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

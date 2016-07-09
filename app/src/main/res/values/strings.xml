@@ -97,4 +97,9 @@
     <string name="create">Create</string>
 
 
+    <!-- create announcement header -->
+    <string name="announcement_header">Create Announcement</string>
+    <string name="message">Message</string>
+    <string name="announce">Announce</string>
+
 </resources>

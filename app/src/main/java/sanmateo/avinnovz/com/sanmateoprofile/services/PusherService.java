@@ -96,6 +96,10 @@ public class PusherService extends Service {
                             LogHelper.log("pusher","news created");
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     json.getString("title"),json.getString("reported_by"),null);
+                        } else if (action.equals("announcements")) {
+                            LogHelper.log("pusher","announcements created");
+                            NotificationHelper.displayNotification(id,PusherService.this,
+                                    json.getString("title"),json.getString("message"),null);
                         }
                     }
                 } catch (JSONException e) {

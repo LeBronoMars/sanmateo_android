@@ -28,4 +28,13 @@ public class AnnouncementsSingleton {
         this.announcements.clear();
         this.announcements.addAll(announcements);
     }
+
+    public boolean isAnnouncementExisting(final int id) {
+        for (Announcement a : getAnnouncements()) {
+            if (a.getId() == id) {
+                return true;
+            }
+        }
+        return false;
+    }
 }

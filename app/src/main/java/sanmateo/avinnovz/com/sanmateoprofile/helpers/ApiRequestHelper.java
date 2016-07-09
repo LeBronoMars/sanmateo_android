@@ -277,4 +277,26 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void createAnnouncement(final String token, final String title, final String message) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_ANNOUNCEMENTS);
+        Observable<Announcement> observable = AppConstants.API_INTERFACE.createAnnouncement(token,title,message);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Announcement>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_ANNOUNCEMENTS, e);
+                    }
+
+                    @Override
+                    public void onNext(Announcement announcement) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_ANNOUNCEMENTS, announcement);
+                    }
+                });
+    }
 }
