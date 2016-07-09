@@ -115,6 +115,8 @@ public class AdminMainActivity extends BaseActivity {
         final ArrayList<HomeMenu> homeMenus = new ArrayList<>();
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Review Incidents"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Public Announcements"));
+
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
             @Override
@@ -123,6 +125,8 @@ public class AdminMainActivity extends BaseActivity {
                     startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
                 } else if (position == 1) {
                     startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
+                } else if (position == 2) {
+                    startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
                 }
                 animateToLeft(AdminMainActivity.this);
             }
