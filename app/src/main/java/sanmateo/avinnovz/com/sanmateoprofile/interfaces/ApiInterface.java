@@ -164,5 +164,24 @@ public interface ApiInterface {
                                    @Query("limit") int limit,
                                    @Query("status") String status,
                                    @Query("when") String when);
+
+    /**
+     * create news
+     *
+     * @param token represents the user that trying to make the request
+     * @param title title of the news
+     * @param body body of the news
+     * @param sourceUrl source of the news
+     * @param imageUrl image url of news banner image
+     * @param reportedBy who reports the news
+     * */
+    @POST("/api/v1/news")
+    @FormUrlEncoded
+    Observable<News> createNews(@Header("Authorization") String token,
+                                @Field("title") String title,
+                                @Field("body") String body,
+                                @Field("source_url") String sourceUrl,
+                                @Field("image_url") String imageUrl,
+                                @Field("reported_by") String reportedBy);
 }
 

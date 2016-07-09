@@ -231,4 +231,27 @@ public class ApiRequestHelper {
                 });
     }
 
+    public void createNews(final String token, final String title, final String body,
+                           final String sourceUrl, final String imageUrl, final String reportedBy) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_NEWS);
+        Observable<News> observable = AppConstants.API_INTERFACE.createNews(token,title,body,
+                                                    sourceUrl,imageUrl,reportedBy);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<News>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_NEWS, e);
+                    }
+
+                    @Override
+                    public void onNext(News news) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_NEWS, news);
+                    }
+                });
+    }
 }

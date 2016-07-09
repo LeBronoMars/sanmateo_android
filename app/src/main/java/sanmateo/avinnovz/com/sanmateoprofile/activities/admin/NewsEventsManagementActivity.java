@@ -122,4 +122,5 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         map.put("result",news);
         BusSingleton.getInstance().post(map);
     }
+    
 }

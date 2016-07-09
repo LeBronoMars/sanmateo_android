@@ -52,7 +52,7 @@ public class PusherService extends Service {
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         final Pusher pusher = new Pusher("d37253507ae4d71dee6b",options);
-        final Channel channel = pusher.subscribe("all");
+        final Channel channel = pusher.subscribe("clients");
         channel.bind("san_mateo_event", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
