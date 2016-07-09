@@ -10,10 +10,12 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.CreateNewsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.NewsEventsFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.PreviousNewsEventsFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
@@ -122,5 +124,10 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         map.put("result",news);
         BusSingleton.getInstance().post(map);
     }
-    
+
+    @OnClick(R.id.btnCreateNews)
+    public void createNews() {
+        final CreateNewsDialogFragment fragment = CreateNewsDialogFragment.newInstance();
+        fragment.show(getFragmentManager(),"create news");
+    }
 }

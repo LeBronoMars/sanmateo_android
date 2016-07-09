@@ -87,4 +87,14 @@
         From 1696 to 1746, the town residents rebelled against the Spanish authority in the municipality. They were forced to go to the mountains and abandon the lowland settlement. However, in 1746, the townspeople returned to the lowlands after having been wooed and persuaded by the[Jesuit priests.
         The independent-mindedness of the San Mateo people showed itself again in the 15-year period from 1751 to 1765 when the natives rebelled against Spanish governance. The residents were ordered to surrender their weapons, but they refused. With this resistance, the Spanish government was forced to reduce the town to ruins.
         In 1712, the Conde de Lizarriaga, the Governor of the Islands, sent Captain Don Lorenzo de Yturriaga together with 12 soldiers to punish Captain Pambila, a native chieftain who was reportedly inciting the residents to revolt against the Spanish government and the local Spanish priest. Captain Pambila attacked the Spanish officer, but the latter was able to parry the blow and shot the native leader dead.</string>
+
+    <!-- create news dialog fragment -->
+    <string name="create_news_header">Create News</string>
+    <string name="news_title">Title</string>
+    <string name="news_body">Content</string>
+    <string name="source_url">Source URL (Optional)</string>
+    <string name="image_url">News banner image (Optional)</string>
+    <string name="create">Create</string>
+
+
 </resources>
