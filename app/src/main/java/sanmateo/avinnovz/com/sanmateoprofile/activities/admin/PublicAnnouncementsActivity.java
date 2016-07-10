@@ -8,6 +8,9 @@ import android.support.v7.widget.RecyclerView;
 
 import com.squareup.otto.Subscribe;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -55,7 +58,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         token = currentUserSingleton.getAuthResponse().getToken();
 
         if (PrefsHelper.getBoolean(this,"refresh_announcements") && announcementsSingleton.getAnnouncements().size() > 0) {
-
+            apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
         } else if (announcementsSingleton.getAnnouncements().size() == 0) {
             apiRequestHelper.getAnnouncements(token,0,10);
         }
@@ -74,6 +77,8 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
             showCustomProgress("Getting announcements, Please wait...");
         } else if (action.equals(AppConstants.ACTION_POST_ANNOUNCEMENTS)) {
             showCustomProgress("Broadcasting announcement, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_GET_LATEST_ANNOUNCEMENTS)) {
+            showCustomProgress("Fetching latest announcements, Please wait...");
         }
     }
 
@@ -88,6 +93,10 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
             if (!announcementsSingleton.isAnnouncementExisting(announcement.getId())) {
                 announcementsSingleton.getAnnouncements().add(0,announcement);
             }
+        } else if (action.equals(AppConstants.ACTION_GET_LATEST_ANNOUNCEMENTS)) {
+            final ArrayList<Announcement> announcements = (ArrayList<Announcement>)result;
+            announcementsSingleton.getAnnouncements().addAll(0,announcements);
+            PrefsHelper.setBoolean(this,"refresh_announcements",false);
         }
         rvAnnouncements.getAdapter().notifyDataSetChanged();
     }
@@ -127,7 +136,31 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
     }
 
     @Subscribe
-    public void handleResponse(final HashMap<String,Object> map) {
+    public void handleApiResponse(final HashMap<String,Object> map) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (map.containsKey("data")) {
+                    try {
+                        final JSONObject json = new JSONObject(map.get("data").toString());
+                        if (json.has("action")) {
+                            final String action = json.getString("action");
 
+                            /** new incident notification */
+                            if (action.equals("announcements")) {
+                                if (announcementsSingleton.getAnnouncements().size() == 0) {
+                                    apiRequestHelper.getAnnouncements(token,0,10);
+                                } else {
+                                    apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
+                                }
+                            }
+                            rvAnnouncements.getAdapter().notifyDataSetChanged();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
     }
 }
