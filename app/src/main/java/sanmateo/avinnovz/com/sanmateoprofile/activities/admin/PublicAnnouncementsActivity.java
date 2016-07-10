@@ -45,6 +45,10 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
+    private boolean loading = true;
+    private int pastVisibleItems;
+    private int visibleItemCount;
+    private int totalItemCount;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +71,33 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
 
     private void initAnnouncements() {
         final AnnouncementsAdapter adapter = new AnnouncementsAdapter(this,announcementsSingleton.getAnnouncements());
+        final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvAnnouncements.setAdapter(adapter);
-        rvAnnouncements.setLayoutManager(new LinearLayoutManager(this));
+        rvAnnouncements.setLayoutManager(linearLayoutManager);
+        rvAnnouncements.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
+                super.onScrollStateChanged(recyclerView, newState);
+            }
+
+            @Override
+            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    visibleItemCount = linearLayoutManager.getChildCount();
+                    totalItemCount = linearLayoutManager.getItemCount();
+                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
+
+                    if (loading) {
+                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            loading = false;
+                            apiRequestHelper.getAnnouncements(token,announcementsSingleton.getAnnouncements().size(),10);
+                        }
+                    }
+                }
+                //int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
+                //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);
+            }
+        });
     }
 
     @Override
