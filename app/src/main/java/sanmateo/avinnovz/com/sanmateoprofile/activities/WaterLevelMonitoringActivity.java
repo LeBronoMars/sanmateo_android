@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -39,7 +40,8 @@ public class WaterLevelMonitoringActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.menu_alert_list:
-                LogHelper.log("water","must show water level");
+                startActivity(new Intent(this, WaterAlertListActivity.class));
+                animateToLeft(this);
                 break;
         }
         return super.onOptionsItemSelected(item);

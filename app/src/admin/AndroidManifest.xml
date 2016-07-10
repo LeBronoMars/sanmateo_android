@@ -49,7 +49,12 @@
         <activity android:name=".activities.admin.PublicAnnouncementsActivity"
             android:screenOrientation="portrait"/>
 
+        <!-- water level monitoring -->
         <activity android:name=".activities.WaterLevelMonitoringActivity"
+            android:screenOrientation="portrait"/>
+
+        <!-- alert list -->
+        <activity android:name=".activities.WaterAlertListActivity"
             android:screenOrientation="portrait"/>
 
         <!-- amazon s3 config -->
