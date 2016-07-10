@@ -51,6 +51,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragm
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**

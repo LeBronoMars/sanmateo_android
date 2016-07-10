@@ -102,6 +102,11 @@
     <string name="message">Message</string>
     <string name="announce">Announce</string>
 
+    <!-- water level activity -->
     <string name="water_level_source">Source : www.pagasa.dost.gov.ph</string>
     <string name="alert_list">Alert List</string>
+    <string name="water_level_header">Water Level Notification</string>
+    <string name="water_level">Water Level</string>
+
+
 </resources>
