@@ -1,13 +1,31 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -57,17 +75,17 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
         initWaterListing();
         setToolbarTitle("Water Level Monitoring");
 
-        if (PrefsHelper.getBoolean(this,"refresh_water_level") && waterLevelSingleton.getWaterLevels().size() > 0) {
-            LogHelper.log("water","must refresh");
+        if (PrefsHelper.getBoolean(this, "refresh_water_level") && waterLevelSingleton.getWaterLevels().size() > 0) {
+            LogHelper.log("water", "must refresh");
         } else if (waterLevelSingleton.getWaterLevels().size() == 0) {
-            LogHelper.log("water","must call all");
-            apiRequestHelper.getWaterLevelNotifications(token,0,10);
+            LogHelper.log("water", "must call all");
+            apiRequestHelper.getWaterLevelNotifications(token, 0, 10);
         }
     }
 
     private void initWaterListing() {
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
-        final WaterLevelAdapter adapter = new WaterLevelAdapter(this,waterLevelSingleton.getWaterLevels());
+        final WaterLevelAdapter adapter = new WaterLevelAdapter(this, waterLevelSingleton.getWaterLevels());
         rvListing.setAdapter(adapter);
         rvListing.setLayoutManager(linearLayoutManager);
         rvListing.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -86,7 +104,7 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
                     if (loading) {
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
                             loading = false;
-                            apiRequestHelper.getWaterLevelNotifications(token,waterLevelSingleton.getWaterLevels().size(),10);
+                            apiRequestHelper.getWaterLevelNotifications(token, waterLevelSingleton.getWaterLevels().size(), 10);
                         }
                     }
                 }
@@ -95,7 +113,6 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             }
         });
     }
-
 
     @Override
     public void onApiRequestBegin(String action) {
@@ -110,24 +127,25 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_GET_WATER_LEVEL_NOTIFS)) {
-            final ArrayList<WaterLevel> waterLevels = (ArrayList<WaterLevel>)result;
-            waterLevelSingleton.getWaterLevels().addAll(0,waterLevels);
-            LogHelper.log("water","size ---> " + waterLevels.size());
+            final ArrayList<WaterLevel> waterLevels = (ArrayList<WaterLevel>) result;
+            waterLevelSingleton.getWaterLevels().addAll(0, waterLevels);
+            LogHelper.log("water", "size ---> " + waterLevels.size());
         } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
-            final WaterLevel waterLevel = (WaterLevel)result;
-            waterLevelSingleton.getWaterLevels().add(0,waterLevel);
+            final WaterLevel waterLevel = (WaterLevel) result;
+            waterLevelSingleton.getWaterLevels().add(0, waterLevel);
         }
+        displayData(waterLevelSingleton.getWaterLevels(),barchart);
         rvListing.getAdapter().notifyDataSetChanged();
     }
 
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
-        LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
+        LogHelper.log("err", "error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
             if (action.equals(AppConstants.ACTION_LOGIN)) {
                 final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
-                showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+                showConfirmDialog(action, "Login Failed", apiError.getMessage(), "Close", "", null);
             }
         }
     }
@@ -139,7 +157,7 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             @Override
             public void onAnnounceNotif(double level) {
                 fragment.dismiss();
-                apiRequestHelper.createWaterLevelNotification(token,level);
+                apiRequestHelper.createWaterLevelNotification(token, level);
             }
 
             @Override
@@ -147,6 +165,68 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
                 fragment.dismiss();
             }
         });
-        fragment.show(getFragmentManager(),"water level");
+        fragment.show(getFragmentManager(), "water level");
+    }
+
+    private void displayData(final ArrayList<WaterLevel> waterLevels, final BarChart barChart) {
+        final ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(getDataSet(waterLevels));
+
+        BarData data = new BarData(dataSets);
+        barChart.setData(data);
+        barChart.animateXY(2000, 2000);
+
+        barChart.getAxisLeft().setDrawLabels(false);
+        barChart.getAxisLeft().setDrawGridLines(false);
+        barChart.getAxisLeft().setDrawAxisLine(false);
+
+        barChart.getAxisRight().setDrawLabels(false);
+        barChart.getAxisRight().setDrawGridLines(false);
+        barChart.getAxisRight().setDrawAxisLine(false);
+        barChart.setDrawGridBackground(false);
+        barChart.setBackgroundColor(Color.WHITE);
+
+        barChart.setDescription("");
+        barChart.getBarData().setValueTextSize(5);
+        barChart.getBarData().setValueFormatter(new ValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return new DecimalFormat("#.##").format(value);
+            }
+        });
+
+        barChart.getXAxis().setDrawGridLines(false);
+        barChart.getXAxis().setDrawAxisLine(false);
+        barChart.getXAxis().setGridColor(Color.RED);
+        barChart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        barChart.getXAxis().setTextSize(7);
+
+        barChart.getLegend().setEnabled(false);
+        barChart.setTouchEnabled(false);
+        barChart.setData(data);
+        barChart.invalidate();
+    }
+
+    private BarDataSet getDataSet(final ArrayList<WaterLevel> waterLevels) {
+        final ArrayList<Integer> colors = new ArrayList<>();
+        final ArrayList<BarEntry> valueSet1 = new ArrayList<>();
+
+        for (int i = 0; i < waterLevels.size(); i++) {
+            final WaterLevel w = waterLevels.get(i);
+            valueSet1.add(createBarEntry((float) w.getWaterLevel(), i));
+            if (w.getWaterLevel() >= 18.01 && w.getWaterLevel() <= 19.00) {
+                colors.add(ContextCompat.getColor(this,R.color.water_level_alarm));
+            } else if (w.getWaterLevel() >= 19.01) {
+                colors.add(ContextCompat.getColor(this,R.color.water_level_critical));
+            } else {
+                colors.add(ContextCompat.getColor(this,R.color.water_level_alert));
+            }
+        }
+        return new BarDataSet(valueSet1, "");
+    }
+
+    private BarEntry createBarEntry(final float value, final int index) {
+        final BarEntry barEntry = new BarEntry(value, index);
+        return barEntry;
     }
 }
