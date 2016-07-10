@@ -210,5 +210,25 @@ public interface ApiInterface {
     Observable<Announcement> createAnnouncement(@Header("Authorization") String token,
                                                 @Field("title") String title,
                                                 @Field("message") String message);
+
+    /**
+     * get announcement by id
+     *
+     * @param token represents the user that trying to make the request
+     * @param announcementId id of announcement to fetch
+     * */
+    @GET("/api/v1/announcements/show/{id}")
+    Observable<Announcement> getAnnouncementById(@Header("Authorization") String token,
+                                                 @Path("id") int announcementId);
+
+    /**
+     * get latest announcements
+     *
+     * @param token represents the user that trying to make the request
+     * @param announcementId offset of query
+     * */
+    @GET("/api/v1/announcements/latest/{id}")
+    Observable<List<Announcement>> getLatestAnnouncements(@Header("Authorization") String token,
+                                                    @Path("id") int announcementId);
 }
 

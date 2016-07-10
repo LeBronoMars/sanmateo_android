@@ -35,6 +35,8 @@ public class AppConstants {
     public static final String ACTION_POST_NEWS = "create news";
     public static final String ACTION_GET_ANNOUNCEMENTS = "get all announcements";
     public static final String ACTION_POST_ANNOUNCEMENTS = "create announcement";
+    public static final String ACTION_GET_ANNOUNCEMENT_BY_ID = "get announcement by id";
+    public static final String ACTION_GET_LATEST_ANNOUNCEMENTS = "get latest announcements";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

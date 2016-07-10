@@ -96,7 +96,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
             showCustomProgress("Filing your incident report, Please wait...");
         } else if (action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
-            showCustomProgress("Submiting your report, Please wait...");
+            showCustomProgress("Submitting your report, Please wait...");
         }
     }
 

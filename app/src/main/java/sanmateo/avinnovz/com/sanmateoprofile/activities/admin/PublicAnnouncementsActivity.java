@@ -6,7 +6,10 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
+import com.squareup.otto.Subscribe;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -20,6 +23,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
@@ -50,7 +54,9 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         apiRequestHelper = new ApiRequestHelper(this);
         token = currentUserSingleton.getAuthResponse().getToken();
 
-        if (announcementsSingleton.getAnnouncements().size() == 0) {
+        if (PrefsHelper.getBoolean(this,"refresh_announcements") && announcementsSingleton.getAnnouncements().size() > 0) {
+
+        } else if (announcementsSingleton.getAnnouncements().size() == 0) {
             apiRequestHelper.getAnnouncements(token,0,10);
         }
         initAnnouncements();
@@ -118,5 +124,10 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
             }
         });
         fragment.show(getFragmentManager(),"announcements");
+    }
+
+    @Subscribe
+    public void handleResponse(final HashMap<String,Object> map) {
+
     }
 }

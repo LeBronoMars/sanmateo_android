@@ -299,4 +299,49 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void getAnnouncementById(final String token, final int announcementId) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_ANNOUNCEMENT_BY_ID);
+        Observable<Announcement> observable = AppConstants.API_INTERFACE.getAnnouncementById(token,announcementId);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<Announcement>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_ANNOUNCEMENT_BY_ID, e);
+                    }
+
+                    @Override
+                    public void onNext(Announcement announcement) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_ANNOUNCEMENT_BY_ID, announcement);
+                    }
+                });
+    }
+
+    public void getLatestAnnouncements(final String token, final int announcementId) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_LATEST_ANNOUNCEMENTS);
+        Observable<List<Announcement>> observable = AppConstants.API_INTERFACE.getLatestAnnouncements(token,announcementId);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<Announcement>>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_LATEST_ANNOUNCEMENTS, e);
+                    }
+
+                    @Override
+                    public void onNext(List<Announcement> announcements) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_LATEST_ANNOUNCEMENTS, announcements);
+                    }
+                });
+    }
+
 }

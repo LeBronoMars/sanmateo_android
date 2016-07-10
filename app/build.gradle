@@ -22,11 +22,13 @@ android {
         user {
             applicationId "sanmateo.avinnovz.com.sanmateoprofile.user"
             resValue "string", "app_name", "San Mateo Profile App"
+            buildConfigField 'String', 'VERSION', 'client'
         }
 
         admin {
             applicationId "sanmateo.avinnovz.com.sanmateoprofile.admin"
             resValue "string", "app_name", "San Mateo Profile Admin App"
+            buildConfigField 'String', 'VERSION', 'admin'
         }
     }
 

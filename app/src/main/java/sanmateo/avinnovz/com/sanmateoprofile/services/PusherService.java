@@ -17,9 +17,11 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.NotificationHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -30,11 +32,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 /**
  * Created by rsbulanon on 6/28/16.
  */
-public class PusherService extends Service {
+public class PusherService extends Service implements OnApiRequestListener {
 
     private CurrentUserSingleton currentUserSingleton;
     private IncidentsSingleton incidentsSingleton;
     private NewsSingleton newsSingleton;
+    private ApiRequestHelper apiRequestHelper;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -44,6 +47,7 @@ public class PusherService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         incidentsSingleton = IncidentsSingleton.getInstance();
         newsSingleton = NewsSingleton.getInstance();
@@ -62,6 +66,7 @@ public class PusherService extends Service {
                 /** manage, construct and display local push notification */
                 try {
                     final JSONObject json = new JSONObject(data);
+
                     if (json.has("action")) {
                         final String action = json.getString("action");
                         final int id = Integer.valueOf(json.getInt("id"));
@@ -98,8 +103,10 @@ public class PusherService extends Service {
                                     json.getString("title"),json.getString("reported_by"),null);
                         } else if (action.equals("announcements")) {
                             LogHelper.log("pusher","announcements created");
+                            PrefsHelper.setBoolean(PusherService.this,"refresh_announcements",true);
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     json.getString("title"),json.getString("message"),null);
+
                         }
                     }
                 } catch (JSONException e) {
@@ -126,5 +133,20 @@ public class PusherService extends Service {
             }
         });
         return Service.START_STICKY;
+    }
+
+    @Override
+    public void onApiRequestBegin(String action) {
+
+    }
+
+    @Override
+    public void onApiRequestSuccess(String action, Object result) {
+
+    }
+
+    @Override
+    public void onApiRequestFailed(String action, Throwable t) {
+
     }
 }
