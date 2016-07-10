@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,6 +66,12 @@ public class WaterLevelAdapter extends RecyclerView.Adapter<WaterLevelAdapter.Vi
 
         holder.tvWaterLevel.setText(w.getWaterLevel()+"");
         holder.tvAlarmLevel.setText(w.getAlert());
+
+        if (w.getWaterLevel() >= 18.01 && w.getWaterLevel() <= 19.00) {
+            holder.tvAlarmLevel.setTextColor(ContextCompat.getColor(context,R.color.water_level_alarm));
+        } else if (w.getWaterLevel() >= 19.01) {
+            holder.tvAlarmLevel.setTextColor(ContextCompat.getColor(context,R.color.water_level_critical));
+        }
         try {
             final Date dateReported = activity.getDateFormatter().parse(w.getCreatedAt());
             final Calendar calendar = Calendar.getInstance();
