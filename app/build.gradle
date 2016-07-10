@@ -65,5 +65,4 @@ dependencies {
         exclude module: 'support-v4'
     }
     compile 'com.google.android.gms:play-services-maps:8.4.0'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.0-beta1'
 }
