@@ -23,6 +23,7 @@ import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.WaterLevelMonitoringActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
@@ -116,6 +117,7 @@ public class AdminMainActivity extends BaseActivity {
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_ambulance),"Review Incidents"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Public Announcements"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_water_level),"Water Level Monitoring"));
 
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
@@ -127,6 +129,8 @@ public class AdminMainActivity extends BaseActivity {
                     startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
                 } else if (position == 2) {
                     startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
+                } else if (position == 3) {
+                    startActivity(new Intent(AdminMainActivity.this, WaterLevelMonitoringActivity.class));
                 }
                 animateToLeft(AdminMainActivity.this);
             }
