@@ -18,6 +18,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
 /**
  * Created by rsbulanon on 6/22/16.
@@ -230,5 +231,31 @@ public interface ApiInterface {
     @GET("/api/v1/announcements/latest/{id}")
     Observable<List<Announcement>> getLatestAnnouncements(@Header("Authorization") String token,
                                                     @Path("id") int announcementId);
+
+    /**
+     * get all water level notification
+     *
+     * @param token represents the user that trying to make the request
+     * @param start defines the offset of query (for pagination)
+     * @param limit size of expected result
+     * */
+    @GET("/api/v1/water_level")
+    Observable<List<WaterLevel>> getWaterLevels(@Header("Authorization") String token,
+                                                @Query("start") int start,
+                                                @Query("limit") int limit);
+
+
+    /**
+     * create new water level notification
+     *
+     * @param token represents the user that trying to make the request
+     * @param level water level amount
+     * */
+    @POST("/api/v1/water_level")
+    @FormUrlEncoded
+    Observable<WaterLevel> createWaterLevelNotification(@Header("Authorization") String token,
+                                                        @Field("water_level") double level);
 }
+
+
 
