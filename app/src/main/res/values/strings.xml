@@ -107,6 +107,6 @@
     <string name="alert_list">Alert List</string>
     <string name="water_level_header">Water Level Notification</string>
     <string name="water_level">Water Level</string>
-
+    <string name="alarm_level">Alarm Level</string>
 
 </resources>

@@ -31,4 +31,8 @@
     <color name="report_button_bg">#be0d0d</color>
     <color name="report_button_bg_dark">#720707</color>
 
+    <color name="water_level_alert">#1E90FF</color>
+    <color name="water_level_alarm">#BA55D3</color>
+    <color name="water_level_critical">#be0d0d</color>
+
 </resources>
