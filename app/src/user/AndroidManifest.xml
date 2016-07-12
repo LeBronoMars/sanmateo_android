@@ -60,6 +60,10 @@
 
         <activity android:name=".activities.GovtInfoActivity"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".activities.NewHomeActivity"
+            android:screenOrientation="portrait"/>
+
         <!-- google maps -->
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />
