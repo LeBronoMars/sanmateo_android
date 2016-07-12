@@ -16,7 +16,13 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.squareup.otto.Subscribe;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,6 +75,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         animateBanners();
         initNavigationDrawer();
         initNews();
+
         if (!isMyServiceRunning(PusherService.class)) {
             startService(new Intent(this, PusherService.class));
         }
@@ -130,6 +137,15 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
     private void initNews() {
         final NewsAdapter newsAdapter = new NewsAdapter(this, newsSingleton.getAllNews());
+        newsAdapter.setOnSelectNewsListener(new NewsAdapter.OnSelectNewsListener() {
+            @Override
+            public void onSelectedNews(News n) {
+                final Intent intent = new Intent(NewHomeActivity.this, NewsFullPreviewActivity.class);
+                intent.putExtra("news",n);
+                startActivity(intent);
+                animateToLeft(NewHomeActivity.this);
+            }
+        });
         rvHomeMenu.setAdapter(newsAdapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
         rvHomeMenu.setItemAnimator(new SlideInOutLeftItemAnimator(rvHomeMenu));
@@ -160,6 +176,18 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             if (action.equals(AppConstants.ACTION_LOGIN)) {
                 final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
                 showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            }
+        }
+    }
+
+    @Subscribe
+    public void handleResponse(final HashMap<String,Object> map) {
+        if (map.containsKey("data")) {
+            try {
+                final JSONObject jsonObject = new JSONObject(map.get("data").toString());
+
+            } catch (JSONException e) {
+
             }
         }
     }

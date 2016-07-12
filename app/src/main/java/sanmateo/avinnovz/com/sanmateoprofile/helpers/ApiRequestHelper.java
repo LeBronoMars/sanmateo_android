@@ -256,6 +256,28 @@ public class ApiRequestHelper {
                 });
     }
 
+    public void getNewsById(final String token, final int id) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_NEWS_BY_ID);
+        Observable<News> observable = AppConstants.API_INTERFACE.getNewsById(token,id);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<News>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_NEWS_BY_ID, e);
+                    }
+
+                    @Override
+                    public void onNext(News news) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_NEWS_BY_ID, news);
+                    }
+                });
+    }
+
     public void getAnnouncements(final String token, final int start, final int limit) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_ANNOUNCEMENTS);
         Observable<List<Announcement>> observable = AppConstants.API_INTERFACE.getAnnouncements(token,start,limit);

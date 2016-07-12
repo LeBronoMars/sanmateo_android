@@ -106,7 +106,6 @@ public class PusherService extends Service implements OnApiRequestListener {
                             PrefsHelper.setBoolean(PusherService.this,"refresh_announcements",true);
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     json.getString("title"),json.getString("message"),null);
-
                         }
                     }
                 } catch (JSONException e) {

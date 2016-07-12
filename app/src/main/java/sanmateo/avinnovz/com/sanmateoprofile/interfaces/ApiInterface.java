@@ -168,6 +168,17 @@ public interface ApiInterface {
                                    @Query("when") String when);
 
     /**
+     * get news by id
+     *
+     * @param token represents the user that trying to make the request
+     * @param id unique identification of news to fetch
+     *
+     * */
+    @GET("/api/v1/news/{id}")
+    Observable<News> getNewsById(@Header("Authorization") String token,
+                                 @Path("id") int id);
+
+    /**
      * create news
      *
      * @param token represents the user that trying to make the request
