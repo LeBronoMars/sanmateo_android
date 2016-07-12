@@ -12,6 +12,7 @@ public class NewsSingleton {
 
     private ArrayList<News> newsToday = new ArrayList<>();
     private ArrayList<News> newsPrevious = new ArrayList<>();
+    private ArrayList<News> allNews = new ArrayList<>();
 
     private static NewsSingleton NEWS = new NewsSingleton();
 
@@ -25,18 +26,10 @@ public class NewsSingleton {
         return newsToday;
     }
 
-    public void setNewsToday(ArrayList<News> news) {
-        this.newsToday.clear();
-        this.newsToday.addAll(news);
-    }
+    public ArrayList<News> getAllNews() { return allNews; }
 
     public ArrayList<News> getNewsPrevious() {
         return newsPrevious;
-    }
-
-    public void setNewsPrevious(ArrayList<News> news) {
-        this.newsPrevious.clear();
-        this.newsPrevious.addAll(news);
     }
 
     public boolean isNewsExisting(final int id) {

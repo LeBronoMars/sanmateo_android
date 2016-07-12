@@ -75,7 +75,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
                     authResponse.getUserLevel().equals("admin")) {
                 final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
                 currentUserSingleton.setAuthResponse(authResponse);
-                startActivity(new Intent(this, MainActivity.class));
+                startActivity(new Intent(this, NewHomeActivity.class));
                 animateToLeft(this);
                 finish();
             } else {

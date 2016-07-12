@@ -210,8 +210,7 @@ public class ApiRequestHelper {
                 });
     }
 
-    public void getNews(final String token, final int start, final int limit, final String status,
-                        final String when) {
+    public void getNews(final String token, final int start, final int limit, final String status, final String when) {
         onApiRequestListener.onApiRequestBegin(when);
         Observable<List<News>> observable = AppConstants.API_INTERFACE.getNews(token,start,limit,status,when);
         observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())

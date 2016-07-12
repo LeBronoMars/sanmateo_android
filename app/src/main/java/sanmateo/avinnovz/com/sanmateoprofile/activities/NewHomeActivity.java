@@ -21,13 +21,20 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
+import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
@@ -35,7 +42,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 /**
  * Created by rsbulanon on 7/12/16.
  */
-public class NewHomeActivity extends BaseActivity {
+public class NewHomeActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
@@ -46,6 +53,8 @@ public class NewHomeActivity extends BaseActivity {
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
+    private ApiRequestHelper apiRequestHelper;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,11 +63,18 @@ public class NewHomeActivity extends BaseActivity {
         ButterKnife.bind(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
+        apiRequestHelper = new ApiRequestHelper(this);
+        token = currentUserSingleton.getAuthResponse().getToken();
+
         animateBanners();
         initNavigationDrawer();
         initNews();
         if (!isMyServiceRunning(PusherService.class)) {
             startService(new Intent(this, PusherService.class));
+        }
+
+        if (newsSingleton.getNewsPrevious().size() == 0) {
+            apiRequestHelper.getNews(token,0,10,"active",AppConstants.ACTION_GET_NEWS);
         }
     }
 
@@ -113,9 +129,38 @@ public class NewHomeActivity extends BaseActivity {
     }
 
     private void initNews() {
-        final NewsAdapter newsAdapter = new NewsAdapter(this);
+        final NewsAdapter newsAdapter = new NewsAdapter(this, newsSingleton.getAllNews());
         rvHomeMenu.setAdapter(newsAdapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
+        rvHomeMenu.setItemAnimator(new SlideInOutLeftItemAnimator(rvHomeMenu));
     }
 
+    @Override
+    public void onApiRequestBegin(String action) {
+        if (action.equals(AppConstants.ACTION_GET_NEWS)) {
+            showCustomProgress("Fetching news, Please wait...");
+        }
+    }
+
+    @Override
+    public void onApiRequestSuccess(String action, Object result) {
+        dismissCustomProgress();
+        if (action.equals(AppConstants.ACTION_GET_NEWS)) {
+            final ArrayList<News> news = (ArrayList<News>)result;
+            newsSingleton.getAllNews().addAll(news);
+            rvHomeMenu.getAdapter().notifyDataSetChanged();
+        }
+    }
+
+    @Override
+    public void onApiRequestFailed(String action, Throwable t) {
+        dismissCustomProgress();
+        LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
+        if (t instanceof HttpException) {
+            if (action.equals(AppConstants.ACTION_LOGIN)) {
+                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
+                showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            }
+        }
+    }
 }

@@ -33,6 +33,7 @@ public class AppConstants {
     public static final String ACTION_POST_REPORT_MALICIOUS_INCIDENT = "report malicious incident";
     public static final String ACTION_PUT_BLOCK_REPORT = "block malicious report";
     public static final String ACTION_POST_NEWS = "create news";
+    public static final String ACTION_GET_NEWS = "get news";
     public static final String ACTION_GET_ANNOUNCEMENTS = "get all announcements";
     public static final String ACTION_POST_ANNOUNCEMENTS = "create announcement";
     public static final String ACTION_GET_ANNOUNCEMENT_BY_ID = "get announcement by id";
