@@ -164,8 +164,12 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         if (action.equals(AppConstants.ACTION_GET_NEWS)) {
             final ArrayList<News> news = (ArrayList<News>)result;
             newsSingleton.getAllNews().addAll(news);
-            rvHomeMenu.getAdapter().notifyDataSetChanged();
+        } else if (action.equals(AppConstants.ACTION_GET_NEWS_BY_ID)) {
+            final News news = (News)result;
+            newsSingleton.getAllNews().add(0,news);
         }
+        rvHomeMenu.getAdapter().notifyDataSetChanged();
+        rvHomeMenu.smoothScrollToPosition(0);
     }
 
     @Override
@@ -184,8 +188,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     public void handleResponse(final HashMap<String,Object> map) {
         if (map.containsKey("data")) {
             try {
-                final JSONObject jsonObject = new JSONObject(map.get("data").toString());
-
+                final JSONObject json = new JSONObject(map.get("data").toString());
+                apiRequestHelper.getNewsById(token,json.getInt("id"));
             } catch (JSONException e) {
 
             }
