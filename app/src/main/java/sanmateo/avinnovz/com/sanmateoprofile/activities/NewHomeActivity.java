@@ -175,6 +175,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     case R.id.menu_change_pass:
                         break;
                 }
+                drawerLayout.closeDrawers();
                 return true;
             }
         });
