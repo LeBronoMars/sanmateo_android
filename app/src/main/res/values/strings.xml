@@ -109,4 +109,16 @@
     <string name="water_level">Water Level</string>
     <string name="alarm_level">Alarm Level</string>
 
+    <!-- menu items -->
+    <string name="menu_panic_emergency">Panic/Emergency</string>
+    <string name="menu_incident_report">Incident Report</string>
+    <string name="menu_information">Information</string>
+    <string name="menu_map">Map</string>
+    <string name="menu_directories">Directories</string>
+    <string name="menu_gallery">Gallery</string>
+    <string name="menu_news_events">News/Events</string>
+    <string name="menu_social_media">Social Media</string>
+    <string name="menu_disaster_management">Disaster Management</string>
+    <string name="menu_contact_us">Contact Us</string>
+
 </resources>

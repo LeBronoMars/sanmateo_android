@@ -137,6 +137,45 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 .fit().centerCrop().into(ivProfileImage);
         tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
                 currentUserSingleton.getAuthResponse().getLastName());
+
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_panic_emergency:
+                        showToast("panic emergency");
+                        break;
+                    case R.id.menu_incident_report:
+                        showToast("incident report");
+                        break;
+                    case R.id.menu_information:
+                        showToast("information");
+                        break;
+                    case R.id.menu_map:
+                        showToast("map");
+                        break;
+                    case R.id.menu_directories:
+                        showToast("directories");
+                        break;
+                    case R.id.menu_gallery:
+                        showToast("gallery");
+                        break;
+                    case R.id.menu_news_events:
+                        showToast("news events");
+                        break;
+                    case R.id.menu_social_media:
+                        showToast("social media");
+                        break;
+                    case R.id.menu_disaster_management:
+                        showToast("disaster management");
+                        break;
+                    case R.id.menu_contact_us:
+                        showToast("contact us");
+                        break;
+                }
+                return true;
+            }
+        });
     }
 
     private void initNews() {
