@@ -49,4 +49,9 @@
         android:id="@+id/menu_contact_us"
         android:title="@string/menu_contact_us"
         android:icon="@drawable/menu_contact_us"/>
+
+    <item
+        android:id="@+id/menu_change_pass"
+        android:title="@string/menu_change_pass"
+        android:icon="@drawable/menu_padlock"/>
 </menu>

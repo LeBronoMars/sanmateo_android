@@ -120,5 +120,6 @@
     <string name="menu_social_media">Social Media</string>
     <string name="menu_disaster_management">Disaster Management</string>
     <string name="menu_contact_us">Contact Us</string>
+    <string name="menu_change_pass">Change Password</string>
 
 </resources>

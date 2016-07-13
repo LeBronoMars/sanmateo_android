@@ -172,6 +172,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     case R.id.menu_contact_us:
                         showToast("contact us");
                         break;
+                    case R.id.menu_change_pass:
+                        break;
                 }
                 return true;
             }
