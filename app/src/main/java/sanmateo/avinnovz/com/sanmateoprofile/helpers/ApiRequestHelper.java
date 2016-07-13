@@ -409,4 +409,28 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void changePassword(final String token, final String email, final String oldPassword,
+                               final String newPassword) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_CHANGE_PASSWORD);
+        Observable<ResponseBody> observable = AppConstants.API_INTERFACE.changePassword(token, email,
+                oldPassword, newPassword);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<ResponseBody>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_PUT_CHANGE_PASSWORD, e);
+                    }
+
+                    @Override
+                    public void onNext(ResponseBody responseBody) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_PUT_CHANGE_PASSWORD, responseBody);
+                    }
+                });
+    }
 }

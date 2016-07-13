@@ -122,4 +122,9 @@
     <string name="menu_contact_us">Contact Us</string>
     <string name="menu_change_pass">Change Password</string>
 
+    <!-- other labels -->
+    <string name="change_password_header">Change password</string>
+    <string name="confirm">CONFIRM</string>
+    <string name="old_password">Old Password</string>
+    <string name="new_password">New Password</string>
 </resources>

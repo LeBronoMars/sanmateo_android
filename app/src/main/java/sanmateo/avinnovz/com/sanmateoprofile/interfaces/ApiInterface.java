@@ -266,6 +266,21 @@ public interface ApiInterface {
     @FormUrlEncoded
     Observable<WaterLevel> createWaterLevelNotification(@Header("Authorization") String token,
                                                         @Field("water_level") double level);
+
+    /**
+     * change password
+     *
+     * @param token represents the user that trying to make the request
+     * @param email email of user trying to change password
+     * @param oldPassword current password of the user
+     * @param newPassword new password of the user
+     * */
+    @POST("/api/v1/change_password")
+    @FormUrlEncoded
+    Observable<ResponseBody> changePassword(@Header("Authorization") String token,
+                                            @Field("email") String email,
+                                            @Field("old_password") String oldPassword,
+                                            @Field("new_password") String newPassword);
 }
 
 

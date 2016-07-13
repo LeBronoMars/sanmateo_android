@@ -11,6 +11,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -33,6 +34,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -173,6 +175,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         showToast("contact us");
                         break;
                     case R.id.menu_change_pass:
+                        changePassword();
                         break;
                 }
                 drawerLayout.closeDrawers();
@@ -181,6 +184,21 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         });
     }
 
+    private void changePassword() {
+        ChangePasswordDialogFragment fragment = ChangePasswordDialogFragment.newInstance();
+        fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
+            @Override
+            public void onConfirm(String oldPassword, String newPassword) {
+
+            }
+        });
+        fragment.show(getFragmentManager(),"chane password");
+    }
+
+    private void changeUserPassword(final String oldPassword, final String newPassword) {
+        final String email = currentUserSingleton.getAuthResponse().getEmail();
+        apiRequestHelper.changePassword(token, email, oldPassword, newPassword);
+    }
     private void initNews() {
         final NewsAdapter newsAdapter = new NewsAdapter(this, newsSingleton.getAllNews());
         newsAdapter.setOnSelectNewsListener(new NewsAdapter.OnSelectNewsListener() {
@@ -227,6 +245,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     public void onApiRequestBegin(String action) {
         if (action.equals(AppConstants.ACTION_GET_NEWS)) {
             showCustomProgress("Fetching news, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+            showCustomProgress("Updating account, Please wait...");
         }
     }
 
@@ -239,6 +259,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         } else if (action.equals(AppConstants.ACTION_GET_NEWS_BY_ID)) {
             final News news = (News)result;
             newsSingleton.getAllNews().add(0,news);
+        } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+            showToast("Your password was successfully changed!");
         }
         rvHomeMenu.getAdapter().notifyDataSetChanged();
         rvHomeMenu.smoothScrollToPosition(0);
@@ -249,9 +271,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         dismissCustomProgress();
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
+            final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
             if (action.equals(AppConstants.ACTION_LOGIN)) {
-                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
                 showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+                showConfirmDialog(action,"Change Password Failed", apiError.getMessage(),"Close","",null);
             }
         }
     }
