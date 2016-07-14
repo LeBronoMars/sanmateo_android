@@ -49,6 +49,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.others.Hotlines;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
@@ -183,7 +184,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
                             @Override
                             public void onSelectedMenu(int position) {
-                                fragment.dismiss();
                                 if (position == 0) {
                                     moveToOtherAcitivity(PublicAnnouncementsActivity.class);
                                 } else if (position == 1) {
@@ -191,6 +191,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 } else if (position == 2) {
                                     moveToOtherAcitivity(WaterLevelMonitoringActivity.class);
                                 } else if (position == 3) {
+                                    moveToOtherAcitivity(GlobalDisasterActivity.class);
+                                } else if (position == 4) {
+                                    moveToOtherAcitivity(HotlinesActivity.class);
                                 }
                             }
 

@@ -9,7 +9,7 @@ import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 
 /**
- * Created by rsbulanon on 5/8/15.
+ * Created by rsbulanon on 7/14/16.
  */
 public class GlobalDisasterActivity extends BaseActivity {
 

@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import java.util.ArrayList;
 
@@ -26,7 +27,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.WaterLevelSingleton;
 
 /**
- * Created by rsbulanon on 7/10/16.
+ * Created by rsbulanon on 7/14/16.
  */
 public class WaterAlertListActivity extends BaseActivity implements OnApiRequestListener {
 
@@ -58,6 +59,10 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
         } else if (waterLevelSingleton.getWaterLevels().size() == 0) {
             LogHelper.log("water", "must call all");
             apiRequestHelper.getWaterLevelNotifications(token, 0, 10);
+        }
+
+        if (currentUserSingleton.getAuthResponse().getUserLevel().equals("Regular User")) {
+            btnAdd.setVisibility(View.INVISIBLE);
         }
     }
 
