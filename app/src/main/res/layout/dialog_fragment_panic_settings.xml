@@ -23,27 +23,49 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.rey.material.widget.Button
-            android:id="@+id/btnSelect"
+        <LinearLayout
+            android:id="@+id/llMenu"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/select_contact"
             android:layout_alignParentBottom="true"
-            android:layout_gravity="center_horizontal"
-            android:background="@color/colorPrimary"
-            android:textColor="@android:color/white"
-            app:rd_rippleType="touch"
-            android:textSize="@dimen/_14sdp"
-            app:rd_maxRippleRadius="match_view"
-            fontPath="fonts/Roboto-Light.ttf"
-            app:rd_enable="true"/>
+            android:orientation="vertical">
+
+            <com.rey.material.widget.Button
+                android:id="@+id/btnSelect"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/select_contact"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimary"
+                android:textColor="@android:color/white"
+                app:rd_rippleType="touch"
+                android:textSize="@dimen/_14sdp"
+                app:rd_maxRippleRadius="match_view"
+                fontPath="fonts/Roboto-Light.ttf"
+                app:rd_enable="true"/>
+
+            <com.rey.material.widget.Button
+                android:id="@+id/btnClose"
+                fontPath="fonts/Roboto-Light.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/colorPrimaryDark"
+                android:text="@string/close"
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/_14sdp"
+                app:rd_enable="true"
+                app:rd_maxRippleRadius="match_view"
+                app:rd_rippleType="touch" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tvNoContact"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:layout_above="@id/btnSelect"
+            android:layout_above="@id/llMenu"
             android:text="@string/no_contacts"
             android:textSize="@dimen/_20sdp" />
 
@@ -51,7 +73,7 @@
             android:id="@+id/lvContacts"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@id/btnSelect"
+            android:layout_above="@id/llMenu"
             android:visibility="gone">
 
         </ListView>

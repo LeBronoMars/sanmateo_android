@@ -120,10 +120,10 @@ public class BaseActivity extends AppCompatActivity {
             dialog.positiveActionClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    dialog.dismiss();
                     if (onConfirmDialogListener != null) {
                         onConfirmDialogListener.onConfirmed(action);
                     }
-                    dialog.dismiss();
                 }
             });
         }
@@ -132,10 +132,10 @@ public class BaseActivity extends AppCompatActivity {
         dialog.negativeActionClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dialog.dismiss();
                 if (onConfirmDialogListener != null) {
                     onConfirmDialogListener.onCancelled(action);
                 }
-                dialog.dismiss();
             }
         });
         dialog.show();

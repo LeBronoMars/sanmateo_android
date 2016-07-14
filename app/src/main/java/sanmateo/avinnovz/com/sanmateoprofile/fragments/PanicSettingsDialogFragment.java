@@ -31,6 +31,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.PanicContactsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 
@@ -103,20 +104,27 @@ public class PanicSettingsDialogFragment extends DialogFragment {
     }
 
     private void checkContactSize() {
-        if (DaoHelper.getPanicContactSize() == 0) {
+        if (contacts.size() == 0) {
             tvNoContact.setVisibility(View.VISIBLE);
             lvContacts.setVisibility(View.GONE);
         } else {
             tvNoContact.setVisibility(View.GONE);
             lvContacts.setVisibility(View.VISIBLE);
         }
-        PrefsHelper.setInt(activity, "panicContactSize",(int)DaoHelper.getPanicContactSize());
+        PrefsHelper.setInt(activity, "panicContactSize",contacts.size());
     }
 
     @OnClick(R.id.btnSelect)
     public void openContacts() {
-        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        LogHelper.log("book","must open");
+        final Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
         startActivityForResult(intent, READ_PHONE_BOOK);
+    }
+
+    @OnClick(R.id.btnClose)
+    public void closeWindow() {
+        LogHelper.log("book","must close");
+        onPanicContactListener.onDismiss();
     }
 
     @Override

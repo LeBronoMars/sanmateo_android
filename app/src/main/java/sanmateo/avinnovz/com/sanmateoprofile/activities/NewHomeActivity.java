@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -150,10 +152,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             public boolean onNavigationItemSelected(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.menu_panic_emergency:
-                        showToast("panic emergency");
+                        setPanicContacts();
                         break;
                     case R.id.menu_incident_report:
-                        showToast("incident report");
+                        startActivity(new Intent(NewHomeActivity.this, IncidentsActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_information:
                         showToast("information");
@@ -304,6 +307,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
     private void initPanicContact() {
         if (PrefsHelper.getInt(this, "panicContactSize") == 0) {
+            LogHelper.log("book","show");
             showConfirmDialog("", "Emergency Contacts", "Please add at least one contact person" +
                     " for emergency purposes", "Ok", "", new OnConfirmDialogListener() {
                 @Override
@@ -316,6 +320,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
                 }
             });
+        } else {
+            LogHelper.log("book","do not show");
         }
     }
 
@@ -328,7 +334,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 initPanicContact();
             }
         });
-        panicSettingsFragment.setCancelable(false);
         panicSettingsFragment.show(getSupportFragmentManager(),"panic");
     }
 }
