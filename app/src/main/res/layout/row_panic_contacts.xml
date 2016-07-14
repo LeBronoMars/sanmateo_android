@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/transparent"
+    android:layout_margin="@dimen/dp_ten"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_marginLeft="@dimen/dp_ten"
+        android:layout_marginRight="@dimen/dp_ten"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/ivDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="@dimen/dp_ten"
+            android:clickable="true"
+            android:layout_marginLeft="@dimen/dp_ten"
+            android:layout_centerVertical="true"
+            android:src="@drawable/delete"/>
+
+        <LinearLayout
+            android:layout_toLeftOf="@id/ivDelete"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <goqc.com.goqc.customviews.TextViewPlus
+                    android:id="@+id/tvContactName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/app_name"
+                    android:textColor="@color/metro_blue"
+                    android:textSize="@dimen/sp_twenty"
+                    app:customTextViewFont="Roboto-Thin.ttf" />
+
+                <goqc.com.goqc.customviews.TextViewPlus
+                    android:id="@+id/tvContactNo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
+                    android:text="@string/app_name"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/sp_twenty"
+                    app:customTextViewFont="Roboto-Thin.ttf" />
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
+
+</LinearLayout>

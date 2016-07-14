@@ -29,6 +29,11 @@ import butterknife.OnClick;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.PanicContactsAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 
 /**
  * Created by rsbulanon on 7/14/16.
@@ -43,8 +48,8 @@ public class PanicSettingsDialogFragment extends DialogFragment {
     private static final int READ_PHONEBOOK = 1;
     private ArrayList<PanicContact> contacts = new ArrayList<>();
 
-    public static PanicSettingsFragment newInstance() {
-        final PanicSettingsFragment frag = new PanicSettingsFragment();
+    public static PanicSettingsDialogFragment newInstance() {
+        final PanicSettingsDialogFragment frag = new PanicSettingsDialogFragment();
         return frag;
     }
 
@@ -57,12 +62,30 @@ public class PanicSettingsDialogFragment extends DialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        view = getActivity().getLayoutInflater().inflate(R.layout.modal_panic_settings,null);
-        activity = (MainActivity)getActivity();
+        view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_panic_settings,null);
+        activity = (BaseActivity) getActivity();
         contacts.clear();
         contacts.addAll((ArrayList) DaoHelper.getAllPanicContacs());
-        ButterKnife.inject(this, view);
-        lvContacts.setAdapter(new PanicContactsAdapter(activity, this, contacts));
+        ButterKnife.bind(this, view);
+        final PanicContactsAdapter adapter = new PanicContactsAdapter(getActivity(), contacts);
+        adapter.setOnDeleteContactListener(new PanicContactsAdapter.OnDeleteContactListener() {
+            @Override
+            public void onDeleteContact(final PanicContact contact) {
+                activity.showConfirmDialog("", "Delete Contact", "Are you sure you want to remove "
+                        + contact.getContactName() + " from your panic contact list?", "Yes", "No", new OnConfirmDialogListener() {
+                    @Override
+                    public void onConfirmed(String action) {
+                        DaoHelper.deletePanicContact(contact);
+                        refreshList();
+                        activity.showToast("Contact successfully deleted!");
+                    }
+
+                    @Override
+                    public void onCancelled(String action) {}
+                });
+            }
+        });
+        lvContacts.setAdapter(adapter);
         checkContactSize();
         final Dialog mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -70,16 +93,6 @@ public class PanicSettingsDialogFragment extends DialogFragment {
         mDialog.setCancelable(false);
         mDialog.getWindow().setLayout(LinearLayout.LayoutParams.WRAP_CONTENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT);
-        view.findViewById(R.id.ivClose).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (Prefs.getMyIntPref(activity,"panicContactSize") == 0) {
-                    activity.showToast("Please add atleast one contact person!");
-                } else {
-                    mDialog.dismiss();
-                }
-            }
-        });
         return mDialog;
     }
 
@@ -98,7 +111,7 @@ public class PanicSettingsDialogFragment extends DialogFragment {
             tvNoContact.setVisibility(View.GONE);
             lvContacts.setVisibility(View.VISIBLE);
         }
-        Prefs.setMyIntPref(activity, "panicContactSize",(int)DaoHelper.getPanicContactSize());
+        PrefsHelper.setInt(activity, "panicContactSize",(int)DaoHelper.getPanicContactSize());
     }
 
     @OnClick(R.id.btnSelect)
@@ -125,16 +138,16 @@ public class PanicSettingsDialogFragment extends DialogFragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == READ_PHONEBOOK) {
             if (resultCode == Activity.RESULT_OK) {
-                Uri contact = data.getData();
-                ContentResolver cr = getActivity().getContentResolver();
-                Cursor c = getActivity().getContentResolver().query(contact, null, null, null, null);
+                final Uri contact = data.getData();
+                final ContentResolver cr = getActivity().getContentResolver();
+                final Cursor c = getActivity().getContentResolver().query(contact, null, null, null, null);
                 while (c.moveToNext()) {
-                    String id = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
-                    String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
+                    final String id = c.getString(c.getColumnIndex(ContactsContract.Contacts._ID));
+                    final String name = c.getString(c.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
                     if (Integer.parseInt(c.getString(c.getColumnIndex(ContactsContract.Contacts.HAS_PHONE_NUMBER))) > 0) {
-                        Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", new String[]{id}, null);
+                        final Cursor pCur = cr.query(ContactsContract.CommonDataKinds.Phone.CONTENT_URI,null, ContactsContract.CommonDataKinds.Phone.CONTACT_ID +" = ?", new String[]{id}, null);
                         while (pCur.moveToNext()) {
-                            String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
+                           final  String phone = pCur.getString(pCur.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER));
                             if (DaoHelper.isContactExisting(phone)) {
                                 activity.showToast("Contact already in your list");
                             } else {
