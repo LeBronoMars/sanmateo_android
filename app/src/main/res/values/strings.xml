@@ -127,4 +127,10 @@
     <string name="confirm">CONFIRM</string>
     <string name="old_password">Old Password</string>
     <string name="new_password">New Password</string>
+
+    <!-- panic settings dialog fragment -->
+    <string name="panic_settings_header">Set emergency contacts</string>
+    <string name="no_contacts">No contact/s found!</string>
+    <string name="select_contact">Select from Contacts</string>
+
 </resources>

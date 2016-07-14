@@ -211,7 +211,8 @@ public class ApiRequestHelper {
     }
 
     public void getNews(final String token, final int start, final int limit, final String status, final String when) {
-        onApiRequestListener.onApiRequestBegin(when);
+        final String action = when == null ? AppConstants.ACTION_GET_NEWS : when;
+        onApiRequestListener.onApiRequestBegin(action);
         Observable<List<News>> observable = AppConstants.API_INTERFACE.getNews(token,start,limit,status,when);
         observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
                 .subscribe(new Subscriber<List<News>>() {
@@ -222,12 +223,12 @@ public class ApiRequestHelper {
 
                     @Override
                     public void onError(Throwable e) {
-                        onApiRequestListener.onApiRequestFailed(when, e);
+                        onApiRequestListener.onApiRequestFailed(action, e);
                     }
 
                     @Override
                     public void onNext(List<News> news) {
-                        onApiRequestListener.onApiRequestSuccess(when, news);
+                        onApiRequestListener.onApiRequestSuccess(action, news);
                     }
                 });
     }

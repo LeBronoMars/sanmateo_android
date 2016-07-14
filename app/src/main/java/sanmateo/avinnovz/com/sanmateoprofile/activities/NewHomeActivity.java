@@ -87,7 +87,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         }
 
         if (newsSingleton.getNewsPrevious().size() == 0) {
-            apiRequestHelper.getNews(token,0,10,"active",AppConstants.ACTION_GET_NEWS);
+            apiRequestHelper.getNews(token,0,10,"active",null);
         }
     }
 
@@ -134,7 +134,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         navigationView.getHeaderView(0).setLayoutParams(params);
 
-        navigationView.inflateMenu(R.menu.menu_side_drawer);
         AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
         tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
@@ -229,11 +228,16 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
                     if (loading) {
                         if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
+                            LogHelper.log("paginate","1111");
                             loading = false;
                             apiRequestHelper.getNews(token,newsSingleton.getAllNews().size(),
-                                    10,"active",AppConstants.ACTION_GET_NEWS);
+                                    10,"active",null);
+                        } else {
+                            LogHelper.log("paginate","2222");
                         }
                     }
+                } else {
+                    LogHelper.log("paginate","3333");
                 }
                 //int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
                 //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);
