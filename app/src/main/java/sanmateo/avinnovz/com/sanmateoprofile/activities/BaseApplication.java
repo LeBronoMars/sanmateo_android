@@ -20,6 +20,7 @@ import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ApiInterface;
 import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
@@ -37,6 +38,9 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        /** initialize DAO Helper */
+        DaoHelper.initialize(this);
+
         /** initialize facebook sdk */
         FacebookSdk.sdkInitialize(this);
 
