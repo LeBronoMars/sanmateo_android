@@ -51,6 +51,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.Hotlines;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -222,7 +223,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
             @Override
             public void onConfirm(String oldPassword, String newPassword) {
-
+                apiRequestHelper.changePassword(token,currentUserSingleton.getAuthResponse().getEmail(),
+                        oldPassword,newPassword);
             }
         });
         fragment.show(getFragmentManager(),"chane password");
@@ -284,7 +286,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         if (action.equals(AppConstants.ACTION_GET_NEWS)) {
             showCustomProgress("Fetching news, Please wait...");
         } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
-            showCustomProgress("Updating account, Please wait...");
+            showCustomProgress("Changing password, Please wait...");
         }
     }
 
@@ -298,10 +300,14 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             final News news = (News)result;
             newsSingleton.getAllNews().add(0,news);
         } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
-            showToast("Your password was successfully changed!");
+            final GenericMessage genericMessage = (GenericMessage)result;
+            showToast(genericMessage.getMessage());
         }
-        rvHomeMenu.getAdapter().notifyDataSetChanged();
-        rvHomeMenu.smoothScrollToPosition(0);
+
+        if (!action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+            rvHomeMenu.getAdapter().notifyDataSetChanged();
+            rvHomeMenu.smoothScrollToPosition(0);
+        }
     }
 
     @Override

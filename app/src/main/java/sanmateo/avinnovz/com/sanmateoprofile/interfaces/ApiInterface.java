@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
@@ -275,12 +276,12 @@ public interface ApiInterface {
      * @param oldPassword current password of the user
      * @param newPassword new password of the user
      * */
-    @POST("/api/v1/change_password")
+    @PUT("/api/v1/change_password")
     @FormUrlEncoded
-    Observable<ResponseBody> changePassword(@Header("Authorization") String token,
-                                            @Field("email") String email,
-                                            @Field("old_password") String oldPassword,
-                                            @Field("new_password") String newPassword);
+    Observable<GenericMessage> changePassword(@Header("Authorization") String token,
+                                              @Field("email") String email,
+                                              @Field("old_password") String oldPassword,
+                                              @Field("new_password") String newPassword);
 }
 
 

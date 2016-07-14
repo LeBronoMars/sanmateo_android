@@ -10,6 +10,7 @@ import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
@@ -414,10 +415,10 @@ public class ApiRequestHelper {
     public void changePassword(final String token, final String email, final String oldPassword,
                                final String newPassword) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_CHANGE_PASSWORD);
-        Observable<ResponseBody> observable = AppConstants.API_INTERFACE.changePassword(token, email,
+        Observable<GenericMessage> observable = AppConstants.API_INTERFACE.changePassword(token, email,
                 oldPassword, newPassword);
         observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<ResponseBody>() {
+                .subscribe(new Subscriber<GenericMessage>() {
                     @Override
                     public void onCompleted() {
 
@@ -429,8 +430,8 @@ public class ApiRequestHelper {
                     }
 
                     @Override
-                    public void onNext(ResponseBody responseBody) {
-                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_PUT_CHANGE_PASSWORD, responseBody);
+                    public void onNext(GenericMessage genericMessage) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_PUT_CHANGE_PASSWORD, genericMessage);
                     }
                 });
     }
