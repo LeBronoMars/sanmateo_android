@@ -35,12 +35,15 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
@@ -73,6 +76,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
+
+        initPanicContact();
+
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
         apiRequestHelper = new ApiRequestHelper(this);
@@ -294,5 +300,35 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
             }
         }
+    }
+
+    private void initPanicContact() {
+        if (PrefsHelper.getInt(this, "panicContactSize") == 0) {
+            showConfirmDialog("", "Emergency Contacts", "Please add at least one contact person" +
+                    " for emergency purposes", "Ok", "", new OnConfirmDialogListener() {
+                @Override
+                public void onConfirmed(String action) {
+                    setPanicContacts();
+                }
+
+                @Override
+                public void onCancelled(String action) {
+
+                }
+            });
+        }
+    }
+
+    public void setPanicContacts() {
+        final PanicSettingsDialogFragment panicSettingsFragment = PanicSettingsDialogFragment.newInstance();
+        panicSettingsFragment.setOnPanicContactListener(new PanicSettingsDialogFragment.OnPanicContactListener() {
+            @Override
+            public void onDismiss() {
+                panicSettingsFragment.dismiss();
+                initPanicContact();
+            }
+        });
+        panicSettingsFragment.setCancelable(false);
+        panicSettingsFragment.show(getSupportFragmentManager(),"panic");
     }
 }

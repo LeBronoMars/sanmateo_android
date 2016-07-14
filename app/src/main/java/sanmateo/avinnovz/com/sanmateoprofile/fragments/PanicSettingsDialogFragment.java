@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.PanicContactsAdapter;
@@ -45,7 +44,7 @@ public class PanicSettingsDialogFragment extends DialogFragment {
     private OnPanicContactListener onPanicContactListener;
     @BindView(R.id.lvContacts) ListView lvContacts;
     @BindView(R.id.tvNoContact) TextView tvNoContact;
-    private static final int READ_PHONEBOOK = 1;
+    private static final int READ_PHONE_BOOK = 1;
     private ArrayList<PanicContact> contacts = new ArrayList<>();
 
     public static PanicSettingsDialogFragment newInstance() {
@@ -116,7 +115,8 @@ public class PanicSettingsDialogFragment extends DialogFragment {
 
     @OnClick(R.id.btnSelect)
     public void openContacts() {
-        onPanicContactListener.onOpenPhoneBook();
+        Intent intent = new Intent(Intent.ACTION_PICK, ContactsContract.Contacts.CONTENT_URI);
+        startActivityForResult(intent, READ_PHONE_BOOK);
     }
 
     @Override
@@ -126,7 +126,6 @@ public class PanicSettingsDialogFragment extends DialogFragment {
     }
 
     public interface OnPanicContactListener {
-        void onOpenPhoneBook();
         void onDismiss();
     }
 
@@ -136,7 +135,7 @@ public class PanicSettingsDialogFragment extends DialogFragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == READ_PHONEBOOK) {
+        if (requestCode == READ_PHONE_BOOK) {
             if (resultCode == Activity.RESULT_OK) {
                 final Uri contact = data.getData();
                 final ContentResolver cr = getActivity().getContentResolver();

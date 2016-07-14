@@ -11,11 +11,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:paddingLeft="@dimen/_10sdp"
+        android:paddingTop="@dimen/_10sdp"
         android:layout_centerVertical="true"
         android:layout_marginBottom="@dimen/_20sdp"
-        android:text="@string/select_contact"
+        android:text="@string/panic_settings_header"
         android:textColor="@color/colorPrimaryDark"
-        android:textSize="@dimen/_25sdp" />
+        android:textSize="@dimen/_20sdp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
