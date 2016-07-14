@@ -134,4 +134,8 @@
     <string name="select_contact">Select from Contacts</string>
     <string name="close">Close</string>
 
+    <!-- disaster management -->
+    <string name="disaster_mgmt">Disaster Management</string>
+
+
 </resources>

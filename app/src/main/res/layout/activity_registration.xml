@@ -136,7 +136,7 @@
                     android:layout_height="wrap_content"
                     android:hint="@string/contact_no"
                     android:imeOptions="actionNext"
-                    android:inputType="textCapWords"
+                    android:inputType="number"
                     android:paddingTop="@dimen/_10sdp"
                     android:singleLine="true"
                     android:textColor="@android:color/black"

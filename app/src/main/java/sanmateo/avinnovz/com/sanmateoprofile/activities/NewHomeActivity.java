@@ -33,10 +33,12 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.NewsEventsManagementActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
@@ -159,25 +161,42 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_information:
-                        showToast("information");
+                        startActivity(new Intent(NewHomeActivity.this, InformationActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_map:
-                        showToast("map");
+                        startActivity(new Intent(NewHomeActivity.this, MapActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_directories:
-                        showToast("directories");
+                        startActivity(new Intent(NewHomeActivity.this, DirectoriesActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_gallery:
-                        showToast("gallery");
+                        startActivity(new Intent(NewHomeActivity.this, GalleryActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_news_events:
-                        showToast("news events");
+                        startActivity(new Intent(NewHomeActivity.this, NewsEventsManagementActivity.class));
+                        animateToLeft(NewHomeActivity.this);
                         break;
                     case R.id.menu_social_media:
                         showToast("social media");
                         break;
                     case R.id.menu_disaster_management:
-                        showToast("disaster management");
+                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment.newInstance();
+                        fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
+                            @Override
+                            public void onSelectedMenu(int position) {
+                                fragment.dismiss();
+                            }
+
+                            @Override
+                            public void onClose() {
+                                fragment.dismiss();
+                            }
+                        });
+                        fragment.show(getFragmentManager(),"disaster menu");
                         break;
                     case R.id.menu_contact_us:
                         showToast("contact us");

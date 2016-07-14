@@ -22,6 +22,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
@@ -113,7 +114,7 @@ public class RegistrationActivity extends BaseActivity implements OnApiRequestLi
         if (action.equals(AppConstants.ACTION_POST_CREATE_USER)) {
             CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
             currentUserSingleton.setAuthResponse((AuthResponse) result);
-            startActivity(new Intent(this, MainActivity.class));
+            startActivity(new Intent(this, NewHomeActivity.class));
             finish();
         }
     }
