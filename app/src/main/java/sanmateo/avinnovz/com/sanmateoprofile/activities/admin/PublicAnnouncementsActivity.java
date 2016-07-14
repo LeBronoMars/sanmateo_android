@@ -5,6 +5,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 
 import com.squareup.otto.Subscribe;
 
@@ -67,6 +68,10 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
             apiRequestHelper.getAnnouncements(token,0,10);
         }
         initAnnouncements();
+
+        if (currentUserSingleton.getAuthResponse().getUserLevel().equals("Regular User")) {
+            btnAdd.setVisibility(View.INVISIBLE);
+        }
     }
 
     private void initAnnouncements() {

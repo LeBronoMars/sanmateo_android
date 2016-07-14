@@ -34,6 +34,7 @@ import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.NewsEventsManagementActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
@@ -157,28 +158,22 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         setPanicContacts();
                         break;
                     case R.id.menu_incident_report:
-                        startActivity(new Intent(NewHomeActivity.this, IncidentsActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(IncidentsActivity.class);
                         break;
                     case R.id.menu_information:
-                        startActivity(new Intent(NewHomeActivity.this, InformationActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(InformationActivity.class);
                         break;
                     case R.id.menu_map:
-                        startActivity(new Intent(NewHomeActivity.this, MapActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(MapActivity.class);
                         break;
                     case R.id.menu_directories:
-                        startActivity(new Intent(NewHomeActivity.this, DirectoriesActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(DirectoriesActivity.class);
                         break;
                     case R.id.menu_gallery:
-                        startActivity(new Intent(NewHomeActivity.this, GalleryActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(GalleryActivity.class);
                         break;
                     case R.id.menu_news_events:
-                        startActivity(new Intent(NewHomeActivity.this, NewsEventsManagementActivity.class));
-                        animateToLeft(NewHomeActivity.this);
+                        moveToOtherAcitivity(NewsEventsManagementActivity.class);
                         break;
                     case R.id.menu_social_media:
                         showToast("social media");
@@ -189,6 +184,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                             @Override
                             public void onSelectedMenu(int position) {
                                 fragment.dismiss();
+                                if (position == 0) {
+                                    moveToOtherAcitivity(PublicAnnouncementsActivity.class);
+                                }
                             }
 
                             @Override
@@ -342,6 +340,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         } else {
             LogHelper.log("book","do not show");
         }
+    }
+
+    private void moveToOtherAcitivity(Class clz) {
+        startActivity(new Intent(this, clz));
+        animateToLeft(this);
     }
 
     public void setPanicContacts() {
