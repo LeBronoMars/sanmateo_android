@@ -186,6 +186,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 fragment.dismiss();
                                 if (position == 0) {
                                     moveToOtherAcitivity(PublicAnnouncementsActivity.class);
+                                } else if (position == 1) {
+                                    moveToOtherAcitivity(TyphoonWatchActivity.class);
+                                } else if (position == 2) {
+                                    moveToOtherAcitivity(WaterLevelMonitoringActivity.class);
+                                } else if (position == 3) {
                                 }
                             }
 
