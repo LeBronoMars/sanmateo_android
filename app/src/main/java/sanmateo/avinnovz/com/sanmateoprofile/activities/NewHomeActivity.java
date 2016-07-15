@@ -329,7 +329,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         if (map.containsKey("data")) {
             try {
                 final JSONObject json = new JSONObject(map.get("data").toString());
-                apiRequestHelper.getNewsById(token,json.getInt("id"));
+                if (json.has("action")) {
+                    if (json.getString("action").equals("news created")) {
+                        apiRequestHelper.getNewsById(token,json.getInt("id"));
+                    }
+                }
             } catch (JSONException e) {
 
             }

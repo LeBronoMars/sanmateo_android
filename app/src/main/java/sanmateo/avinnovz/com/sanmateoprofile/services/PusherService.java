@@ -106,6 +106,11 @@ public class PusherService extends Service implements OnApiRequestListener {
                             PrefsHelper.setBoolean(PusherService.this,"refresh_announcements",true);
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     json.getString("title"),json.getString("message"),null);
+                        } else if (action.equals("water level")) {
+                            LogHelper.log("pusher","water level created");
+                            PrefsHelper.setBoolean(PusherService.this,"refresh_water_level",true);
+                            NotificationHelper.displayNotification(id,PusherService.this,
+                                    json.getString("title"),json.getString("message"),null);
                         }
                     }
                 } catch (JSONException e) {

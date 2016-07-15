@@ -390,6 +390,28 @@ public class ApiRequestHelper {
                 });
     }
 
+    public void getLatestWaterLevelNotifications(final String token, final int id) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST);
+        Observable<List<WaterLevel>> observable = AppConstants.API_INTERFACE.getLatestWaterLevels(token,id);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<List<WaterLevel>>() {
+
+                    @Override
+                    public void onCompleted() {
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST, e);
+                    }
+
+                    @Override
+                    public void onNext(List<WaterLevel> waterLevels) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST, waterLevels);
+                    }
+                });
+    }
+
     public void createWaterLevelNotification(final String token, final double level) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS);
         Observable<WaterLevel> observable = AppConstants.API_INTERFACE.createWaterLevelNotification(token,level);

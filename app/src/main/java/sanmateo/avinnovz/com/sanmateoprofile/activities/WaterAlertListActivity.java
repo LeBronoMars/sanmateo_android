@@ -6,7 +6,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.squareup.otto.Subscribe;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -56,6 +62,8 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
 
         if (PrefsHelper.getBoolean(this, "refresh_water_level") && waterLevelSingleton.getWaterLevels().size() > 0) {
             LogHelper.log("water", "must refresh");
+            apiRequestHelper.getLatestWaterLevelNotifications(token,
+                    waterLevelSingleton.getWaterLevels().get(0).getId());
         } else if (waterLevelSingleton.getWaterLevels().size() == 0) {
             LogHelper.log("water", "must call all");
             apiRequestHelper.getWaterLevelNotifications(token, 0, 10);
@@ -103,16 +111,19 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             showCustomProgress("Fetching water level notifications, Please wait...");
         } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
             showCustomProgress("Sending water level notification, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST)) {
+            showCustomProgress("Fetching latest notifications, Please wait...");
         }
     }
 
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
-        if (action.equals(AppConstants.ACTION_GET_WATER_LEVEL_NOTIFS)) {
+        if (action.equals(AppConstants.ACTION_GET_WATER_LEVEL_NOTIFS) ||
+                action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST)) {
             final ArrayList<WaterLevel> waterLevels = (ArrayList<WaterLevel>) result;
             waterLevelSingleton.getWaterLevels().addAll(0, waterLevels);
-            LogHelper.log("water", "size ---> " + waterLevels.size());
+            LogHelper.log("water", "action ---> "+ action+" size ---> " + waterLevels.size());
         } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
             final WaterLevel waterLevel = (WaterLevel) result;
             waterLevelSingleton.getWaterLevels().add(0, waterLevel);
@@ -148,6 +159,24 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             }
         });
         fragment.show(getFragmentManager(), "water level");
+    }
+
+    @Subscribe
+    public void handleEventBus(final HashMap<String,Object> map) {
+        if (map.containsKey("data")) {
+            try {
+                final JSONObject json = new JSONObject(map.get("data").toString());
+                if (json.has("action")) {
+                    if (json.getString("action").equals("water level")) {
+                        LogHelper.log("water","action ----> " + json.getString("action"));
+                        apiRequestHelper.getLatestWaterLevelNotifications(token,
+                                waterLevelSingleton.getWaterLevels().get(0).getId());
+                    }
+                }
+            } catch (JSONException e) {
+
+            }
+        }
     }
 
 }

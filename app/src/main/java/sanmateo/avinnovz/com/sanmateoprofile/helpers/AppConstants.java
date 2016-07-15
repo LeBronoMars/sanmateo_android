@@ -41,6 +41,7 @@ public class AppConstants {
     public static final String ACTION_GET_LATEST_ANNOUNCEMENTS = "get latest announcements";
     public static final String ACTION_GET_WATER_LEVEL_NOTIFS = "get water level notifications";
     public static final String ACTION_POST_WATER_LEVEL_NOTIFS = "create water level notifications";
+    public static final String ACTION_POST_WATER_LEVEL_NOTIFS_LATEST = "create water level notifications latest";
     public static final String ACTION_PUT_CHANGE_PASSWORD = "change password";
 
     /** warning messages */

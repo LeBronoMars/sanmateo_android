@@ -256,6 +256,17 @@ public interface ApiInterface {
                                                 @Query("start") int start,
                                                 @Query("limit") int limit);
 
+    /**
+     * get latest water level notifications
+     *
+     * @param token represents the user that trying to make the request
+     * @param id offset of query
+     *
+     * */
+    @GET("/api/v1/water_level/latest/{id}")
+    Observable<List<WaterLevel>> getLatestWaterLevels(@Header("Authorization") String token,
+                                                      @Path("id") int id);
+
 
     /**
      * create new water level notification
