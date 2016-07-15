@@ -1,6 +1,5 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -39,9 +38,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
         ButterKnife.bind(this);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String[] requiredPermission = new String[]{
-                    Manifest.permission.SEND_SMS,
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    Manifest.permission.READ_CONTACTS
+                    android.Manifest.permission.READ_CONTACTS
             };
             requestPermissions(requiredPermission, REQUEST_PERMISSIONS);
         } else {
@@ -120,11 +118,11 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
         LogHelper.log("res","ON REQUEST PERMISSION");
         switch (requestCode) {
             case REQUEST_PERMISSIONS:
-                final boolean smsPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
-                final boolean writeExternalPermitted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
-                final boolean readContactsPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
-
-                if (smsPermission && writeExternalPermitted && readContactsPermission) {
+                final boolean writeExternalPermitted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                final boolean readContactsPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                LogHelper.log("res","write external --> " + writeExternalPermitted);
+                LogHelper.log("res","read contacts --> " + readContactsPermission);
+                if (writeExternalPermitted && readContactsPermission) {
                     LogHelper.log("res","must continue with initialization");
                     initialize();
                 } else {
