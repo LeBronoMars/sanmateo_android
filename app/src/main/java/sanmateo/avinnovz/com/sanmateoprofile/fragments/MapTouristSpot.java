@@ -14,13 +14,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
 
 /**
  * Created by ctmanalo on 7/6/16.
  */
 public class MapTouristSpot extends Fragment {
 
-    private MapActivity activity;
+    private NewMapActivty activity;
     private SupportMapFragment mapTourist;
 
     public static MapTouristSpot newInstance() {
@@ -29,7 +30,7 @@ public class MapTouristSpot extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activity = (MapActivity) getActivity();
+        activity = (NewMapActivty) getActivity();
         View view = inflater.inflate(R.layout.map_tourist_spots, container, false);
         return view;
     }

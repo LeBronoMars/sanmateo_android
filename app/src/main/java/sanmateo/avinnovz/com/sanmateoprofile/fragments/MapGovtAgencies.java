@@ -14,13 +14,14 @@ import com.google.android.gms.maps.model.LatLng;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
 
 /**
  * Created by ctmanalo on 7/6/16.
  */
 public class MapGovtAgencies extends Fragment {
 
-    private MapActivity activity;
+    private NewMapActivty activity;
     private SupportMapFragment mapGovt;
 
     public static MapGovtAgencies newInstance() {
@@ -29,7 +30,7 @@ public class MapGovtAgencies extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activity = (MapActivity)getActivity();
+        activity = (NewMapActivty)getActivity();
         View view = inflater.inflate(R.layout.map_govt_agencies, container, false);
         return view;
     }
