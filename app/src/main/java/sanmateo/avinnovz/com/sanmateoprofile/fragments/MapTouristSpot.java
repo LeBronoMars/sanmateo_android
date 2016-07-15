@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
@@ -19,7 +20,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
 /**
  * Created by ctmanalo on 7/6/16.
  */
-public class MapTouristSpot extends Fragment {
+public class MapTouristSpot extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private NewMapActivty activity;
     private SupportMapFragment mapTourist;
@@ -54,7 +55,15 @@ public class MapTouristSpot extends Fragment {
         LatLng latLng = new LatLng(14.696123, 121.117771);
         mapTourist.getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mapTourist.getMap().animateCamera(CameraUpdateFactory.zoomTo(12));
+        mapTourist.getMap().setOnMarkerClickListener(this);
         activity.addMapMarker(mapTourist.getMap(), 14.683345, 121.113245,
                 "Ciudad Christhia Resort", "",R.drawable.resort);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        MapMarkerFragment fragment = MapMarkerFragment.newInstance();
+        fragment.show(activity.getFragmentManager(), "municipal map details");
+        return false;
     }
 }

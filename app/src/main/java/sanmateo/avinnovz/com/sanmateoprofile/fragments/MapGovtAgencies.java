@@ -11,6 +11,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
@@ -19,7 +20,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
 /**
  * Created by ctmanalo on 7/6/16.
  */
-public class MapGovtAgencies extends Fragment {
+public class MapGovtAgencies extends Fragment implements GoogleMap.OnMarkerClickListener {
 
     private NewMapActivty activity;
     private SupportMapFragment mapGovt;
@@ -54,7 +55,15 @@ public class MapGovtAgencies extends Fragment {
         LatLng latLng = new LatLng( 14.696123, 121.117771);
         mapGovt.getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mapGovt.getMap().animateCamera(CameraUpdateFactory.zoomTo(12));
+        mapGovt.getMap().setOnMarkerClickListener(this);
         activity.addMapMarker(mapGovt.getMap(), 14.695486, 121.118016,
                 "Police Station", "San Mateo", R.drawable.police);
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        MapMarkerFragment fragment = MapMarkerFragment.newInstance();
+        fragment.show(activity.getFragmentManager(), "municipal map details");
+        return false;
     }
 }
