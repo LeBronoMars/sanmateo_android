@@ -93,7 +93,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyC-Sjv48WFHOCQBZ_d7TnmhhhUu3FsyCiE"/>
+            android:value="AIzaSyCTMcvMqx440t4N5t-khlZZwEOVDhkLPYE"/>
 
         <!-- amazon s3 config -->
         <service
