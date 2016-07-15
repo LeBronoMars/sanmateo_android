@@ -122,8 +122,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
             case REQUEST_PERMISSIONS:
                 final boolean smsPermission = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 final boolean writeExternalPermitted = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                final boolean readContactsPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
 
-                if (smsPermission && writeExternalPermitted) {
+                if (smsPermission && writeExternalPermitted && readContactsPermission) {
                     LogHelper.log("res","must continue with initialization");
                     initialize();
                 } else {

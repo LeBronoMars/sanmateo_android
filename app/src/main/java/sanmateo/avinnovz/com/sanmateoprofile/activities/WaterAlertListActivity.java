@@ -124,6 +124,9 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             final ArrayList<WaterLevel> waterLevels = (ArrayList<WaterLevel>) result;
             waterLevelSingleton.getWaterLevels().addAll(0, waterLevels);
             LogHelper.log("water", "action ---> "+ action+" size ---> " + waterLevels.size());
+            if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST)) {
+                PrefsHelper.setBoolean(this,"refresh_water_level",false);
+            }
         } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
             final WaterLevel waterLevel = (WaterLevel) result;
             waterLevelSingleton.getWaterLevels().add(0, waterLevel);
