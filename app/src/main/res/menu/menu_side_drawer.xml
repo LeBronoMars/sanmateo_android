@@ -30,10 +30,10 @@
         android:title="@string/menu_gallery"
         android:icon="@drawable/menu_gallery"/>
 
-    <item
+    <!--<item
         android:id="@+id/menu_news_events"
         android:title="@string/menu_news_events"
-        android:icon="@drawable/menu_news"/>
+        android:icon="@drawable/menu_news"/>-->
 
     <item
         android:id="@+id/menu_social_media"

@@ -174,9 +174,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     case R.id.menu_gallery:
                         moveToOtherAcitivity(GalleryActivity.class);
                         break;
-                    case R.id.menu_news_events:
+                    /*case R.id.menu_news_events:
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
-                        break;
+                        break;*/
                     case R.id.menu_social_media:
                         showToast("social media");
                         break;
