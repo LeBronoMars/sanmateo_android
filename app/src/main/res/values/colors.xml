@@ -35,4 +35,7 @@
     <color name="water_level_alarm">#BA55D3</color>
     <color name="water_level_critical">#be0d0d</color>
 
+    <color name="dirty_white">#f5f5f5</color>
+    <color name="dirty_white_clicked">#c4c4c4</color>
+
 </resources>

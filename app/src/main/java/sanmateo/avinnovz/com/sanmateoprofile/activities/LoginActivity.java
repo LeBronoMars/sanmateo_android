@@ -2,9 +2,18 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Point;
+import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.view.Display;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.widget.Button;
 import android.widget.TextView;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -25,17 +34,26 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class LoginActivity extends BaseActivity implements OnApiRequestListener {
+public class LoginActivity extends BaseActivity implements OnApiRequestListener, SurfaceHolder.Callback {
 
-    @BindView(R.id.tvCreateAccount) TextView tvCreateAccount;
+    @BindView(R.id.btnSignIn) Button btnSignIn;
+    @BindView(R.id.surfaceView) SurfaceView surfaceView;
     private ApiRequestHelper apiRequestHelper;
     private static final int REQUEST_PERMISSIONS = 1;
+    private SurfaceHolder surfaceHolder;
+    private MediaPlayer mp;
+    private int video_bg = R.raw.login_bg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
+        setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
+
+        mp = new MediaPlayer();
+        surfaceHolder = surfaceView.getHolder();
+        surfaceHolder.addCallback(this);
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String[] requiredPermission = new String[]{
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
@@ -53,7 +71,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
         apiRequestHelper = new ApiRequestHelper(this);
     }
 
-    @OnClick(R.id.btnLogin)
+    @OnClick(R.id.btnSignIn)
     public void showLoginDialogFragment() {
         if (isNetworkAvailable()) {
             final LoginDialogFragment loginDialogFragment = LoginDialogFragment.newInstance();
@@ -66,11 +84,11 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
             });
             loginDialogFragment.show(getFragmentManager(),"login");
         } else {
-            showSnackbar(tvCreateAccount, AppConstants.WARN_CONNECTION);
+            showSnackbar(btnSignIn, AppConstants.WARN_CONNECTION);
         }
     }
 
-    @OnClick(R.id.tvCreateAccount)
+    @OnClick(R.id.btnCreateAccount)
     public void showRegistrationPage() {
         startActivity(new Intent(this, RegistrationActivity.class));
         animateToLeft(this);
@@ -90,7 +108,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
             final AuthResponse authResponse = (AuthResponse)result;
             if (authResponse.getUserLevel().equals("superadmin") ||
                     authResponse.getUserLevel().equals("admin")) {
-                showSnackbar(tvCreateAccount, AppConstants.WARN_INVALID_ACCOUNT);
+                showSnackbar(btnSignIn, AppConstants.WARN_INVALID_ACCOUNT);
             } else {
                 final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
                 currentUserSingleton.setAuthResponse(authResponse);
@@ -144,5 +162,59 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener 
                 }
                 break;
         }
+    }
+
+    @Override
+    public void surfaceCreated(final SurfaceHolder surfaceHolder) {
+        final Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + video_bg);
+
+        try {
+            mp.setDataSource(this,video);
+            mp.setDisplay(surfaceHolder);
+            mp.prepare();
+            mp.setLooping(true);
+
+            //Get the dimensions of the video
+            int videoWidth = mp.getVideoWidth();
+            int videoHeight = mp.getVideoHeight();
+
+            final Display display = getWindowManager().getDefaultDisplay();
+            final Point size = new Point();
+            display.getSize(size);
+
+            //Get the SurfaceView layout parameters
+            final android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+
+            //Set the width of the SurfaceView to the width of the screen
+            lp.width = size.x;
+
+            //Set the height of the SurfaceView to match the aspect ratio of the video
+            //be sure to cast these as floats otherwise the calculation will likely be 0
+            lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
+
+            //Commit the layout parameters
+            surfaceView.setLayoutParams(lp);
+
+            //Start video
+            mp.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        mp.stop();
+        super.onDestroy();
     }
 }
