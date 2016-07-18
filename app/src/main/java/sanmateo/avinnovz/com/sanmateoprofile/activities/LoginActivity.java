@@ -174,10 +174,6 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
             mp.prepare();
             mp.setLooping(true);
 
-            //Get the dimensions of the video
-            int videoWidth = mp.getVideoWidth();
-            int videoHeight = mp.getVideoHeight();
-
             final Display display = getWindowManager().getDefaultDisplay();
             final Point size = new Point();
             display.getSize(size);
@@ -190,7 +186,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
             //Set the height of the SurfaceView to match the aspect ratio of the video
             //be sure to cast these as floats otherwise the calculation will likely be 0
-            lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
+            //lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
+            lp.height = size.y;
 
             //Commit the layout parameters
             surfaceView.setLayoutParams(lp);

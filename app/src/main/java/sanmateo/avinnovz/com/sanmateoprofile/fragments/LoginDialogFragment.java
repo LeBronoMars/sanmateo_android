@@ -2,6 +2,8 @@ package sanmateo.avinnovz.com.sanmateoprofile.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -41,6 +43,7 @@ public class LoginDialogFragment extends DialogFragment {
         Bundle savedInstanceState) {
         getDialog().getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
         getDialog().getWindow().getAttributes().windowAnimations = R.style.dialog_animation;
+        getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         return super.onCreateView(inflater, container, savedInstanceState);
     }
 

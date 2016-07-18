@@ -14,8 +14,8 @@ public class AppConstants {
     public static Picasso PICASSO = null;
 
     //public static final String BASE_URL = "http://192.168.1.6:9000";
-    //public static final String BASE_URL = "http://192.168.10.5:9000";
-    public static final String BASE_URL = "http://54.169.153.164:9000";
+    public static final String BASE_URL = "http://192.168.10.6:9000";
+    //public static final String BASE_URL = "http://54.169.153.164:9000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
     public static boolean IS_FACEBOOK_APP_INSTALLED = false;
