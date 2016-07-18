@@ -1,7 +1,5 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -33,7 +31,6 @@ import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.NewsEventsManagementActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
@@ -49,7 +46,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
-import sanmateo.avinnovz.com.sanmateoprofile.models.others.Hotlines;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
