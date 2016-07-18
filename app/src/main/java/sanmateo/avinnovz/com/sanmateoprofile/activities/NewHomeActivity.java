@@ -27,6 +27,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -70,6 +71,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.rvHomeMenu) RecyclerView rvHomeMenu;
     @BindView(R.id.appBarLayout) AppBarLayout appBarLayout;
+    @BindView(R.id.tvNotification) TextView tvNotification;
+    @BindString(R.string.disaster_mgmt) String headerDisasterManagement;
+    @BindString(R.string.message_alert_notifications) String headerAlertNofications;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
@@ -185,7 +189,16 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         showToast("social media");
                         break;
                     case R.id.menu_disaster_management:
-                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment.newInstance();
+                        final ArrayList<String> menu = new ArrayList<>();
+                        menu.add("Public Announcements");
+                        menu.add("Typhoon Watch");
+                        menu.add("Water Level Monitoring");
+                        menu.add("Global Disaster Monitoring");
+                        menu.add("Emergency Numbers");
+                        menu.add("Emergency Flashlight");
+                        menu.add("SOS Signal");
+                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
+                                .newInstance(headerDisasterManagement,menu);
                         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
                             @Override
                             public void onSelectedMenu(int position) {
@@ -337,6 +350,16 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 if (json.has("action")) {
                     if (json.getString("action").equals("news created")) {
                         apiRequestHelper.getNewsById(token,json.getInt("id"));
+                    } else if (json.getString("action").equals("announcements") ||
+                            json.getString("action").equals("water level")) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (!tvNotification.isShown()) {
+                                    tvNotification.setVisibility(View.VISIBLE);
+                                }
+                            }
+                        });
                     }
                 }
             } catch (JSONException e) {
@@ -395,5 +418,34 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 LogHelper.log("toolbar","state --> " + state.name());
             }
         });
+    }
+
+    @OnClick(R.id.rlNotifications)
+    public void showNotifications() {
+        final ArrayList<String> menu = new ArrayList<>();
+        menu.add("Public Announcements");
+        menu.add("Water Level Monitoring");
+        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
+                .newInstance(headerAlertNofications,menu);
+        fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
+            @Override
+            public void onSelectedMenu(int position) {
+                if (tvNotification.isShown()) {
+                    tvNotification.setVisibility(View.INVISIBLE);
+                }
+                fragment.dismiss();
+                if (position == 0) {
+                    moveToOtherAcitivity(PublicAnnouncementsActivity.class);
+                } else {
+                    moveToOtherAcitivity(WaterLevelMonitoringActivity.class);
+                }
+            }
+
+            @Override
+            public void onClose() {
+                fragment.dismiss();
+            }
+        });
+        fragment.show(getFragmentManager(),"show notifications");
     }
 }

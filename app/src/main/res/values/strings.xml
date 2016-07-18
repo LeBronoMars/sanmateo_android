@@ -152,4 +152,6 @@
     </string>
 
     <string name="new_and_events">News and Events</string>
+    <string name="exclamation">!</string>
+    <string name="message_alert_notifications">Message Alerts / Notifications</string>
 </resources>
