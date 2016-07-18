@@ -27,6 +27,7 @@ import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 import retrofit2.adapter.rxjava.HttpException;
@@ -37,6 +38,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.NewsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.MayorMessageDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
@@ -372,5 +374,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             }
         });
         panicSettingsFragment.show(getSupportFragmentManager(),"panic");
+    }
+
+    @OnClick(R.id.ivMayorImage)
+    public void showMayorImage() {
+        final MayorMessageDialogFragment fragment = MayorMessageDialogFragment.newInstance();
+        fragment.show(getFragmentManager(),"mayor message");
     }
 }

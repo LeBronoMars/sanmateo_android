@@ -138,5 +138,16 @@
     <!-- disaster management -->
     <string name="disaster_mgmt">Disaster Management</string>
 
-
+    <!-- mayor message -->
+    <string name="mayor_message_header">Mayor Message</string>
+    <string name="mayor_message">
+        <b>Message</b>
+            \n\nWe have a lot to be proud of our town - San Mateo has great neighborhoods and schools, outstanding tourism events, places to see, and some of the most famous fast food and restaurants in Manila. With a population of over 180,000 residents, we take pride in our reputation of being both a great place to live and do business.
+            \n\nOur Town has something for everyone. Stroll along our newly remodeled Town Plaza, Plaza Natividad , or visit the Nuestra Senora de Aranzazu Parish , which is one of the oldest and most beautiful churches in the province.
+            \n\nCheck out our new Municipal Hall Building, it offers the utmost in public service convenience and serve as one of the premier government centers for the entire province of Rizal.
+            \n\nSan Mateo is an ideal commercial location, situated at the crossroads of a municipality and three major cities: It is bounded on the South by Marikina City and on the North by the Town of Rodriguez (formerly Montalban). To the West lies Quezon City and to the East is the City of Antipolo. San Mateo\'s close proximity to Quezon City thru the San Mateo-Batasan Bridge provides a convenient, fast and safe mode of travel from our town to any point in Metro Manila and vice-versa.
+            \n\nMaintaining the quality of life remains a key goal for our community. The Municipality\'s strategic business plan for economic development is designed to achieve this goal. We recognize that our financial strength relies on a strong partnership between our residential &amp; business community. Our growth is carefully planned by our elected officials &amp; the many citizen volunteers who serve on our different local boards.
+            \n\nThe Local Government has a dedicated work force which is known for its professionalism, contemporary organizational style and responsiveness. We offer a full range of services as well as many excellent public facilities.
+            \n\nI hope this website will help you get to know San Mateo and what we have to offer. Welcome to our town, we are happy to share it with you!\n\n
+    </string>
 </resources>
