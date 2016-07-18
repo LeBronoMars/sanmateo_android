@@ -2,10 +2,12 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +45,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragme
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
@@ -66,6 +69,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     @BindView(R.id.viewPager) AutoScrollViewPager viewPager;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.rvHomeMenu) RecyclerView rvHomeMenu;
+    @BindView(R.id.appBarLayout) AppBarLayout appBarLayout;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
@@ -100,6 +104,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         if (newsSingleton.getNewsPrevious().size() == 0) {
             apiRequestHelper.getNews(token,0,10,"active",null);
         }
+
+        initAppBarLayoutListener();
     }
 
     private void animateBanners() {
@@ -380,5 +386,14 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     public void showMayorImage() {
         final MayorMessageDialogFragment fragment = MayorMessageDialogFragment.newInstance();
         fragment.show(getFragmentManager(),"mayor message");
+    }
+
+    private void initAppBarLayoutListener() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                LogHelper.log("toolbar","state --> " + state.name());
+            }
+        });
     }
 }
