@@ -51,7 +51,7 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
 
         //check if there are new incidents needed to be fetched from api
         if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {

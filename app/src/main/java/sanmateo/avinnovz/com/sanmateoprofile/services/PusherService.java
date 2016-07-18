@@ -81,7 +81,7 @@ public class PusherService extends Service implements OnApiRequestListener {
                             /** new incident notification */
                             LogHelper.log("pusher","must delete incident report");
                             final int reportedBy = Integer.valueOf(json.getString("reported_by"));
-                            if (currentUserSingleton.getAuthResponse().getId() == reportedBy) {
+                            if (currentUserSingleton.getCurrentUser().getUserId() == reportedBy) {
                                 LogHelper.log("pusher","Show notification for blocked report");
                                 NotificationHelper.displayNotification(id,PusherService.this,
                                         "Your report was blocked by the admin",json.getString("remarks"),null);

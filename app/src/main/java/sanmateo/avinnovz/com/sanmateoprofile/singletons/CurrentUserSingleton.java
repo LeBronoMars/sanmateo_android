@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.singletons;
 
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 
 /**
@@ -8,7 +10,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 public class CurrentUserSingleton {
 
     private static CurrentUserSingleton CURR_USER = new CurrentUserSingleton();
-    private AuthResponse authResponse;
+    private static CurrentUser currentUser;
 
     private CurrentUserSingleton() {}
 
@@ -16,11 +18,10 @@ public class CurrentUserSingleton {
         return CURR_USER;
     }
 
-    public AuthResponse getAuthResponse() {
-        return authResponse;
-    }
-
-    public void setAuthResponse(AuthResponse authResponse) {
-        this.authResponse = authResponse;
+    public CurrentUser getCurrentUser() {
+        if (currentUser == null) {
+            currentUser = DaoHelper.getCurrentUser();
+        }
+        return currentUser;
     }
 }

@@ -85,7 +85,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
         apiRequestHelper = new ApiRequestHelper(this);
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
 
         animateBanners();
         initNavigationDrawer();
@@ -143,10 +143,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         navigationView.getHeaderView(0).setLayoutParams(params);
 
-        AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
+        AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
-        tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
-                currentUserSingleton.getAuthResponse().getLastName());
+        tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
+                currentUserSingleton.getCurrentUser().getLastName());
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -219,7 +219,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
             @Override
             public void onConfirm(String oldPassword, String newPassword) {
-                apiRequestHelper.changePassword(token,currentUserSingleton.getAuthResponse().getEmail(),
+                apiRequestHelper.changePassword(token,currentUserSingleton.getCurrentUser().getEmail(),
                         oldPassword,newPassword);
             }
         });
@@ -227,7 +227,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     }
 
     private void changeUserPassword(final String oldPassword, final String newPassword) {
-        final String email = currentUserSingleton.getAuthResponse().getEmail();
+        final String email = currentUserSingleton.getCurrentUser().getEmail();
         apiRequestHelper.changePassword(token, email, oldPassword, newPassword);
     }
     private void initNews() {

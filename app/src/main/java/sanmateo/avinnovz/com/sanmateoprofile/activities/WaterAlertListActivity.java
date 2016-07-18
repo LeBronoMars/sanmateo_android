@@ -55,7 +55,7 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
         ButterKnife.bind(this);
         waterLevelSingleton = WaterLevelSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
         apiRequestHelper = new ApiRequestHelper(this);
         initWaterListing();
         setToolbarTitle("Water Level Monitoring");
@@ -69,7 +69,7 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
             apiRequestHelper.getWaterLevelNotifications(token, 0, 10);
         }
 
-        if (currentUserSingleton.getAuthResponse().getUserLevel().equals("Regular User")) {
+        if (currentUserSingleton.getCurrentUser().getUserLevel().equals("Regular User")) {
             btnAdd.setVisibility(View.INVISIBLE);
         }
     }

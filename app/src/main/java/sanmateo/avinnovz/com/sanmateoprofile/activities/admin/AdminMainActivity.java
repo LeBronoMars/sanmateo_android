@@ -106,10 +106,10 @@ public class AdminMainActivity extends BaseActivity {
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         navigationView.getHeaderView(0).setLayoutParams(params);
 
-        AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
+        AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
-        tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
-                                    currentUserSingleton.getAuthResponse().getLastName());
+        tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
+                                    currentUserSingleton.getCurrentUser().getLastName());
     }
 
     private void initHomeMenu() {

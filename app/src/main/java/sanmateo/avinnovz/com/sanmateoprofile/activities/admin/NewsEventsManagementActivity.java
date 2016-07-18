@@ -55,7 +55,7 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
         initViewPager();
 
         if (newsSingleton.getNewsToday().size() == 0) {

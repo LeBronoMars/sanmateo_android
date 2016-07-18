@@ -18,6 +18,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
@@ -112,8 +113,7 @@ public class RegistrationActivity extends BaseActivity implements OnApiRequestLi
         dismissCustomProgress();
         LogHelper.log("registration", "success >>> " + action);
         if (action.equals(AppConstants.ACTION_POST_CREATE_USER)) {
-            CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
-            currentUserSingleton.setAuthResponse((AuthResponse) result);
+            DaoHelper.saveCurrentUser((AuthResponse) result);
             startActivity(new Intent(this, NewHomeActivity.class));
             finish();
         }

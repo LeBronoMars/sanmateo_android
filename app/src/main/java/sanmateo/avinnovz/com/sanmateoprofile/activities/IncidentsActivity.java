@@ -72,7 +72,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
         shareCallBackManager = CallbackManager.Factory.create();
 
         //check if there are new incidents needed to be fetched from api
@@ -179,7 +179,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                     public void onReportIncident(String remarks) {
                         fragment.dismiss();
                         apiRequestHelper.reportMaliciousIncidentReport(token,incident.getIncidentId(),
-                                incident.getReporterId(),currentUserSingleton.getAuthResponse().getId(),
+                                incident.getReporterId(),currentUserSingleton.getCurrentUser().getUserId(),
                                 remarks);
                     }
 
@@ -295,7 +295,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             LogHelper.log("s3","FINAL URL --->  " + uploadedFilesUrl.toString());
             apiRequestHelper.fileIncidentReport(token,bundle.getString("incidentLocation"),
                     bundle.getString("incidentDescription"),bundle.getString("incidentType"),
-                    1,1,currentUserSingleton.getAuthResponse().getId(),
+                    1,1,currentUserSingleton.getCurrentUser().getUserId(),
                     uploadedFilesUrl.toString());
         }
     }

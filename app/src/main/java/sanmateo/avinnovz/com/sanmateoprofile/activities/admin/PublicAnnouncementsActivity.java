@@ -60,7 +60,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         announcementsSingleton = AnnouncementsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         apiRequestHelper = new ApiRequestHelper(this);
-        token = currentUserSingleton.getAuthResponse().getToken();
+        token = currentUserSingleton.getCurrentUser().getToken();
 
         if (PrefsHelper.getBoolean(this,"refresh_announcements") && announcementsSingleton.getAnnouncements().size() > 0) {
             apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
@@ -69,7 +69,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         }
         initAnnouncements();
 
-        if (currentUserSingleton.getAuthResponse().getUserLevel().equals("Regular User")) {
+        if (currentUserSingleton.getCurrentUser().getUserLevel().equals("Regular User")) {
             btnAdd.setVisibility(View.INVISIBLE);
         }
     }

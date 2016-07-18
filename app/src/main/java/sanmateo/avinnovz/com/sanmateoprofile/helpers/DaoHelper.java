@@ -5,10 +5,13 @@ import android.database.sqlite.SQLiteDatabase;
 
 import java.util.List;
 
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUserDao;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoMaster;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoSession;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContactDao;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 
 
 /**
@@ -18,6 +21,7 @@ public class DaoHelper {
 
     private static SQLiteDatabase DB;
     private static PanicContactDao DAO_PANIC_CONTACT;
+    private static CurrentUserDao DAO_CURRENT_USER;
 
     public static void initialize(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "dev-profile-app-db-v1.0", null);
@@ -25,6 +29,7 @@ public class DaoHelper {
         DaoMaster daoMaster = new DaoMaster(DB);
         DaoSession daoSession = daoMaster.newSession();
         DAO_PANIC_CONTACT = daoSession.getPanicContactDao();
+        DAO_CURRENT_USER = daoSession.getCurrentUserDao();
     }
 
     public static void addContact(PanicContact panicContact) {
@@ -50,6 +55,24 @@ public class DaoHelper {
 
     public static long getPanicContactSize() {
         return DAO_PANIC_CONTACT.count();
+    }
+
+    public static boolean haCurrentUser() {
+        return DAO_CURRENT_USER.loadAll().size() > 0;
+    }
+
+    public static CurrentUser getCurrentUser() {
+        return DAO_CURRENT_USER.loadAll().get(0);
+    }
+
+    public static void saveCurrentUser(AuthResponse authResponse) {
+        DAO_CURRENT_USER.deleteAll();
+        final CurrentUser currentUser = new CurrentUser(null,authResponse.getId(),
+                authResponse.getCreatedAt(),authResponse.getUpdatedAt(),authResponse.getFirstName(),
+                authResponse.getLastName(),authResponse.getEmail(),authResponse.getAddress(),
+                authResponse.getContactNo(),authResponse.getStatus(),authResponse.getUserLevel(),
+                authResponse.getGender(), authResponse.getPicUrl(),authResponse.getToken());
+        DAO_CURRENT_USER.insert(currentUser);
     }
 }
 

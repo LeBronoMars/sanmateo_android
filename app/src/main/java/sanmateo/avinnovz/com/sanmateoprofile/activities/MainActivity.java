@@ -58,7 +58,7 @@ public class MainActivity extends BaseActivity {
         } else {
             LogHelper.log("pusher","service already running");
         }
-        LogHelper.log("token", currentUserSingleton.getAuthResponse().getToken());
+        LogHelper.log("token", currentUserSingleton.getCurrentUser().getToken());
     }
 
     private void animateBanners() {
@@ -105,10 +105,10 @@ public class MainActivity extends BaseActivity {
         navigationView.getHeaderView(0).setLayoutParams(params);
 
         navigationView.inflateMenu(R.menu.menu_side_drawer);
-        AppConstants.PICASSO.load(currentUserSingleton.getAuthResponse().getPicUrl())
+        AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
-        tvProfileName.setText(currentUserSingleton.getAuthResponse().getFirstName() + " " +
-                                    currentUserSingleton.getAuthResponse().getLastName());
+        tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
+                                    currentUserSingleton.getCurrentUser().getLastName());
     }
 
     private void initHomeMenu() {

@@ -14,6 +14,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
@@ -67,7 +68,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
             final AuthResponse authResponse = (AuthResponse)result;
-            currentUserSingleton.setAuthResponse(authResponse);
+            DaoHelper.saveCurrentUser(authResponse);
             startActivity(new Intent(this, AdminMainActivity.class));
             animateToLeft(this);
             finish();

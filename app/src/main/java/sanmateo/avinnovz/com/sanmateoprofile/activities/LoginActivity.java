@@ -11,7 +11,6 @@ import android.view.Display;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.widget.Button;
-import android.widget.TextView;
 
 import java.io.IOException;
 
@@ -24,12 +23,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
  * Created by rsbulanon on 6/22/16.
@@ -63,12 +62,15 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         } else {
             initialize();
         }
-
     }
 
     private void initialize() {
-        AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
-        apiRequestHelper = new ApiRequestHelper(this);
+        if (!DaoHelper.haCurrentUser()) {
+            AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
+            apiRequestHelper = new ApiRequestHelper(this);
+        } else {
+            moveToHome();
+        }
     }
 
     @OnClick(R.id.btnSignIn)
@@ -110,11 +112,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
                     authResponse.getUserLevel().equals("admin")) {
                 showSnackbar(btnSignIn, AppConstants.WARN_INVALID_ACCOUNT);
             } else {
-                final CurrentUserSingleton currentUserSingleton = CurrentUserSingleton.newInstance();
-                currentUserSingleton.setAuthResponse(authResponse);
-                startActivity(new Intent(this, NewHomeActivity.class));
-                animateToLeft(this);
-                finish();
+                DaoHelper.saveCurrentUser(authResponse);
+                moveToHome();
             }
         }
     }
@@ -213,5 +212,11 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     protected void onDestroy() {
         mp.stop();
         super.onDestroy();
+    }
+
+    private void moveToHome() {
+        startActivity(new Intent(this, NewHomeActivity.class));
+        animateToLeft(this);
+        finish();
     }
 }
