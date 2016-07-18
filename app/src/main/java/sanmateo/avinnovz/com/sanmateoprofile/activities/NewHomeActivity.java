@@ -230,6 +230,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         final String email = currentUserSingleton.getCurrentUser().getEmail();
         apiRequestHelper.changePassword(token, email, oldPassword, newPassword);
     }
+
     private void initNews() {
         final NewsAdapter newsAdapter = new NewsAdapter(this, newsSingleton.getAllNews());
         newsAdapter.setOnSelectNewsListener(new NewsAdapter.OnSelectNewsListener() {
