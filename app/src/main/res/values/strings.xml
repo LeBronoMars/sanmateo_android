@@ -151,7 +151,10 @@
             \n\nI hope this website will help you get to know San Mateo and what we have to offer. Welcome to our town, we are happy to share it with you!\n\n
     </string>
 
-    <string name="new_and_events">News and Events</string>
+    <string name="new_and_events">Latest News and Events</string>
     <string name="exclamation">!</string>
     <string name="message_alert_notifications">Message Alerts / Notifications</string>
+
+    <string name="tb_header_san_mateo">San Mateo</string>
+    <string name="tb_header_tayo_naman"><i>, Tayo Naman!</i></string>
 </resources>

@@ -72,8 +72,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     @BindView(R.id.rvHomeMenu) RecyclerView rvHomeMenu;
     @BindView(R.id.appBarLayout) AppBarLayout appBarLayout;
     @BindView(R.id.tvNotification) TextView tvNotification;
+    @BindView(R.id.llHeader) LinearLayout llHeader;
     @BindString(R.string.disaster_mgmt) String headerDisasterManagement;
-    @BindString(R.string.message_alert_notifications) String headerAlertNofications;
+    @BindString(R.string.message_alert_notifications) String headerAlertNotifications;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
@@ -110,6 +111,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         }
 
         initAppBarLayoutListener();
+
+        /** display notification if there are any */
+        if (PrefsHelper.getBoolean(this,"has_notification")) {
+            tvNotification.setVisibility(View.VISIBLE);
+        }
     }
 
     private void animateBanners() {
@@ -168,19 +174,19 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         setPanicContacts();
                         break;
                     case R.id.menu_incident_report:
-                        moveToOtherAcitivity(IncidentsActivity.class);
+                        moveToOtherActivity(IncidentsActivity.class);
                         break;
                     case R.id.menu_information:
-                        moveToOtherAcitivity(InformationActivity.class);
+                        moveToOtherActivity(InformationActivity.class);
                         break;
                     case R.id.menu_map:
-                        moveToOtherAcitivity(NewMapActivty.class);
+                        moveToOtherActivity(NewMapActivty.class);
                         break;
                     case R.id.menu_directories:
-                        moveToOtherAcitivity(DirectoriesActivity.class);
+                        moveToOtherActivity(DirectoriesActivity.class);
                         break;
                     case R.id.menu_gallery:
-                        moveToOtherAcitivity(GalleryActivity.class);
+                        moveToOtherActivity(GalleryActivity.class);
                         break;
                     /*case R.id.menu_news_events:
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
@@ -203,15 +209,15 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                             @Override
                             public void onSelectedMenu(int position) {
                                 if (position == 0) {
-                                    moveToOtherAcitivity(PublicAnnouncementsActivity.class);
+                                    moveToOtherActivity(PublicAnnouncementsActivity.class);
                                 } else if (position == 1) {
-                                    moveToOtherAcitivity(TyphoonWatchActivity.class);
+                                    moveToOtherActivity(TyphoonWatchActivity.class);
                                 } else if (position == 2) {
-                                    moveToOtherAcitivity(WaterLevelMonitoringActivity.class);
+                                    moveToOtherActivity(WaterLevelMonitoringActivity.class);
                                 } else if (position == 3) {
-                                    moveToOtherAcitivity(GlobalDisasterActivity.class);
+                                    moveToOtherActivity(GlobalDisasterActivity.class);
                                 } else if (position == 4) {
-                                    moveToOtherAcitivity(HotlinesActivity.class);
+                                    moveToOtherActivity(HotlinesActivity.class);
                                 }
                             }
 
@@ -388,7 +394,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         }
     }
 
-    private void moveToOtherAcitivity(Class clz) {
+    private void moveToOtherActivity(Class clz) {
         startActivity(new Intent(this, clz));
         animateToLeft(this);
     }
@@ -415,7 +421,13 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         appBarLayout.addOnOffsetChangedListener(new AppBarStateListener() {
             @Override
             public void onStateChanged(AppBarLayout appBarLayout, State state) {
-                LogHelper.log("toolbar","state --> " + state.name());
+                if (state.name().equals("COLLAPSED")) {
+                    llHeader.setVisibility(View.VISIBLE);
+                } else {
+                    if (llHeader.isShown()) {
+                        llHeader.setVisibility(View.INVISIBLE);
+                    }
+                }
             }
         });
     }
@@ -426,18 +438,19 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         menu.add("Public Announcements");
         menu.add("Water Level Monitoring");
         final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
-                .newInstance(headerAlertNofications,menu);
+                .newInstance(headerAlertNotifications,menu);
         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
             @Override
             public void onSelectedMenu(int position) {
                 if (tvNotification.isShown()) {
                     tvNotification.setVisibility(View.INVISIBLE);
+                    PrefsHelper.setBoolean(NewHomeActivity.this,"has_notifications",false);
                 }
                 fragment.dismiss();
                 if (position == 0) {
-                    moveToOtherAcitivity(PublicAnnouncementsActivity.class);
+                    moveToOtherActivity(PublicAnnouncementsActivity.class);
                 } else {
-                    moveToOtherAcitivity(WaterLevelMonitoringActivity.class);
+                    moveToOtherActivity(WaterLevelMonitoringActivity.class);
                 }
             }
 
