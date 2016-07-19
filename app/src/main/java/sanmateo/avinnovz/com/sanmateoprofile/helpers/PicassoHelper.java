@@ -18,7 +18,7 @@ public class PicassoHelper {
 
     public static void loadImageFromURL(final String url,final int size,final int color,
                                         final ImageView imageView, final ProgressBar progressBar) {
-        LogHelper.log("load pic url ---> " + url);
+        LogHelper.log("pic","load pic url ---> " + url);
         progressBar.setVisibility(View.VISIBLE);
         AppConstants.PICASSO.load(url)
                 .placeholder(R.drawable.placeholder_image)

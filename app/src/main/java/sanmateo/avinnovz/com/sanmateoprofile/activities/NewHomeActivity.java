@@ -512,14 +512,12 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     public void onClick(DialogInterface dialog, int which) {
                         switch (which) {
                             case R.id.open_gallery:
-                                drawerLayout.closeDrawers();
                                 final Intent intent = new Intent();
                                 intent.setType("image/*");
                                 intent.setAction(Intent.ACTION_GET_CONTENT);//
                                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
                                 break;
                             case R.id.open_camera:
-                                drawerLayout.closeDrawers();
                                 final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
                                 try {
                                     fileToUpload = createImageFile();
