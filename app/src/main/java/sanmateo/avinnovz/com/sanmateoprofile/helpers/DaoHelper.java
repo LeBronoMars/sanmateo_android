@@ -74,5 +74,9 @@ public class DaoHelper {
                 authResponse.getGender(), authResponse.getPicUrl(),authResponse.getToken());
         DAO_CURRENT_USER.insert(currentUser);
     }
+
+    public static void updateCurrentUser(final CurrentUser currentUser) {
+        DAO_CURRENT_USER.update(currentUser);
+    }
 }
 

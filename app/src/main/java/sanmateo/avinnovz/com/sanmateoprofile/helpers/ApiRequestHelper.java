@@ -457,4 +457,26 @@ public class ApiRequestHelper {
                     }
                 });
     }
+
+    public void changeProfilePic(final String token, final int userId, final String newPicUrl) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC);
+        Observable<GenericMessage> observable = AppConstants.API_INTERFACE.changeProfilePic(token,userId,newPicUrl);
+        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+                .subscribe(new Subscriber<GenericMessage>() {
+                    @Override
+                    public void onCompleted() {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC, e);
+                    }
+
+                    @Override
+                    public void onNext(GenericMessage genericMessage) {
+                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC, genericMessage);
+                    }
+                });
+    }
 }

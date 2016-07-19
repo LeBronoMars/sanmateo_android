@@ -16,12 +16,27 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
  */
 public class PicassoHelper {
 
-    public static void loadImageFromURL(String url, int size, int color, ImageView imageView) {
+    public static void loadImageFromURL(final String url,final int size,final int color,
+                                        final ImageView imageView, final ProgressBar progressBar) {
+        LogHelper.log("pic","load pic url ---> " + url);
+        progressBar.setVisibility(View.VISIBLE);
         AppConstants.PICASSO.load(url)
                 .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .resize(size,size)
-                .transform(new CircleTransform(color, 1)).into(imageView);
+                .transform(new CircleTransform(color, 1)).into(imageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                progressBar.setVisibility(View.GONE);
+                LogHelper.log("pic","profile pic loaded successfully");
+            }
+
+            @Override
+            public void onError() {
+                progressBar.setVisibility(View.GONE);
+                LogHelper.log("pic","profile pic loaded unable to load");
+            }
+        });
     }
 
     public static void loadImageFromDrawable(int drawable, ImageView imageView) {

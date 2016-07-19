@@ -43,6 +43,7 @@ public class AppConstants {
     public static final String ACTION_POST_WATER_LEVEL_NOTIFS = "create water level notifications";
     public static final String ACTION_POST_WATER_LEVEL_NOTIFS_LATEST = "create water level notifications latest";
     public static final String ACTION_PUT_CHANGE_PASSWORD = "change password";
+    public static final String ACTION_PUT_CHANGE_PROFILE_PIC = "change profile pic";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";
@@ -63,4 +64,7 @@ public class AppConstants {
     public static final String CATEGORY_MUNICIPAL = "Municipal Government";
     public static final String CATEGORY_BARANGAY = "Barangay Government";
 
+    /** aws s3 buckets */
+    public static final String BUCKET_INCIDENTS = "sanmateoprofileapp/incidents";
+    public static final String BUCKET_PROFILE_PIC = "sanmateoprofileapp/profilepics";
 }

@@ -145,7 +145,7 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         if (resultCode == activity.RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
                 final String fileName = "incident_image_"+ activity.getSDF().format(Calendar.getInstance().getTime());
-                filesToUpload.add(activity.getFile(data.getData(),fileName));
+                filesToUpload.add(activity.getFile(data.getData(),fileName+".jpg"));
             } else {
                 LogHelper.log("s3","captured image absolute file --> " + fileToUpload.getAbsolutePath());
                 filesToUpload.add(activity.rotateBitmap(fileUri.getPath()));

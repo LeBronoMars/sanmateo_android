@@ -24,7 +24,6 @@ public class AmazonS3Helper {
     private AmazonS3Client amazonS3Client;
     private TransferUtility transferUtility;
     private CognitoCachingCredentialsProvider sCredProvider;
-    private static final String BUCKET_NAME = "sanmateoprofileapp/incidents";
     private static final String JOBS = "jobs";
 
     public AmazonS3Helper(final Context context) {
@@ -42,19 +41,19 @@ public class AmazonS3Helper {
         return sCredProvider;
     }
 
-    public TransferObserver uploadImage(final Intent data) {
+    public TransferObserver uploadImage(final String bucketName, final Intent data) {
         final Uri selectedImageUri = data.getData();
         final File file = new File(getPath(selectedImageUri));
         return transferUtility.upload(
-                BUCKET_NAME,          /* The bucket to upload to */
+                bucketName,          /* The bucket to upload to */
                 file.getName(),       /* The key for the uploaded object */
                 file                  /* The file where the data to upload exists */
         );
     }
 
-    public TransferObserver uploadImage(final File file) {
+    public TransferObserver uploadImage(final String bucketName, final File file) {
         return transferUtility.upload(
-                BUCKET_NAME,          /* The bucket to upload to */
+                bucketName,          /* The bucket to upload to */
                 file.getName(),       /* The key for the uploaded object */
                 file                  /* The file where the data to upload exists */
         );
@@ -71,7 +70,7 @@ public class AmazonS3Helper {
         return s;
     }
 
-    public String getResourceUrl(final String fileName) {
-        return amazonS3Client.getResourceUrl(BUCKET_NAME,fileName);
+    public String getResourceUrl(final String bucketName, final String fileName) {
+        return amazonS3Client.getResourceUrl(bucketName,fileName);
     }
 }

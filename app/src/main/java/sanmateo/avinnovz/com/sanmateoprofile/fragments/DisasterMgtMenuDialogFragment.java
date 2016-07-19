@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -29,14 +30,19 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
  */
 public class DisasterMgtMenuDialogFragment extends DialogFragment {
 
+    @BindView(R.id.tvHeader) TextView tvHeader;
     @BindView(R.id.lvDisasterMenu) ListView lvDisasterMenu;
     private View view;
     private Dialog mDialog;
     private BaseActivity activity;
     private OnSelectDisasterMenuListener onSelectDisasterMenuListener;
+    private String header;
+    private ArrayList<String> menu;
 
-    public static DisasterMgtMenuDialogFragment newInstance() {
+    public static DisasterMgtMenuDialogFragment newInstance(final String header, final ArrayList<String> menu) {
         final DisasterMgtMenuDialogFragment fragment = new DisasterMgtMenuDialogFragment();
+        fragment.header = header;
+        fragment.menu = menu;
         return fragment;
     }
 
@@ -54,16 +60,7 @@ public class DisasterMgtMenuDialogFragment extends DialogFragment {
         ButterKnife.bind(this, view);
         activity = (BaseActivity) getActivity();
         mDialog = new Dialog(getActivity());
-
-        final ArrayList<String> menu = new ArrayList<>();
-        menu.add("Public Announcements");
-        menu.add("Typhoon Watch");
-        menu.add("Water Level Monitoring");
-        menu.add("Global Disaster Monitoring");
-        menu.add("Emergency Numbers");
-        menu.add("Emergency Flashlight");
-        menu.add("SOS Signal");
-
+        tvHeader.setText(header);
         final DisasterMenuAdapter adapter = new DisasterMenuAdapter(getActivity(),menu);
         lvDisasterMenu.setAdapter(adapter);
         lvDisasterMenu.setOnItemClickListener(new AdapterView.OnItemClickListener() {
