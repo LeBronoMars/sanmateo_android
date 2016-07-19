@@ -11,7 +11,8 @@ import java.util.ArrayList;
  */
 public class MapPagerAdapter extends FragmentPagerAdapter {
 
-    private String tabTitles[] = new String[] {"Municipal Buildings", "Tourist Spots", "Govt Agencies" };
+    private String tabTitles[] = new String[] {"Local Government Office", "National Government Office",
+            "Tourist & Leisure Place" };
     private ArrayList<Fragment> fragments;
 
     public MapPagerAdapter(FragmentManager fm, ArrayList<Fragment> fragments) {

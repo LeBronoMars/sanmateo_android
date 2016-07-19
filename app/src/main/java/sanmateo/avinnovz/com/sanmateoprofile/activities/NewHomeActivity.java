@@ -162,7 +162,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         moveToOtherAcitivity(InformationActivity.class);
                         break;
                     case R.id.menu_map:
-                        moveToOtherAcitivity(NewMapActivty.class);
+                        moveToOtherAcitivity(MapActivity.class);
                         break;
                     case R.id.menu_directories:
                         moveToOtherAcitivity(DirectoriesActivity.class);

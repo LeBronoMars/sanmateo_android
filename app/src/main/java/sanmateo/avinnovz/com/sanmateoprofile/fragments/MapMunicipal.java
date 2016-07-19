@@ -15,6 +15,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
 
@@ -23,7 +24,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty;
  */
 public class MapMunicipal extends Fragment implements GoogleMap.OnMarkerClickListener{
 
-    private NewMapActivty activity;
+    private BaseActivity activity;
     public SupportMapFragment mapMunicipal;
 
     public static MapMunicipal newInstance() {
@@ -32,7 +33,7 @@ public class MapMunicipal extends Fragment implements GoogleMap.OnMarkerClickLis
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        activity = (NewMapActivty) getActivity();
+        activity = (BaseActivity) getActivity();
         View view = inflater.inflate(R.layout.map_municipal, container, false);
         return view;
     }

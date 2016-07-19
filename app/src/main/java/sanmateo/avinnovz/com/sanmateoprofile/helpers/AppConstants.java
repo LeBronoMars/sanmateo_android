@@ -59,5 +59,8 @@ public class AppConstants {
     public static final String CATEGORY_RESORT = "Resort";
     public static final String CATEGORY_SHOPPING_MALL = "Shopping Mall";
     public static final String CATEGORY_AUTHENTIC_RESTAURANT = "Authentic Restaurant";
-    public static final String CATEGORY_HERITAGE_SITE = "Diocesan Shrine of Our Lady of Aranazu";
+    public static final String CATEGORY_HERITAGE_SITE = "Heritage Site";
+    public static final String CATEGORY_MUNICIPAL = "Municipal Government";
+    public static final String CATEGORY_BARANGAY = "Barangay Government";
+
 }

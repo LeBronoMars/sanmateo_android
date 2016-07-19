@@ -14,7 +14,7 @@ public class Location {
     private LatLng latLng;
     private String category;
 
-    public Location(String locationName, String locationAddress, String contactNo) {
+    /*public Location(String locationName, String locationAddress, String contactNo) {
         this.locationName = locationName;
         this.locationAddress = locationAddress;
         this.contactNo = contactNo;
@@ -26,7 +26,7 @@ public class Location {
         this.contactNo = contactNo;
         this.imageUrl = imageUrl;
         this.latLng = latLng;
-    }
+    }*/
 
     public Location(String locationName, String locationAddress, String contactNo, String imageUrl,
                     LatLng latLng, String category) {
