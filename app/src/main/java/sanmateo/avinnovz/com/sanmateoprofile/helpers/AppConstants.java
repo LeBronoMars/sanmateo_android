@@ -51,4 +51,13 @@ public class AppConstants {
     public static final String WARN_INVALID_EMAIL_FORMAT = "Invalid email format";
     public static final String WARN_CANT_GET_IMAGE = "We can't get your image. Please try again.";
     public static final String WARN_INVALID_ACCOUNT = "Invalid account!";
+
+    /** categories */
+    public static final String CATEGORY_PEACE_AND_SECURITY = "Peace & Security";
+    public static final String CATEGORY_SOCIAL_AND_DEVELOPMENT = "Social & Development Sector";
+    public static final String CATEGORY_HEALTH = "Health Sector";
+    public static final String CATEGORY_RESORT = "Resort";
+    public static final String CATEGORY_SHOPPING_MALL = "Shopping Mall";
+    public static final String CATEGORY_AUTHENTIC_RESTAURANT = "Authentic Restaurant";
+    public static final String CATEGORY_HERITAGE_SITE = "Diocesan Shrine of Our Lady of Aranazu";
 }
