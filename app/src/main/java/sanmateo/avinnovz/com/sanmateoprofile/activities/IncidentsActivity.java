@@ -263,11 +263,12 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     private void uploadImageToS3() {
         if (filesToUploadCtr < filesToUpload.size()) {
-            amazonS3Helper.uploadImage(filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
+            amazonS3Helper.uploadImage(AppConstants.BUCKET_INCIDENTS,filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {
                     if (state.name().equals("COMPLETED")) {
-                        uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(filesToUpload.get(filesToUploadCtr).getName())+"###");
+                        uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(
+                                AppConstants.BUCKET_INCIDENTS,filesToUpload.get(filesToUploadCtr).getName())+"###");
                         if (filesToUploadCtr < filesToUpload.size()) {
                             filesToUploadCtr++;
                             uploadImageToS3();
