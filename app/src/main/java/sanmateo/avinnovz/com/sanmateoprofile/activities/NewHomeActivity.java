@@ -113,7 +113,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         initAppBarLayoutListener();
 
         /** display notification if there are any */
-        if (PrefsHelper.getBoolean(this,"has_notification")) {
+        if (PrefsHelper.getBoolean(this,"has_notifications")) {
             tvNotification.setVisibility(View.VISIBLE);
         }
     }
