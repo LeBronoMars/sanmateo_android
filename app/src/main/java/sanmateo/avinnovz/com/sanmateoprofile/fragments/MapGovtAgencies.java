@@ -51,14 +51,14 @@ public class MapGovtAgencies extends Fragment implements GoogleMap.OnMarkerClick
     @Override
     public void onStart() {
         super.onStart();
-        mapGovt.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        /*mapGovt.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mapGovt.getMap().getUiSettings().setScrollGesturesEnabled(true);
         LatLng latLng = new LatLng( 14.696123, 121.117771);
         mapGovt.getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mapGovt.getMap().animateCamera(CameraUpdateFactory.zoomTo(12));
         mapGovt.getMap().setOnMarkerClickListener(this);
         activity.addMapMarker(mapGovt.getMap(), 14.695486, 121.118016,
-                "Police Station", "San Mateo", R.drawable.police);
+                "Police Station", "San Mateo", R.drawable.police);*/
     }
 
     @Override

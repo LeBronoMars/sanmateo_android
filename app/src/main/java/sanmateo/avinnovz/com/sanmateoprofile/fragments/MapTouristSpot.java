@@ -51,14 +51,14 @@ public class MapTouristSpot extends Fragment implements GoogleMap.OnMarkerClickL
     @Override
     public void onStart() {
         super.onStart();
-        mapTourist.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        /*mapTourist.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mapTourist.getMap().getUiSettings().setScrollGesturesEnabled(true);
         LatLng latLng = new LatLng(14.696123, 121.117771);
         mapTourist.getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mapTourist.getMap().animateCamera(CameraUpdateFactory.zoomTo(12));
         mapTourist.getMap().setOnMarkerClickListener(this);
         activity.addMapMarker(mapTourist.getMap(), 14.683345, 121.113245,
-                "Ciudad Christhia Resort", "",R.drawable.resort);
+                "Ciudad Christhia Resort", "",R.drawable.resort);*/
     }
 
     @Override

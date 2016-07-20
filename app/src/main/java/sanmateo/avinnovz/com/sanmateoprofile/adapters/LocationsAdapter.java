@@ -74,7 +74,7 @@ public class LocationsAdapter extends RecyclerView.Adapter<LocationsAdapter.View
                 if (!location.getImageUrl().equals("")) {
                     activity.showImage(location.getImageUrl());
                 } else {
-                    activity.showToast("No image found...");
+                    activity.showToast("Image not yet available...");
                 }
             }
         });

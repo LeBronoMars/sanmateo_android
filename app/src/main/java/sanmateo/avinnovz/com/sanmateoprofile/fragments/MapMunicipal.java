@@ -53,14 +53,14 @@ public class MapMunicipal extends Fragment implements GoogleMap.OnMarkerClickLis
     public void onStart() {
         super.onStart();
 
-        mapMunicipal.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
+        /*mapMunicipal.getMap().setMapType(GoogleMap.MAP_TYPE_NORMAL);
         mapMunicipal.getMap().getUiSettings().setScrollGesturesEnabled(true);
         LatLng latLng = new LatLng( 14.696123, 121.117771);
         mapMunicipal.getMap().moveCamera(CameraUpdateFactory.newLatLng(latLng));
         mapMunicipal.getMap().animateCamera(CameraUpdateFactory.zoomTo(11));
         mapMunicipal.getMap().setOnMarkerClickListener(this);
         activity.addMapMarker(mapMunicipal.getMap(), 14.696123, 121.117771,
-                "Municipal Hall", "San Mateo",R.drawable.hall);
+                "Municipal Hall", "San Mateo",R.drawable.hall);*/
     }
 
     @Override
