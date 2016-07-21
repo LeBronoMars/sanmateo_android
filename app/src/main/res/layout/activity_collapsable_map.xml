@@ -9,7 +9,7 @@
         android:layout_height="match_parent">
 
         <android.support.design.widget.AppBarLayout
-            android:id="@+id/appbar_layout"
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="256dp"
             app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
@@ -94,12 +94,12 @@
             android:layout_marginRight="@dimen/_10sdp"
             android:src="@drawable/back_arrow"/>
 
-        <TextView
+        <!--<TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/menu_map"
             android:textColor="@color/colorPrimary"
-            android:textSize="@dimen/_22sdp" />
+            android:textSize="@dimen/_22sdp" />-->
 
     </LinearLayout>
 
