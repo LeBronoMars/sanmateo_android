@@ -48,7 +48,9 @@ import java.util.Date;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -353,6 +355,43 @@ public class BaseActivity extends AppCompatActivity {
             }
         }
         return false;
+    }
+
+    public void moveToOtherActivity(Class clz) {
+        startActivity(new Intent(this, clz));
+        animateToLeft(this);
+    }
+
+    public void setPanicContacts() {
+        final PanicSettingsDialogFragment panicSettingsFragment = PanicSettingsDialogFragment.newInstance();
+        panicSettingsFragment.setOnPanicContactListener(new PanicSettingsDialogFragment.OnPanicContactListener() {
+            @Override
+            public void onDismiss() {
+                panicSettingsFragment.dismiss();
+                initPanicContact();
+            }
+        });
+        panicSettingsFragment.show(getSupportFragmentManager(),"panic");
+    }
+
+    public void initPanicContact() {
+        if (PrefsHelper.getInt(this, "panicContactSize") == 0) {
+            LogHelper.log("book","show");
+            showConfirmDialog("", "Emergency Contacts", "Please add at least one contact person" +
+                    " for emergency purposes", "Ok", "", new OnConfirmDialogListener() {
+                @Override
+                public void onConfirmed(String action) {
+                    setPanicContacts();
+                }
+
+                @Override
+                public void onCancelled(String action) {
+
+                }
+            });
+        } else {
+            LogHelper.log("book","do not show");
+        }
     }
 }
 

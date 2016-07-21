@@ -78,5 +78,9 @@ public class DaoHelper {
     public static void updateCurrentUser(final CurrentUser currentUser) {
         DAO_CURRENT_USER.update(currentUser);
     }
+
+    public static void deleteCurrentUser() {
+        DAO_CURRENT_USER.deleteAll();
+    }
 }
 

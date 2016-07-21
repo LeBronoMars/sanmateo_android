@@ -267,6 +267,23 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     case R.id.menu_change_pass:
                         changePassword();
                         break;
+                    case R.id.menu_logout:
+                        showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
+                                "Yes", "No", new OnConfirmDialogListener() {
+                                    @Override
+                                    public void onConfirmed(String action) {
+                                        DaoHelper.deleteCurrentUser();
+                                        startActivity(new Intent(NewHomeActivity.this, LoginActivity.class));
+                                        finish();
+                                        animateToRight(NewHomeActivity.this);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(String action) {
+
+                                    }
+                                });
+                        break;
                 }
                 drawerLayout.closeDrawers();
                 return true;
@@ -414,43 +431,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
             }
         }
-    }
-
-    private void initPanicContact() {
-        if (PrefsHelper.getInt(this, "panicContactSize") == 0) {
-            LogHelper.log("book","show");
-            showConfirmDialog("", "Emergency Contacts", "Please add at least one contact person" +
-                    " for emergency purposes", "Ok", "", new OnConfirmDialogListener() {
-                @Override
-                public void onConfirmed(String action) {
-                    setPanicContacts();
-                }
-
-                @Override
-                public void onCancelled(String action) {
-
-                }
-            });
-        } else {
-            LogHelper.log("book","do not show");
-        }
-    }
-
-    private void moveToOtherActivity(Class clz) {
-        startActivity(new Intent(this, clz));
-        animateToLeft(this);
-    }
-
-    public void setPanicContacts() {
-        final PanicSettingsDialogFragment panicSettingsFragment = PanicSettingsDialogFragment.newInstance();
-        panicSettingsFragment.setOnPanicContactListener(new PanicSettingsDialogFragment.OnPanicContactListener() {
-            @Override
-            public void onDismiss() {
-                panicSettingsFragment.dismiss();
-                initPanicContact();
-            }
-        });
-        panicSettingsFragment.show(getSupportFragmentManager(),"panic");
     }
 
     @OnClick(R.id.ivMayorImage)

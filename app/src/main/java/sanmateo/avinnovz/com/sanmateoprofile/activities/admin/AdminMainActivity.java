@@ -12,6 +12,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -19,19 +20,33 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.DirectoriesActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.GalleryActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.GlobalDisasterActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.HotlinesActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.InformationActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.LoginActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.TyphoonWatchActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.WaterLevelMonitoringActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -49,6 +64,7 @@ public class AdminMainActivity extends BaseActivity {
     @BindView(R.id.tvNotification) TextView tvNotification;
     @BindView(R.id.llHeader) LinearLayout llHeader;
     @BindView(R.id.ivMayorImage) ImageView ivMayorImage;
+    @BindString(R.string.disaster_mgmt) String headerDisasterManagement;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
 
@@ -115,6 +131,96 @@ public class AdminMainActivity extends BaseActivity {
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         navigationView.getHeaderView(0).setLayoutParams(params);
 
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_panic_emergency:
+                        setPanicContacts();
+                        break;
+                    case R.id.menu_incident_report:
+                        moveToOtherActivity(IncidentsActivity.class);
+                        break;
+                    case R.id.menu_information:
+                        moveToOtherActivity(InformationActivity.class);
+                        break;
+                    case R.id.menu_map:
+                        moveToOtherActivity(MapActivity.class);
+                        break;
+                    case R.id.menu_directories:
+                        moveToOtherActivity(DirectoriesActivity.class);
+                        break;
+                    case R.id.menu_gallery:
+                        moveToOtherActivity(GalleryActivity.class);
+                        break;
+                    /*case R.id.menu_news_events:
+                        moveToOtherAcitivity(NewsEventsManagementActivity.class);
+                        break;*/
+                    case R.id.menu_social_media:
+                        showToast("social media");
+                        break;
+                    case R.id.menu_disaster_management:
+                        final ArrayList<String> menu = new ArrayList<>();
+                        menu.add("Public Announcements");
+                        menu.add("Typhoon Watch");
+                        menu.add("Water Level Monitoring");
+                        menu.add("Global Disaster Monitoring");
+                        menu.add("Emergency Numbers");
+                        menu.add("Emergency Flashlight");
+                        menu.add("SOS Signal");
+                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
+                                .newInstance(headerDisasterManagement,menu);
+                        fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
+                            @Override
+                            public void onSelectedMenu(int position) {
+                                if (position == 0) {
+                                    moveToOtherActivity(PublicAnnouncementsActivity.class);
+                                } else if (position == 1) {
+                                    moveToOtherActivity(TyphoonWatchActivity.class);
+                                } else if (position == 2) {
+                                    moveToOtherActivity(WaterLevelMonitoringActivity.class);
+                                } else if (position == 3) {
+                                    moveToOtherActivity(GlobalDisasterActivity.class);
+                                } else if (position == 4) {
+                                    moveToOtherActivity(HotlinesActivity.class);
+                                }
+                            }
+
+                            @Override
+                            public void onClose() {
+                                fragment.dismiss();
+                            }
+                        });
+                        fragment.show(getFragmentManager(),"disaster menu");
+                        break;
+                    case R.id.menu_contact_us:
+                        showToast("contact us");
+                        break;
+                    case R.id.menu_change_pass:
+                        showToast("Not yet available");
+                        break;
+                    case R.id.menu_logout:
+                        showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
+                                "Yes", "No", new OnConfirmDialogListener() {
+                                    @Override
+                                    public void onConfirmed(String action) {
+                                        DaoHelper.deleteCurrentUser();
+                                        startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
+                                        finish();
+                                        animateToRight(AdminMainActivity.this);
+                                    }
+
+                                    @Override
+                                    public void onCancelled(String action) {
+
+                                    }
+                                });
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
+            }
+        });
         AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
         tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +

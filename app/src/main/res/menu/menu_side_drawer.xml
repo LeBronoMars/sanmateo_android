@@ -54,4 +54,11 @@
         android:id="@+id/menu_change_pass"
         android:title="@string/menu_change_pass"
         android:icon="@drawable/menu_padlock"/>
+
+    <item
+        android:id="@+id/menu_logout"
+        android:title="@string/menu_logout"
+        android:icon="@drawable/menu_logout"/>
+
+
 </menu>

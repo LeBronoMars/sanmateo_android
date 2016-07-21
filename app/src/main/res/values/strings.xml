@@ -121,6 +121,7 @@
     <string name="menu_disaster_management">Disaster Management</string>
     <string name="menu_contact_us">Contact Us</string>
     <string name="menu_change_pass">Change Password</string>
+    <string name="menu_logout">Log Out</string>
 
     <!-- other labels -->
     <string name="change_password_header">Change password</string>
