@@ -52,10 +52,10 @@
                     <RelativeLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingTop="@dimen/_10sdp"
                         android:paddingBottom="@dimen/_10sdp"
+                        android:paddingLeft="@dimen/_5sdp"
                         android:paddingRight="@dimen/_5sdp"
-                        android:paddingLeft="@dimen/_5sdp">
+                        android:paddingTop="@dimen/_10sdp">
 
                         <LinearLayout
                             android:id="@+id/llHeader"
@@ -68,31 +68,31 @@
                                 android:layout_width="@dimen/_25sdp"
                                 android:layout_height="@dimen/_25sdp"
                                 android:layout_marginRight="@dimen/_10sdp"
-                                android:src="@drawable/san_mateo_logo"/>
+                                android:src="@drawable/san_mateo_logo" />
 
                             <TextView
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:textColor="@android:color/white"
                                 fontPath="fonts/Roboto-Medium.ttf"
-                                android:textSize="@dimen/_13sdp"
-                                android:text="@string/tb_header_san_mateo"/>
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/tb_header_san_mateo"
+                                android:textColor="@android:color/white"
+                                android:textSize="@dimen/_13sdp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
+                                android:text="@string/tb_header_tayo_naman"
                                 android:textColor="@android:color/white"
-                                android:textSize="@dimen/_13sdp"
-                                android:text="@string/tb_header_tayo_naman"/>
+                                android:textSize="@dimen/_13sdp" />
 
                         </LinearLayout>
 
                         <RelativeLayout
                             android:id="@+id/rlNotifications"
-                            android:clickable="true"
                             android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_alignParentRight="true"
-                            android:layout_height="wrap_content">
+                            android:clickable="true">
 
                             <ImageView
                                 android:layout_width="@dimen/_35sdp"
@@ -129,22 +129,29 @@
             android:orientation="vertical"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
-            <TextView
-                fontPath="fonts/Roboto-Medium.ttf"
+            <LinearLayout
+                android:id="@+id/llLatestNewsAndEvents"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="@dimen/_5sdp"
-                android:text="@string/new_and_events"
-                android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_18sdp" />
+                android:orientation="vertical">
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="3px"
-                android:layout_marginBottom="@dimen/_3sdp"
-                android:layout_marginLeft="@dimen/_5sdp"
-                android:layout_marginRight="@dimen/_5sdp"
-                android:background="@color/colorPrimary" />
+                <TextView
+                    fontPath="fonts/Roboto-Medium.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/_5sdp"
+                    android:text="@string/new_and_events"
+                    android:textColor="@color/colorPrimary"
+                    android:textSize="@dimen/_18sdp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="3px"
+                    android:layout_marginBottom="@dimen/_3sdp"
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:background="@color/colorPrimary" />
+            </LinearLayout>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rvHomeMenu"

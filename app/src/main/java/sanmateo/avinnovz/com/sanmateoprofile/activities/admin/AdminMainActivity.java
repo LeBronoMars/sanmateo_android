@@ -2,6 +2,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
@@ -42,6 +44,11 @@ public class AdminMainActivity extends BaseActivity {
     @BindView(R.id.viewPager) AutoScrollViewPager viewPager;
     @BindView(R.id.drawerLayout) DrawerLayout drawerLayout;
     @BindView(R.id.rvHomeMenu) RecyclerView rvHomeMenu;
+    @BindView(R.id.llLatestNewsAndEvents) LinearLayout llLatestNewsAndEvents;
+    @BindView(R.id.appBarLayout) AppBarLayout appBarLayout;
+    @BindView(R.id.tvNotification) TextView tvNotification;
+    @BindView(R.id.llHeader) LinearLayout llHeader;
+    @BindView(R.id.ivMayorImage) ImageView ivMayorImage;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
 
@@ -61,6 +68,8 @@ public class AdminMainActivity extends BaseActivity {
         } else {
             LogHelper.log("pusher","service already running");
         }
+        llLatestNewsAndEvents.setVisibility(View.GONE);
+        initAppBarLayoutListener();
     }
 
     private void animateBanners() {
@@ -137,6 +146,21 @@ public class AdminMainActivity extends BaseActivity {
         });
         rvHomeMenu.setAdapter(adapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void initAppBarLayoutListener() {
+        appBarLayout.addOnOffsetChangedListener(new AppBarStateListener() {
+            @Override
+            public void onStateChanged(AppBarLayout appBarLayout, State state) {
+                if (state.name().equals("COLLAPSED")) {
+                    llHeader.setVisibility(View.VISIBLE);
+                } else {
+                    if (llHeader.isShown()) {
+                        llHeader.setVisibility(View.INVISIBLE);
+                    }
+                }
+            }
+        });
     }
 }
 
