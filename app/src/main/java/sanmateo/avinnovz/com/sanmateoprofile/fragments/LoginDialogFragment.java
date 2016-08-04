@@ -2,10 +2,12 @@ package sanmateo.avinnovz.com.sanmateoprofile.fragments;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -67,7 +69,6 @@ public class LoginDialogFragment extends DialogFragment {
     public void manageLogin() {
         final String email = etEmail.getText().toString().trim();
         final String password = etPassword.getText().toString().trim();
-
         if (email.isEmpty()) {
             activity.setError(etEmail, AppConstants.WARN_FIELD_REQUIRED);
         } else if (!activity.isValidEmail(email)) {
