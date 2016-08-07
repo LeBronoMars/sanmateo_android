@@ -144,8 +144,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     private void animateBanners() {
         final ArrayList<Fragment> fragments = new ArrayList<>();
         fragments.add(SanMateoBannerFragment.newInstance());
-        fragments.add(BannerFragment.newInstance(ContextCompat.getDrawable(this,R.drawable.banner1)));
-        fragments.add(BannerFragment.newInstance(ContextCompat.getDrawable(this,R.drawable.banner2)));
+        fragments.add(SanMateoBannerFragment.newInstance());
+        fragments.add(BannerFragment.newInstance(ContextCompat.getDrawable(this,R.drawable.image_1)));
+        fragments.add(BannerFragment.newInstance(ContextCompat.getDrawable(this,R.drawable.image_2)));
+        fragments.add(BannerFragment.newInstance(ContextCompat.getDrawable(this,R.drawable.image_3)));
         viewPager.setAdapter(new BannerAdapter(getSupportFragmentManager(), fragments));
         viewPager.setOffscreenPageLimit(fragments.size());
         viewPager.setInterval(2000);
