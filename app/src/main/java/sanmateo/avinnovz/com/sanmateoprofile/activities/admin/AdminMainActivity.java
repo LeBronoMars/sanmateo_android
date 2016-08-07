@@ -244,6 +244,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_news),"News/Events"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Public Announcements"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_water_level),"Water Level Monitoring"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_gallery),"Manage Gallery"));
 
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
@@ -257,6 +258,8 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                     startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
                 } else if (position == 3) {
                     startActivity(new Intent(AdminMainActivity.this, WaterLevelMonitoringActivity.class));
+                } else if (position == 4) {
+                    startActivity(new Intent(AdminMainActivity.this, ManageGalleryActivity.class));
                 }
                 animateToLeft(AdminMainActivity.this);
             }
