@@ -12,7 +12,6 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -142,96 +141,94 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         navigationView.inflateMenu(R.menu.menu_side_drawer);
         navigationView.getHeaderView(0).setLayoutParams(params);
 
-        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.menu_panic_emergency:
-                        setPanicContacts();
-                        break;
-                    case R.id.menu_incident_report:
-                        moveToOtherActivity(IncidentsActivity.class);
-                        break;
-                    case R.id.menu_information:
-                        moveToOtherActivity(InformationActivity.class);
-                        break;
-                    case R.id.menu_map:
-                        moveToOtherActivity(MapActivity.class);
-                        break;
-                    case R.id.menu_directories:
-                        moveToOtherActivity(DirectoriesActivity.class);
-                        break;
-                    case R.id.menu_gallery:
-                        moveToOtherActivity(GalleryActivity.class);
-                        break;
+        navigationView.setNavigationItemSelectedListener(item -> {
+            switch (item.getItemId()) {
+                case R.id.menu_panic_emergency:
+                    setPanicContacts();
+                    break;
+                case R.id.menu_incident_report:
+                    moveToOtherActivity(IncidentsActivity.class);
+                    break;
+                case R.id.menu_information:
+                    moveToOtherActivity(InformationActivity.class);
+                    break;
+                case R.id.menu_map:
+                    moveToOtherActivity(MapActivity.class);
+                    break;
+                case R.id.menu_directories:
+                    moveToOtherActivity(DirectoriesActivity.class);
+                    break;
+                case R.id.menu_gallery:
+                    moveToOtherActivity(GalleryActivity.class);
+                    break;
                     /*case R.id.menu_news_events:
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
                         break;*/
-                    case R.id.menu_social_media:
-                        showToast("social media");
-                        break;
-                    case R.id.menu_disaster_management:
-                        final ArrayList<String> menu = new ArrayList<>();
-                        menu.add("Public Announcements");
-                        menu.add("Typhoon Watch");
-                        menu.add("Water Level Monitoring");
-                        menu.add("Global Disaster Monitoring");
-                        menu.add("Emergency Numbers");
-                        menu.add("Emergency Flashlight");
-                        menu.add("SOS Signal");
-                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
-                                .newInstance(headerDisasterManagement,menu);
-                        fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
-                            @Override
-                            public void onSelectedMenu(int position) {
-                                if (position == 0) {
-                                    moveToOtherActivity(PublicAnnouncementsActivity.class);
-                                } else if (position == 1) {
-                                    moveToOtherActivity(TyphoonWatchActivity.class);
-                                } else if (position == 2) {
-                                    moveToOtherActivity(WaterLevelMonitoringActivity.class);
-                                } else if (position == 3) {
-                                    moveToOtherActivity(GlobalDisasterActivity.class);
-                                } else if (position == 4) {
-                                    moveToOtherActivity(HotlinesActivity.class);
+                case R.id.menu_social_media:
+                    showToast("social media");
+                    break;
+                case R.id.menu_disaster_management:
+                    final ArrayList<String> menu = new ArrayList<>();
+                    menu.add("Public Announcements");
+                    menu.add("Typhoon Watch");
+                    menu.add("Water Level Monitoring");
+                    menu.add("Global Disaster Monitoring");
+                    menu.add("Emergency Numbers");
+                    menu.add("Emergency Flashlight");
+                    menu.add("SOS Signal");
+                    final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
+                            .newInstance(headerDisasterManagement,menu);
+                    fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
+                        @Override
+                        public void onSelectedMenu(int position) {
+                            if (position == 0) {
+                                moveToOtherActivity(PublicAnnouncementsActivity.class);
+                            } else if (position == 1) {
+                                moveToOtherActivity(TyphoonWatchActivity.class);
+                            } else if (position == 2) {
+                                moveToOtherActivity(WaterLevelMonitoringActivity.class);
+                            } else if (position == 3) {
+                                moveToOtherActivity(GlobalDisasterActivity.class);
+                            } else if (position == 4) {
+                                moveToOtherActivity(HotlinesActivity.class);
+                            }
+                        }
+
+                        @Override
+                        public void onClose() {
+                            fragment.dismiss();
+                        }
+                    });
+                    fragment.show(getFragmentManager(),"disaster menu");
+                    break;
+                case R.id.menu_contact_us:
+                    showToast("contact us");
+                    break;
+                case R.id.menu_change_pass:
+                    changePassword();
+                    break;
+                case R.id.menu_logout:
+                    showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
+                            "Yes", "No", new OnConfirmDialogListener() {
+                                @Override
+                                public void onConfirmed(String action) {
+                                    DaoHelper.deleteCurrentUser();
+                                    startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
+                                    finish();
+                                    animateToRight(AdminMainActivity.this);
                                 }
-                            }
 
-                            @Override
-                            public void onClose() {
-                                fragment.dismiss();
-                            }
-                        });
-                        fragment.show(getFragmentManager(),"disaster menu");
-                        break;
-                    case R.id.menu_contact_us:
-                        showToast("contact us");
-                        break;
-                    case R.id.menu_change_pass:
-                        changePassword();
-                        break;
-                    case R.id.menu_logout:
-                        showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
-                                "Yes", "No", new OnConfirmDialogListener() {
-                                    @Override
-                                    public void onConfirmed(String action) {
-                                        DaoHelper.deleteCurrentUser();
-                                        startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
-                                        finish();
-                                        animateToRight(AdminMainActivity.this);
-                                    }
+                                @Override
+                                public void onCancelled(String action) {
 
-                                    @Override
-                                    public void onCancelled(String action) {
-
-                                    }
-                                });
-                        break;
-                }
-                drawerLayout.closeDrawers();
-                return true;
+                                }
+                            });
+                    break;
             }
+            drawerLayout.closeDrawers();
+            return true;
         });
+
         AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
                 .fit().centerCrop().into(ivProfileImage);
         tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
@@ -247,22 +244,19 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_gallery),"Manage Gallery"));
 
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
-        adapter.setOnSelectHomeMenuListener(new HomeMenuAdapter.OnSelectHomeMenuListener() {
-            @Override
-            public void onSelectedMenu(int position) {
-                if (position == 0) {
-                    startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
-                } else if (position == 1) {
-                    startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
-                } else if (position == 2) {
-                    startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
-                } else if (position == 3) {
-                    startActivity(new Intent(AdminMainActivity.this, WaterLevelMonitoringActivity.class));
-                } else if (position == 4) {
-                    startActivity(new Intent(AdminMainActivity.this, ManageGalleryActivity.class));
-                }
-                animateToLeft(AdminMainActivity.this);
+        adapter.setOnSelectHomeMenuListener(position -> {
+            if (position == 0) {
+                startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
+            } else if (position == 1) {
+                startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
+            } else if (position == 2) {
+                startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
+            } else if (position == 3) {
+                startActivity(new Intent(AdminMainActivity.this, WaterLevelMonitoringActivity.class));
+            } else if (position == 4) {
+                startActivity(new Intent(AdminMainActivity.this, ManageGalleryActivity.class));
             }
+            animateToLeft(AdminMainActivity.this);
         });
         rvHomeMenu.setAdapter(adapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
@@ -285,13 +279,9 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
 
     private void changePassword() {
         ChangePasswordDialogFragment fragment = ChangePasswordDialogFragment.newInstance();
-        fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
-            @Override
-            public void onConfirm(String oldPassword, String newPassword) {
-                apiRequestHelper.changePassword(token,currentUserSingleton.getCurrentUser().getEmail(),
-                        oldPassword,newPassword);
-            }
-        });
+        fragment.setOnChangePasswordListener((oldPassword, newPassword)
+                -> apiRequestHelper.changePassword(token,currentUserSingleton.getCurrentUser().getEmail(),
+                oldPassword,newPassword));
         fragment.show(getFragmentManager(),"chane password");
     }
 

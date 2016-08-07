@@ -39,6 +39,7 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
         apiRequestHelper.getPhotos(token);
         rvGalleries.setAdapter(new PhotosAdapter(this, photos));
         rvGalleries.setLayoutManager(new LinearLayoutManager(this));
+        setToolbarTitle("Manage Gallery");
     }
 
     @Override
