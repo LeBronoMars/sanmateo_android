@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.Response;
@@ -18,6 +19,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
@@ -308,6 +310,15 @@ public interface ApiInterface {
     Observable<GenericMessage> changeProfilePic(@Header("Authorization") String token,
                                               @Field("user_id") int userId,
                                               @Field("new_pic_url") String newPicUrl);
+
+    /**
+     * get all gallery photos
+     *
+     * @param token represents the user that trying to make the request
+     *
+     * */
+    @GET("/api/v1/galleries")
+    Observable<ArrayList<Photo>> getGalleryPhotos(@Header("Authorization") String token);
 }
 
 
