@@ -56,7 +56,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String[] requiredPermission = new String[]{
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
-                    android.Manifest.permission.READ_CONTACTS
+                    android.Manifest.permission.READ_CONTACTS,
+                    android.Manifest.permission.CAMERA
             };
             requestPermissions(requiredPermission, REQUEST_PERMISSIONS);
         } else {
@@ -137,9 +138,13 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
             case REQUEST_PERMISSIONS:
                 final boolean writeExternalPermitted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 final boolean readContactsPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                final boolean cameraPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+
                 LogHelper.log("res","write external --> " + writeExternalPermitted);
                 LogHelper.log("res","read contacts --> " + readContactsPermission);
-                if (writeExternalPermitted && readContactsPermission) {
+                LogHelper.log("res","camera  --> " + cameraPermission);
+
+                if (writeExternalPermitted && readContactsPermission && cameraPermission) {
                     LogHelper.log("res","must continue with initialization");
                     initialize();
                 } else {

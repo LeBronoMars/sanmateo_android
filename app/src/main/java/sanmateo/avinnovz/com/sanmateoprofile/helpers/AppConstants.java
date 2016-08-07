@@ -44,6 +44,7 @@ public class AppConstants {
     public static final String ACTION_POST_WATER_LEVEL_NOTIFS_LATEST = "create water level notifications latest";
     public static final String ACTION_PUT_CHANGE_PASSWORD = "change password";
     public static final String ACTION_PUT_CHANGE_PROFILE_PIC = "change profile pic";
+    public static final String ACTION_GET_PHOTOS = "get photos";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

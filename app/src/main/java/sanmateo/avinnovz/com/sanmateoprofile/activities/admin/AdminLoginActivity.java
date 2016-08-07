@@ -1,9 +1,11 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Point;
 import android.media.MediaPlayer;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Display;
 import android.view.SurfaceHolder;
@@ -19,6 +21,7 @@ import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.NewHomeActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -26,6 +29,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -42,6 +46,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     private MediaPlayer mp;
     private int video_bg = R.raw.login_bg;
     private ApiRequestHelper apiRequestHelper;
+    private static final int REQUEST_PERMISSIONS = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +60,17 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         mp = new MediaPlayer();
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            final String[] requiredPermission = new String[]{
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_CONTACTS,
+                    android.Manifest.permission.CAMERA
+            };
+            requestPermissions(requiredPermission, REQUEST_PERMISSIONS);
+        } else {
+            initialize();
+        }
     }
 
     @OnClick(R.id.btnSignIn)
@@ -87,9 +103,6 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final AuthResponse authResponse = (AuthResponse)result;
             DaoHelper.saveCurrentUser(authResponse);
-            startActivity(new Intent(this, AdminMainActivity.class));
-            animateToLeft(this);
-            finish();
         }
     }
 
@@ -148,5 +161,57 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
 
+    }
+
+    private void initialize() {
+        if (!DaoHelper.haCurrentUser()) {
+            AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
+            apiRequestHelper = new ApiRequestHelper(this);
+        } else {
+            moveToHome();
+        }
+    }
+
+    private void moveToHome() {
+        startActivity(new Intent(this, AdminMainActivity.class));
+        animateToLeft(this);
+        finish();
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,String[] permissions,int[] grantResults) {
+        LogHelper.log("res","ON REQUEST PERMISSION");
+        switch (requestCode) {
+            case REQUEST_PERMISSIONS:
+                final boolean writeExternalPermitted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
+                final boolean readContactsPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
+                final boolean cameraPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+
+                LogHelper.log("res","write external --> " + writeExternalPermitted);
+                LogHelper.log("res","read contacts --> " + readContactsPermission);
+                LogHelper.log("res","camera  --> " + cameraPermission);
+
+                if (writeExternalPermitted && readContactsPermission && cameraPermission) {
+                    LogHelper.log("res","must continue with initialization");
+                    initialize();
+                } else {
+                    /** close the app since the user denied the required permissions */
+                    showConfirmDialog("", "Permission Denied", "You need to grant San Mateo Profile " +
+                            "   app with full permissions to use the app.", "Close", "", new OnConfirmDialogListener() {
+                        @Override
+                        public void onConfirmed(String action) {
+                            finish();
+                            System.exit(0);
+                        }
+
+                        @Override
+                        public void onCancelled(String action) {
+
+                        }
+                    });
+                    LogHelper.log("res","permission denied");
+                }
+                break;
+        }
     }
 }

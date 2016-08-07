@@ -1,5 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
@@ -13,6 +14,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
@@ -159,6 +161,12 @@ public class ApiRequestHelper {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC);
         final Observable<GenericMessage> observable = AppConstants.API_INTERFACE.changeProfilePic(token,userId,newPicUrl);
         handleObservableResult(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC, observable);
+    }
+
+    public void getPhotos(final String token) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_PHOTOS);
+        final Observable<ArrayList<Photo>> observable = AppConstants.API_INTERFACE.getGalleryPhotos(token);
+        handleObservableResult(AppConstants.ACTION_GET_PHOTOS, observable);
     }
 
     /**
