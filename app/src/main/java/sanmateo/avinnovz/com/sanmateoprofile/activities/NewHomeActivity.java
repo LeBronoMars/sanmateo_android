@@ -53,7 +53,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.MayorMessageDialogFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;

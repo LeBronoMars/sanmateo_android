@@ -24,6 +24,7 @@ import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
+import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.DirectoriesActivity;
@@ -42,16 +43,21 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
-public class AdminMainActivity extends BaseActivity {
+public class AdminMainActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
@@ -67,6 +73,8 @@ public class AdminMainActivity extends BaseActivity {
     @BindString(R.string.disaster_mgmt) String headerDisasterManagement;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
+    private ApiRequestHelper apiRequestHelper;
+    private String token;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -78,6 +86,8 @@ public class AdminMainActivity extends BaseActivity {
         initNavigationDrawer();
         initHomeMenu();
 
+        token = currentUserSingleton.getCurrentUser().getToken();
+
         if (!isMyServiceRunning(PusherService.class)) {
             LogHelper.log("pusher","service not yet running");
             startService(new Intent(this, PusherService.class));
@@ -86,6 +96,7 @@ public class AdminMainActivity extends BaseActivity {
         }
         llLatestNewsAndEvents.setVisibility(View.GONE);
         initAppBarLayoutListener();
+        apiRequestHelper = new ApiRequestHelper(this);
     }
 
     private void animateBanners() {
@@ -197,7 +208,7 @@ public class AdminMainActivity extends BaseActivity {
                         showToast("contact us");
                         break;
                     case R.id.menu_change_pass:
-                        showToast("Not yet available");
+                        changePassword();
                         break;
                     case R.id.menu_logout:
                         showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
@@ -267,6 +278,48 @@ public class AdminMainActivity extends BaseActivity {
                 }
             }
         });
+    }
+
+    private void changePassword() {
+        ChangePasswordDialogFragment fragment = ChangePasswordDialogFragment.newInstance();
+        fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
+            @Override
+            public void onConfirm(String oldPassword, String newPassword) {
+                apiRequestHelper.changePassword(token,currentUserSingleton.getCurrentUser().getEmail(),
+                        oldPassword,newPassword);
+            }
+        });
+        fragment.show(getFragmentManager(),"chane password");
+    }
+
+    @Override
+    public void onApiRequestBegin(String action) {
+        if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+            showCustomProgress("Changing password, Please wait...");
+        }
+    }
+
+    @Override
+    public void onApiRequestSuccess(String action, Object result) {
+        dismissCustomProgress();
+        if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+            final GenericMessage genericMessage = (GenericMessage)result;
+            showToast(genericMessage.getMessage());
+        }
+    }
+
+    @Override
+    public void onApiRequestFailed(String action, Throwable t) {
+        dismissCustomProgress();
+        LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
+        if (t instanceof HttpException) {
+            final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
+            if (action.equals(AppConstants.ACTION_LOGIN)) {
+                showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
+            } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
+                showConfirmDialog(action,"Change Password Failed", apiError.getMessage(),"Close","",null);
+            }
+        }
     }
 }
 
