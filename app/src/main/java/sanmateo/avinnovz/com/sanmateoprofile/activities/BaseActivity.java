@@ -273,6 +273,7 @@ public class BaseActivity extends AppCompatActivity {
             fos.close();
             return f;
         } catch (IOException e) {
+            LogHelper.log("select_image","unable to select image --> " + e.getMessage());
             e.printStackTrace();
             return null;
         }

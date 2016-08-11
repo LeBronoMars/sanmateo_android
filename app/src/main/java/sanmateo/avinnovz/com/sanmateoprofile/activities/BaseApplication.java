@@ -1,6 +1,8 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Application;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
@@ -30,7 +32,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
@@ -41,6 +43,7 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        MultiDex.install(this);
         /** initialize DAO Helper */
         DaoHelper.initialize(this);
 
@@ -57,13 +60,10 @@ public class BaseApplication extends Application {
 
             final OkHttpClient okHttpClient = new OkHttpClient.Builder()
                     .addInterceptor(
-                            new Interceptor() {
-                                @Override
-                                public Response intercept(Interceptor.Chain chain) throws IOException {
-                                    Request request = chain.request();
-                                    LogHelper.log("api","performing url --> " + request.url());
-                                    return chain.proceed(request);
-                                }
+                            chain -> {
+                                Request request = chain.request();
+                                LogHelper.log("api","performing url --> " + request.url());
+                                return chain.proceed(request);
                             })
                     .cache(cache)
                     .build();

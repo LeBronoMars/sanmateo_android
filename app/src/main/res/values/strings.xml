@@ -162,4 +162,7 @@
 
     <string name="image_still_loading">Loading banner image, Please wait...</string>
     <string name="unable_to_load_image">Unable to load banner image</string>
+
+    <string name="or">OR</string>
+    <string name="select_from_gallery">Select from gallery</string>
 </resources>

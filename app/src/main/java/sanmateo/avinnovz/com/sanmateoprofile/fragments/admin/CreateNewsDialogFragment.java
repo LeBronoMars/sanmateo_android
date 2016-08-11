@@ -2,6 +2,7 @@ package sanmateo.avinnovz.com.sanmateoprofile.fragments.admin;
 
 import android.app.Dialog;
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -10,7 +11,14 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+
+import com.squareup.picasso.Callback;
+
+import java.io.File;
+import java.util.Calendar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,6 +27,7 @@ import retrofit2.http.Field;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
 /**
  * Created by rsbulanon on 6/30/16.
@@ -30,10 +39,14 @@ public class CreateNewsDialogFragment extends DialogFragment {
     @BindView(R.id.etReportedBy) EditText etReportedBy;
     @BindView(R.id.etImageURL) EditText etImageURL;
     @BindView(R.id.etSourceURL) EditText etSourceURL;
+    @BindView(R.id.rlImagePreview) RelativeLayout rlImagePreview;
+    @BindView(R.id.ivImagePreview) ImageView ivImagePreview;
     private View view;
     private Dialog mDialog;
     private BaseActivity activity;
     private OnCreateNewsListener onCreateNewsListener;
+    private static final int SELECT_IMAGE = 1;
+    private File fileToUpload = null;
 
     public static CreateNewsDialogFragment newInstance() {
         final CreateNewsDialogFragment fragment = new CreateNewsDialogFragment();
@@ -103,6 +116,36 @@ public class CreateNewsDialogFragment extends DialogFragment {
     public void cancel() {
         if (onCreateNewsListener != null) {
             onCreateNewsListener.onCancel();
+        }
+    }
+
+    @OnClick(R.id.btnSelectFromGallery)
+    public void selectFromGallery() {
+        final Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == activity.RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
+                final String fileName = "news_banner_img_"+ activity.getSDF().format(Calendar.getInstance().getTime());
+                fileToUpload = null;
+                fileToUpload = activity.getFile(data.getData(),fileName+".jpg");
+                AppConstants.PICASSO.load(fileToUpload).fit().centerCrop().into(ivImagePreview);
+                rlImagePreview.setVisibility(View.VISIBLE);
+            }
+        }
+    }
+
+    @OnClick(R.id.ivRemove)
+    public void removeSelectedImage() {
+        if (rlImagePreview.isShown()) {
+            fileToUpload = null;
+            rlImagePreview.setVisibility(View.GONE);
         }
     }
 }

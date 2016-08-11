@@ -40,12 +40,9 @@ public class FileToUploadAdapter extends RecyclerView.Adapter<FileToUploadAdapte
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
         AppConstants.PICASSO.load(files.get(position)).fit().centerCrop().into(holder.ivImage);
-        holder.ivRemove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onSelectImageListener != null) {
-                    onSelectImageListener.onSelectedImage(position);
-                }
+        holder.ivRemove.setOnClickListener(view -> {
+            if (onSelectImageListener != null) {
+                onSelectImageListener.onSelectedImage(position);
             }
         });
     }

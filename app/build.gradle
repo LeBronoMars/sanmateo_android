@@ -12,6 +12,7 @@ android {
         targetSdkVersion 24
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -86,5 +87,5 @@ dependencies {
 
     provided "org.projectlombok:lombok:1.12.6"
     apt "org.projectlombok:lombok:1.12.6"
-
+    compile 'com.android.support:multidex:1.0.1'
 }

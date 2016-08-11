@@ -108,29 +108,26 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
         if (filesToUpload.size() < 3) {
             new BottomSheet.Builder(getActivity())
                     .title("Upload Photo").sheet(R.menu.menu_upload_image)
-                    .listener(new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {
-                            switch (which) {
-                                case R.id.open_gallery:
-                                    final Intent intent = new Intent();
-                                    intent.setType("image/*");
-                                    intent.setAction(Intent.ACTION_GET_CONTENT);//
-                                    startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
-                                    break;
-                                case R.id.open_camera:
-                                    final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                    try {
-                                        fileToUpload = activity.createImageFile();
-                                        fileUri = Uri.fromFile(fileToUpload);
-                                        cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                                        startActivityForResult(cameraIntent, CAPTURE_IMAGE);
-                                    } catch (Exception ex) {
-                                        activity.showConfirmDialog("","Capture Image",
-                                                "We can't get your image. Please try again.","Close","",null);
-                                    }
-                                    break;
-                            }
+                    .listener((dialog, which) -> {
+                        switch (which) {
+                            case R.id.open_gallery:
+                                final Intent intent = new Intent();
+                                intent.setType("image/*");
+                                intent.setAction(Intent.ACTION_GET_CONTENT);//
+                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
+                                break;
+                            case R.id.open_camera:
+                                final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                                try {
+                                    fileToUpload = activity.createImageFile();
+                                    fileUri = Uri.fromFile(fileToUpload);
+                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                    startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                                } catch (Exception ex) {
+                                    activity.showConfirmDialog("","Capture Image",
+                                            "We can't get your image. Please try again.","Close","",null);
+                                }
+                                break;
                         }
                     }).show();
         } else {
@@ -156,14 +153,11 @@ public class FileIncidentReportDialogFragment extends DialogFragment {
 
     private void initRecyclerView() {
         final FileToUploadAdapter adapter = new FileToUploadAdapter(getActivity(),filesToUpload);
-        adapter.setOnSelectImageListener(new FileToUploadAdapter.OnSelectImageListener() {
-            @Override
-            public void onSelectedImage(int position) {
-                final File file = filesToUpload.get(position);
-                file.delete();
-                filesToUpload.remove(position);
-                rvImages.getAdapter().notifyDataSetChanged();
-            }
+        adapter.setOnSelectImageListener(position -> {
+            final File file = filesToUpload.get(position);
+            file.delete();
+            filesToUpload.remove(position);
+            rvImages.getAdapter().notifyDataSetChanged();
         });
         rvImages.setAdapter(adapter);
     }
