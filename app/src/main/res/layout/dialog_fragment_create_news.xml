@@ -117,83 +117,91 @@
                     android:textSize="@dimen/_10sdp" />
             </android.support.design.widget.TextInputLayout>
 
-            <!-- image url -->
-            <android.support.design.widget.TextInputLayout
+            <LinearLayout
+                android:id="@+id/llManualInput"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:orientation="horizontal"
-                android:theme="@style/FieldsStyle"
-                app:hintTextAppearance="@style/FloatingLabelStyle">
+                android:orientation="vertical">
 
-                <EditText
-                    android:id="@+id/etImageURL"
+                <!-- image url -->
+                <android.support.design.widget.TextInputLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/image_url"
-                    android:imeOptions="actionDone"
-                    android:inputType="textCapWords"
-                    android:paddingTop="@dimen/_10sdp"
-                    android:singleLine="true"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/_10sdp" />
-            </android.support.design.widget.TextInputLayout>
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:theme="@style/FieldsStyle"
+                    app:hintTextAppearance="@style/FloatingLabelStyle">
 
-            <!-- or select from gallery -->
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginBottom="@dimen/_10sdp"
-                android:layout_marginLeft="@dimen/_20sdp"
-                android:layout_marginRight="@dimen/_20sdp"
-                android:layout_marginTop="@dimen/_10sdp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
+                    <EditText
+                        android:id="@+id/etImageURL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/image_url"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapWords"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/_10sdp" />
+                </android.support.design.widget.TextInputLayout>
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_weight="45"
-                    android:background="@android:color/darker_gray" />
-
-                <TextView
-                    android:layout_width="0dp"
+                <!-- or select from gallery -->
+                <LinearLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="10"
-                    android:gravity="center"
-                    android:text="@string/or"
-                    android:textColor="@android:color/black" />
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="1px"
-                    android:layout_weight="45"
-                    android:background="@android:color/darker_gray" />
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_weight="45"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:gravity="center"
+                        android:text="@string/or"
+                        android:textColor="@android:color/black" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_weight="45"
+                        android:background="@android:color/darker_gray" />
+
+                </LinearLayout>
+
+                <!-- select from gallery -->
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnSelectFromGallery"
+                    fontPath="fonts/Roboto-Light.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/select_from_gallery"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:rd_enable="true"
+                    app:rd_maxRippleRadius="match_view"
+                    app:rd_rippleType="touch" />
 
             </LinearLayout>
 
-            <!-- select from gallery -->
-            <com.rey.material.widget.Button
-                android:id="@+id/btnSelectFromGallery"
-                fontPath="fonts/Roboto-Light.ttf"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/colorPrimary"
-                android:text="@string/select_from_gallery"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/_14sdp"
-                app:rd_enable="true"
-                app:rd_maxRippleRadius="match_view"
-                app:rd_rippleType="touch" />
-
             <RelativeLayout
                 android:id="@+id/rlImagePreview"
-                android:visibility="gone"
-                android:layout_marginTop="@dimen/_10sdp"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/_250sdp">
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/ivImagePreview"
@@ -202,10 +210,10 @@
 
                 <ImageView
                     android:id="@+id/ivRemove"
-                    android:layout_alignParentRight="true"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"
-                    android:src="@drawable/close"/>
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/close" />
 
             </RelativeLayout>
 

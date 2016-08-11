@@ -39,6 +39,7 @@ public class CreateNewsDialogFragment extends DialogFragment {
     @BindView(R.id.etReportedBy) EditText etReportedBy;
     @BindView(R.id.etImageURL) EditText etImageURL;
     @BindView(R.id.etSourceURL) EditText etSourceURL;
+    @BindView(R.id.llManualInput) LinearLayout llManualInput;
     @BindView(R.id.rlImagePreview) RelativeLayout rlImagePreview;
     @BindView(R.id.ivImagePreview) ImageView ivImagePreview;
     private View view;
@@ -137,6 +138,7 @@ public class CreateNewsDialogFragment extends DialogFragment {
                 fileToUpload = activity.getFile(data.getData(),fileName+".jpg");
                 AppConstants.PICASSO.load(fileToUpload).fit().centerCrop().into(ivImagePreview);
                 rlImagePreview.setVisibility(View.VISIBLE);
+                llManualInput.setVisibility(View.GONE);
             }
         }
     }
@@ -146,6 +148,7 @@ public class CreateNewsDialogFragment extends DialogFragment {
         if (rlImagePreview.isShown()) {
             fileToUpload = null;
             rlImagePreview.setVisibility(View.GONE);
+            llManualInput.setVisibility(View.VISIBLE);
         }
     }
 }
