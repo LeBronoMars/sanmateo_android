@@ -1,63 +1,12 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
-    <android.support.design.widget.CoordinatorLayout
-
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/rvPhotos"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <android.support.design.widget.AppBarLayout
-            android:id="@+id/appBarLayout"
-            android:layout_width="match_parent"
-            android:layout_height="256dp"
-            app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-            <android.support.design.widget.CollapsingToolbarLayout
-                android:id="@+id/collapsing_toolbar"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="5dp"
-                app:contentScrim="?attr/colorPrimary"
-                app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:id="@+id/ivSelectedPhoto"
-                        android:text="sample"
-                        android:layout_width="match_parent"
-                        android:layout_height="256dp"
-                        android:padding="@dimen/_2sdp"/>
-
-                    <ProgressBar
-                        android:id="@+id/pbLoadImage"
-                        android:layout_width="match_parent"
-                        android:layout_centerInParent="true"
-                        android:indeterminate="true"
-                        android:layout_height="256dp" />
-
-                </RelativeLayout>
-
-                <android.support.v7.widget.Toolbar
-                    android:id="@+id/toolbar"
-                    android:layout_width="match_parent"
-                    android:layout_height="?attr/actionBarSize"
-                    app:layout_collapseMode="pin" />
-
-            </android.support.design.widget.CollapsingToolbarLayout>
-
-        </android.support.design.widget.AppBarLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/rvPhotos"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-
-    </android.support.design.widget.CoordinatorLayout>
-
-</RelativeLayout>
+        android:layout_height="match_parent"
+        android:scrollbars="vertical" />
+</LinearLayout>

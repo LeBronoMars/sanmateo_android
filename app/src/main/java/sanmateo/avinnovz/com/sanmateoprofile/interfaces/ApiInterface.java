@@ -14,13 +14,13 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
 /**
@@ -318,7 +318,7 @@ public interface ApiInterface {
      *
      * */
     @GET("/api/v1/galleries")
-    Observable<ArrayList<Photo>> getGalleryPhotos(@Header("Authorization") String token);
+    Observable<List<GalleryPhoto>> getGalleryPhotos(@Header("Authorization") String token);
 }
 
 

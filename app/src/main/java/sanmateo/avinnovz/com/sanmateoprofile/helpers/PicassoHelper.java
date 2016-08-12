@@ -1,6 +1,9 @@
 package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 
+import android.content.Context;
+import android.graphics.Point;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -9,6 +12,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.MemoryPolicy;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 
 
 /**
@@ -85,6 +89,39 @@ public class PicassoHelper {
         }
         AppConstants.PICASSO.load(url)
                 .fit()
+                .memoryPolicy(MemoryPolicy.NO_STORE, MemoryPolicy.NO_CACHE)
+                .placeholder(R.drawable.placeholder_image)
+                .error(R.drawable.placeholder_image)
+                .into(imageView, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        if (progressBar != null) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        Log.d("pic", "Image loading done -> " + url);
+                    }
+
+                    @Override
+                    public void onError() {
+                        if (progressBar != null) {
+                            progressBar.setVisibility(View.GONE);
+                        }
+                        Log.d("pic", "Image loading failed");
+                    }
+                });
+    }
+
+    public static void loadImageFromURL(final String url, final int size, final ImageView imageView,
+                                        final ProgressBar progressBar, Context context) {
+        if (progressBar != null) {
+            progressBar.setVisibility(View.VISIBLE);
+        }
+        Display display = ((BaseActivity)context).getWindowManager().getDefaultDisplay();
+        Point point = new Point();
+        display.getSize(point);
+        int width = point.x;
+        AppConstants.PICASSO.load(url)
+                .resize(width, size)
                 .memoryPolicy(MemoryPolicy.NO_STORE, MemoryPolicy.NO_CACHE)
                 .placeholder(R.drawable.placeholder_image)
                 .error(R.drawable.placeholder_image)

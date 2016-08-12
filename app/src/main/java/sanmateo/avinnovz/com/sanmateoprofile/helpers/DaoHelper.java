@@ -3,15 +3,19 @@ package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUserDao;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoMaster;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoSession;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGalleryDao;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContactDao;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 
 
 /**
@@ -22,6 +26,7 @@ public class DaoHelper {
     private static SQLiteDatabase DB;
     private static PanicContactDao DAO_PANIC_CONTACT;
     private static CurrentUserDao DAO_CURRENT_USER;
+    private static LocalGalleryDao DAO_LOCAL_GALLERY;
 
     public static void initialize(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "dev-profile-app-db-v1.0", null);
@@ -30,6 +35,7 @@ public class DaoHelper {
         DaoSession daoSession = daoMaster.newSession();
         DAO_PANIC_CONTACT = daoSession.getPanicContactDao();
         DAO_CURRENT_USER = daoSession.getCurrentUserDao();
+        DAO_LOCAL_GALLERY = daoSession.getLocalGalleryDao();
     }
 
     public static void addContact(PanicContact panicContact) {
@@ -81,6 +87,54 @@ public class DaoHelper {
 
     public static void deleteCurrentUser() {
         DAO_CURRENT_USER.deleteAll();
+    }
+
+    public static boolean hasGalleryPhotos() {
+        return DAO_LOCAL_GALLERY.loadAll().size() > 0;
+    }
+
+    public static void saveGalleryPhotos(List<LocalGallery> localGalleries) {
+        DAO_LOCAL_GALLERY.deleteAll();
+        for (LocalGallery localGallery: localGalleries) {
+            DAO_LOCAL_GALLERY.insert(localGallery);
+        }
+    }
+
+    public static void saveFromGalleryPhotos(List<GalleryPhoto> galleryPhotos) {
+        DAO_LOCAL_GALLERY.deleteAll();
+        for (GalleryPhoto gp: galleryPhotos) {
+            String id = gp.getGalleryId();
+            String createdAt = gp.getCreatedAt();
+            String updatedAt = gp.getUpdatedAt();
+            String deletedAt = gp.getDeletedAt();
+            String title = gp.getTitle();
+            String imageUrl = gp.getImageUrl();
+            String description = gp.getDescription();
+
+            DAO_LOCAL_GALLERY.insert(new LocalGallery(null, id, createdAt, updatedAt, deletedAt,
+                    title, imageUrl, description));
+        }
+    }
+
+    public static List<GalleryPhoto> getAsGalleryPhotos() {
+        List<GalleryPhoto> galleryPhotos = new ArrayList<>();
+        for (LocalGallery l: DAO_LOCAL_GALLERY.loadAll()) {
+            String id = l.getGalleryId();
+            String createdAt = l.getCreatedAt();
+            String updatedAt = l.getUpdatedAt();
+            String deletedAt = l.getDeletedAt();
+            String title = l.getTitle();
+            String imageUrl = l.getImageUrl();
+            String description = l.getDescription();
+
+            galleryPhotos.add(new GalleryPhoto(id, createdAt, updatedAt, deletedAt, title, imageUrl,
+                    description));
+        }
+        return galleryPhotos;
+    }
+
+    public static List<LocalGallery> getAllGalleryPhotos() {
+        return DAO_LOCAL_GALLERY.loadAll();
     }
 }
 
