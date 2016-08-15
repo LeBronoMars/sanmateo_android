@@ -15,7 +15,10 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
 
@@ -133,6 +136,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         final View view = getLayoutInflater().inflate(R.layout.navigation_header,null,false);
         final ImageView ivProfileImage = (ImageView)view.findViewById(R.id.ivProfileImage);
         final TextView tvProfileName = (TextView)view.findViewById(R.id.tvProfileName);
+        final ProgressBar pbLoadImage = (ProgressBar)view.findViewById(R.id.pbLoadImage);
 
         final int screenHeight = getScreenDimension("height");
         final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -231,7 +235,17 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         });
 
         AppConstants.PICASSO.load(currentUserSingleton.getCurrentUser().getPicUrl())
-                .fit().centerCrop().into(ivProfileImage);
+                .fit().centerCrop().into(ivProfileImage, new Callback() {
+            @Override
+            public void onSuccess() {
+                pbLoadImage.setVisibility(View.GONE);
+            }
+
+            @Override
+            public void onError() {
+
+            }
+        });
         tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
                                     currentUserSingleton.getCurrentUser().getLastName());
     }
