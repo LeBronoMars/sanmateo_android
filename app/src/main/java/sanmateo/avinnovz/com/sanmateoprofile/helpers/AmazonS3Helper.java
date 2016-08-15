@@ -12,6 +12,7 @@ import com.amazonaws.mobileconnectors.s3.transferutility.TransferUtility;
 import com.amazonaws.regions.Region;
 import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3Client;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 
 import java.io.File;
 
@@ -72,5 +73,9 @@ public class AmazonS3Helper {
 
     public String getResourceUrl(final String bucketName, final String fileName) {
         return amazonS3Client.getResourceUrl(bucketName,fileName);
+    }
+
+    public void deleteImage(final String bucketName, final String fileName) {
+        amazonS3Client.deleteObject(new DeleteObjectRequest(bucketName, fileName));
     }
 }

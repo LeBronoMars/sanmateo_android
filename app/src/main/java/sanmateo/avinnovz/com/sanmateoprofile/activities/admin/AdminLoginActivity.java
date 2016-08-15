@@ -103,6 +103,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final AuthResponse authResponse = (AuthResponse)result;
             DaoHelper.saveCurrentUser(authResponse);
+            moveToHome();
         }
     }
 

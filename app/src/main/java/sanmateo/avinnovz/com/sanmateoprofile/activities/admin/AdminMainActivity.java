@@ -1,7 +1,10 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.NavigationView;
@@ -18,10 +21,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.cocosw.bottomsheet.BottomSheet;
 import com.squareup.picasso.Callback;
 
+import java.io.File;
 import java.util.ArrayList;
+import java.util.UUID;
 
+import butterknife.BindDimen;
 import butterknife.BindString;
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -41,6 +48,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.TyphoonWatchActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.WaterLevelMonitoringActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
@@ -51,15 +59,17 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PicassoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.HomeMenu;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
-public class AdminMainActivity extends BaseActivity implements OnApiRequestListener {
+public class AdminMainActivity extends BaseActivity implements OnApiRequestListener, OnS3UploadListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
@@ -73,10 +83,18 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
     @BindView(R.id.llHeader) LinearLayout llHeader;
     @BindView(R.id.ivMayorImage) ImageView ivMayorImage;
     @BindString(R.string.disaster_mgmt) String headerDisasterManagement;
+    @BindDimen(R.dimen._90sdp) int profilePicSize;
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
+    private static final int SELECT_IMAGE = 1;
+    private static final int CAPTURE_IMAGE = 2;
+    private Uri fileUri;
+    private File fileToUpload;
+    private String uploadToBucket;
+    private ImageView ivProfileImage;
+    private ProgressBar pbLoadImage;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,7 +105,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         animateBanners();
         initNavigationDrawer();
         initHomeMenu();
-
+        initAmazonS3Helper(this);
         token = currentUserSingleton.getCurrentUser().getToken();
 
         if (!isMyServiceRunning(PusherService.class)) {
@@ -134,9 +152,10 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
 
     private void initSideDrawerMenu() {
         final View view = getLayoutInflater().inflate(R.layout.navigation_header,null,false);
-        final ImageView ivProfileImage = (ImageView)view.findViewById(R.id.ivProfileImage);
         final TextView tvProfileName = (TextView)view.findViewById(R.id.tvProfileName);
-        final ProgressBar pbLoadImage = (ProgressBar)view.findViewById(R.id.pbLoadImage);
+        pbLoadImage = (ProgressBar)view.findViewById(R.id.pbLoadImage);
+        ivProfileImage = (ImageView)view.findViewById(R.id.ivProfileImage);
+        ivProfileImage.setOnClickListener(view1 -> showChangeProfilePicMenu());
 
         final int screenHeight = getScreenDimension("height");
         final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
@@ -304,6 +323,8 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
     public void onApiRequestBegin(String action) {
         if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
             showCustomProgress("Changing password, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC)) {
+            showCustomProgress("Changing your profile pic, Please wait...");
         }
     }
 
@@ -313,6 +334,17 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         if (action.equals(AppConstants.ACTION_PUT_CHANGE_PASSWORD)) {
             final GenericMessage genericMessage = (GenericMessage)result;
             showToast(genericMessage.getMessage());
+        } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC)) {
+            final GenericMessage genericMessage = (GenericMessage)result;
+            showToast("You have successfully changed your profile pic");
+            /** save new profile pic url */
+            final CurrentUser currentUser = currentUserSingleton.getCurrentUser();
+            currentUser.setPicUrl(genericMessage.getMessage());
+            DaoHelper.updateCurrentUser(currentUser);
+            fileToUpload = null;
+            fileUri = null;
+            PicassoHelper.loadImageFromURL(currentUserSingleton.getCurrentUser().getPicUrl(),
+                    profilePicSize, Color.TRANSPARENT,ivProfileImage,pbLoadImage);
         }
     }
 
@@ -328,6 +360,63 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                 showConfirmDialog(action,"Change Password Failed", apiError.getMessage(),"Close","",null);
             }
         }
+    }
+
+    private void showChangeProfilePicMenu() {
+        uploadToBucket = AppConstants.BUCKET_PROFILE_PIC;
+        new BottomSheet.Builder(this)
+                .title("Change Profile Pic").sheet(R.menu.menu_upload_image)
+                .listener((dialog, which) -> {
+                    switch (which) {
+                        case R.id.open_gallery:
+                            final Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);//
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
+                            break;
+                        case R.id.open_camera:
+                            final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            try {
+                                fileToUpload = createImageFile();
+                                fileUri = Uri.fromFile(fileToUpload);
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                            } catch (Exception ex) {
+                                showConfirmDialog("","Capture Image",
+                                        "We can't get your image. Please try again.","Close","",null);
+                            }
+                            break;
+                    }
+                })
+                .show();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            if (requestCode == SELECT_IMAGE) {
+                fileToUpload = getFile(data.getData(), UUID.randomUUID().toString()+".png");
+            } else if (requestCode == CAPTURE_IMAGE) {
+                fileToUpload = rotateBitmap(fileUri.getPath());
+            }
+            /** delete previous profile pic from s3 if it's not the default profile pic using gravatar */
+            if (!currentUserSingleton.getCurrentUser().getPicUrl()
+                    .contains("http://www.gravatar.com/avatar/")) {
+                deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
+            }
+            uploadImageToS3(uploadToBucket, fileToUpload);
+        }
+    }
+
+    @Override
+    public void onUploadFinished(String bucketName, String imageUrl) {
+        if (bucketName.equals(AppConstants.BUCKET_PROFILE_PIC)) {
+            /** upload new pic url */
+            apiRequestHelper.changeProfilePic(token, currentUserSingleton
+                    .getCurrentUser().getUserId(), imageUrl);
+        }
+        uploadToBucket = "";
     }
 }
 

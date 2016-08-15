@@ -15,6 +15,7 @@ import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -28,6 +29,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -47,14 +50,23 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import rx.Observable;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -63,6 +75,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by rsbulanon on 6/22/16.
  */
 public class BaseActivity extends AppCompatActivity {
+
+    private AmazonS3Helper amazonS3Helper;
+    private OnS3UploadListener onS3UploadListener;
+
+    public void initAmazonS3Helper(final OnS3UploadListener onS3UploadListener) {
+        amazonS3Helper = new AmazonS3Helper(this);
+        this.onS3UploadListener = onS3UploadListener;
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -319,8 +339,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public File createImageFile() {
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        final String imageFileName =  "incident_image_" + timeStamp + ".jpg";
+        final String imageFileName = UUID.randomUUID().toString() + ".png";
 
         final File mediaStorageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
@@ -413,6 +432,63 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return localGalleryList;
+    }
+
+    public void uploadImageToS3(final String bucketName, final File fileToUpload) {
+        if (isNetworkAvailable()) {
+            showCustomProgress("Preparing, Please wait...");
+            LogHelper.log("aa","upload to bucket --> " + bucketName);
+            amazonS3Helper.uploadImage(bucketName,fileToUpload).setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (state.name().equals("COMPLETED")) {
+                        dismissCustomProgress();
+                        final String url = amazonS3Helper.getResourceUrl(bucketName,fileToUpload.getName());
+                        onS3UploadListener.onUploadFinished(bucketName, url);
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    updateCustomProgress("Uploading image " + bytesCurrent + "/" + bytesTotal);
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    dismissCustomProgress();
+                }
+            });
+        } else {
+            showConfirmDialog("","No Connection",AppConstants.WARN_CONNECTION,"Close","",null);
+        }
+    }
+
+    public void deleteImage(final String bucketName, final String fileName) {
+        new DeleteImageFromS3(bucketName,fileName).execute();
+    }
+
+    private class DeleteImageFromS3 extends AsyncTask<Void,Void,Void> {
+
+        private String bucketName;
+        private String fileName;
+
+        public DeleteImageFromS3(String bucketName, String fileName) {
+            this.bucketName = bucketName;
+            this.fileName = fileName.replace("https://s3-us-west-1.amazonaws.com/"+AppConstants.BUCKET_ROOT+"/","");
+            LogHelper.log("aa","file name to delete --> " + this.fileName);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            amazonS3Helper.deleteImage(bucketName,fileName);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            LogHelper.log("aa","image successfully deleted from s3");
+        }
     }
 }
 

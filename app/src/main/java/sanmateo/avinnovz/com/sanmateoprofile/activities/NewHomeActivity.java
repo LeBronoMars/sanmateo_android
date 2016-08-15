@@ -1,6 +1,5 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.net.Uri;
@@ -23,8 +22,6 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.cocosw.bottomsheet.BottomSheet;
 import com.squareup.otto.Subscribe;
 
@@ -33,8 +30,8 @@ import org.json.JSONObject;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
+import java.util.UUID;
 
 import butterknife.BindDimen;
 import butterknife.BindString;
@@ -53,7 +50,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragm
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.MayorMessageDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
@@ -64,6 +60,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.PicassoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -74,7 +71,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 /**
  * Created by rsbulanon on 7/12/16.
  */
-public class NewHomeActivity extends BaseActivity implements OnApiRequestListener {
+public class NewHomeActivity extends BaseActivity implements OnApiRequestListener, OnS3UploadListener {
 
     @BindView(R.id.toolbar) Toolbar toolbar;
     @BindView(R.id.collapsing_toolbar) CollapsingToolbarLayout collapsingToolbarLayout;
@@ -94,7 +91,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
     private ApiRequestHelper apiRequestHelper;
-    private AmazonS3Helper amazonS3Helper;
     private String token;
     private boolean loading = true;
     private int pastVisibleItems;
@@ -104,17 +100,15 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     private static final int CAPTURE_IMAGE = 2;
     private Uri fileUri;
     private File fileToUpload;
-    private String newPicUrl;
+    private String uploadToBucket;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         ButterKnife.bind(this);
-
         initPanicContact();
-
-        amazonS3Helper = new AmazonS3Helper(this);
+        initAmazonS3Helper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
         apiRequestHelper = new ApiRequestHelper(this);
@@ -182,12 +176,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         final LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,
                 ((int)(screenHeight * .4)));
 
-        ivProfileImage.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                showChangeProfilePicMenu();
-            }
-        });
+        ivProfileImage.setOnClickListener(view1 -> showChangeProfilePicMenu());
 
         navigationView.addHeaderView(view);
         navigationView.inflateMenu(R.menu.menu_side_drawer);
@@ -237,7 +226,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         menu.add("Emergency Kit");
                         menu.add("How to CPR");
                         final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
-                                .newInstance(headerDisasterManagement,menu);
+                                .newInstance(headerDisasterManagement, menu);
                         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
                             @Override
                             public void onSelectedMenu(int position) {
@@ -256,14 +245,16 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 } else if (position == 6) {
                                     moveToOtherActivity(CprActivity.class);
                                 }
+
                             }
+
 
                             @Override
                             public void onClose() {
                                 fragment.dismiss();
                             }
                         });
-                        fragment.show(getFragmentManager(),"disaster menu");
+                        fragment.show(getFragmentManager(), "disaster menu");
                         break;
                     case R.id.menu_contact_us:
                         showToast("contact us");
@@ -297,26 +288,19 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
     private void changePassword() {
         ChangePasswordDialogFragment fragment = ChangePasswordDialogFragment.newInstance();
-        fragment.setOnChangePasswordListener(new ChangePasswordDialogFragment.OnChangePasswordListener() {
-            @Override
-            public void onConfirm(String oldPassword, String newPassword) {
+        fragment.setOnChangePasswordListener((oldPassword, newPassword) ->
                 apiRequestHelper.changePassword(token,currentUserSingleton.getCurrentUser().getEmail(),
-                        oldPassword,newPassword);
-            }
-        });
+                oldPassword,newPassword));
         fragment.show(getFragmentManager(),"chane password");
     }
 
     private void initNews() {
         final NewsAdapter newsAdapter = new NewsAdapter(this, newsSingleton.getAllNews());
-        newsAdapter.setOnSelectNewsListener(new NewsAdapter.OnSelectNewsListener() {
-            @Override
-            public void onSelectedNews(News n) {
-                final Intent intent = new Intent(NewHomeActivity.this, NewsFullPreviewActivity.class);
-                intent.putExtra("news",n);
-                startActivity(intent);
-                animateToLeft(NewHomeActivity.this);
-            }
+        newsAdapter.setOnSelectNewsListener(n -> {
+            final Intent intent = new Intent(NewHomeActivity.this, NewsFullPreviewActivity.class);
+            intent.putExtra("news",n);
+            startActivity(intent);
+            animateToLeft(NewHomeActivity.this);
         });
         rvHomeMenu.setAdapter(newsAdapter);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -348,7 +332,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     LogHelper.log("paginate","3333");
                 }
                 //int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);
+                //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);Ø
             }
         });
     }
@@ -378,14 +362,13 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             showToast(genericMessage.getMessage());
         } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC)) {
             final GenericMessage genericMessage = (GenericMessage)result;
-            showToast(genericMessage.getMessage());
+            showToast("You have successfully changed your profile pic");
             /** save new profile pic url */
             final CurrentUser currentUser = currentUserSingleton.getCurrentUser();
-            currentUser.setPicUrl(newPicUrl);
+            currentUser.setPicUrl(genericMessage.getMessage());
             DaoHelper.updateCurrentUser(currentUser);
             fileToUpload = null;
             fileUri = null;
-            newPicUrl = "";
             PicassoHelper.loadImageFromURL(currentUserSingleton.getCurrentUser().getPicUrl(),
                     profilePicSize, Color.TRANSPARENT,ivProfileImage,pbLoadImage);
         }
@@ -420,12 +403,9 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         apiRequestHelper.getNewsById(token,json.getInt("id"));
                     } else if (json.getString("action").equals("announcements") ||
                             json.getString("action").equals("water level")) {
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (!tvNotification.isShown()) {
-                                    tvNotification.setVisibility(View.VISIBLE);
-                                }
+                        runOnUiThread(() -> {
+                            if (!tvNotification.isShown()) {
+                                tvNotification.setVisibility(View.VISIBLE);
                             }
                         });
                     }
@@ -488,33 +468,32 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     }
 
     private void showChangeProfilePicMenu() {
+        uploadToBucket = AppConstants.BUCKET_PROFILE_PIC;
         new BottomSheet.Builder(this)
                 .title("Change Profile Pic").sheet(R.menu.menu_upload_image)
-                .listener(new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        switch (which) {
-                            case R.id.open_gallery:
-                                final Intent intent = new Intent();
-                                intent.setType("image/*");
-                                intent.setAction(Intent.ACTION_GET_CONTENT);//
-                                startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
-                                break;
-                            case R.id.open_camera:
-                                final Intent cameraIntent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-                                try {
-                                    fileToUpload = createImageFile();
-                                    fileUri = Uri.fromFile(fileToUpload);
-                                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
-                                    startActivityForResult(cameraIntent, CAPTURE_IMAGE);
-                                } catch (Exception ex) {
-                                    showConfirmDialog("","Capture Image",
-                                            "We can't get your image. Please try again.","Close","",null);
-                                }
-                                break;
-                        }
+                .listener((dialog, which) -> {
+                    switch (which) {
+                        case R.id.open_gallery:
+                            final Intent intent = new Intent();
+                            intent.setType("image/*");
+                            intent.setAction(Intent.ACTION_GET_CONTENT);//
+                            startActivityForResult(Intent.createChooser(intent, "Select Picture"), SELECT_IMAGE);
+                            break;
+                        case R.id.open_camera:
+                            final Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            try {
+                                fileToUpload = createImageFile();
+                                fileUri = Uri.fromFile(fileToUpload);
+                                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, fileUri);
+                                startActivityForResult(cameraIntent, CAPTURE_IMAGE);
+                            } catch (Exception ex) {
+                                showConfirmDialog("","Capture Image",
+                                        "We can't get your image. Please try again.","Close","",null);
+                            }
+                            break;
                     }
-                }).show();
+                })
+                .show();
     }
 
     @Override
@@ -522,43 +501,26 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
-                final String fileName = "incident_image_"+ getSDF().format(Calendar.getInstance().getTime());
-                fileToUpload = getFile(data.getData(),fileName+".jpg");
-                uploadImageToS3();
+                fileToUpload = getFile(data.getData(),UUID.randomUUID().toString()+".png");
             } else if (requestCode == CAPTURE_IMAGE) {
-                LogHelper.log("s3","captured image absolute file --> " + fileToUpload.getAbsolutePath());
                 fileToUpload = rotateBitmap(fileUri.getPath());
-                uploadImageToS3();
             }
+            /** delete previous profile pic from s3 if it's not the default profile pic using gravatar */
+            if (!currentUserSingleton.getCurrentUser().getPicUrl()
+                    .contains("http://www.gravatar.com/avatar/")) {
+                deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
+            }
+            uploadImageToS3(uploadToBucket,fileToUpload);
         }
     }
 
-    private void uploadImageToS3() {
-        if (isNetworkAvailable()) {
-            showCustomProgress("Processing Images, Please wait...");
-            amazonS3Helper.uploadImage(AppConstants.BUCKET_PROFILE_PIC,fileToUpload).setTransferListener(new TransferListener() {
-                @Override
-                public void onStateChanged(int id, TransferState state) {
-                    if (state.name().equals("COMPLETED")) {
-                        dismissCustomProgress();
-                        newPicUrl = amazonS3Helper.getResourceUrl(AppConstants.BUCKET_PROFILE_PIC,fileToUpload.getName());
-                        apiRequestHelper.changeProfilePic(currentUserSingleton.getCurrentUser().getToken(),
-                                currentUserSingleton.getCurrentUser().getUserId(),newPicUrl);
-                    }
-                }
-
-                @Override
-                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    updateCustomProgress("Uploading image " + bytesCurrent + "/" + bytesTotal);
-                }
-
-                @Override
-                public void onError(int id, Exception ex) {
-
-                }
-            });
-        } else {
-            showConfirmDialog("","No Connection",AppConstants.WARN_CONNECTION,"Close","",null);
+    @Override
+    public void onUploadFinished(String bucketName, String imageUrl) {
+        if (bucketName.equals(AppConstants.BUCKET_PROFILE_PIC)) {
+            /** upload new pic url */
+            apiRequestHelper.changeProfilePic(token, currentUserSingleton
+                    .getCurrentUser().getUserId(), imageUrl);
         }
+        uploadToBucket = "";
     }
 }
