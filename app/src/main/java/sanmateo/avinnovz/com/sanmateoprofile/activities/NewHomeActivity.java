@@ -491,9 +491,14 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
-                fileToUpload = getFile(data.getData(),UUID.randomUUID().toString()+".jpg");
+                fileToUpload = getFile(data.getData(),UUID.randomUUID().toString()+".png");
             } else if (requestCode == CAPTURE_IMAGE) {
                 fileToUpload = rotateBitmap(fileUri.getPath());
+            }
+            /** delete previous profile pic from s3 if it's not the default profile pic using gravatar */
+            if (!currentUserSingleton.getCurrentUser().getPicUrl()
+                    .contains("http://www.gravatar.com/avatar/")) {
+                deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
             }
             uploadImageToS3(uploadToBucket,fileToUpload);
         }
@@ -501,6 +506,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
 
     @Override
     public void onUploadFinished(String bucketName, String imageUrl) {
-
+        if (bucketName.equals(AppConstants.BUCKET_PROFILE_PIC)) {
+            /** upload new pic url */
+            apiRequestHelper.changeProfilePic(token, currentUserSingleton
+                    .getCurrentUser().getUserId(), imageUrl);
+        }
+        uploadToBucket = "";
     }
 }

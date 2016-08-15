@@ -67,7 +67,8 @@ public class AppConstants {
     public static final String CATEGORY_BARANGAY = "Barangay Government";
 
     /** aws s3 buckets */
-    public static final String BUCKET_INCIDENTS = "sanmateoprofileapp/incidents";
-    public static final String BUCKET_PROFILE_PIC = "sanmateoprofileapp/profilepics";
+    public static final String BUCKET_ROOT = "sanmateoprofileapp";
+    public static final String BUCKET_INCIDENTS = BUCKET_ROOT + "/incidents";
+    public static final String BUCKET_PROFILE_PIC = BUCKET_ROOT + "/profilepics";
 
 }

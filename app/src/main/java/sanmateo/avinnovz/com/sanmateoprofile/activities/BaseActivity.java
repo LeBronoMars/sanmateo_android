@@ -15,6 +15,7 @@ import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
@@ -49,7 +50,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
+import rx.Observable;
+import rx.Scheduler;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Func0;
+import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
@@ -332,8 +339,7 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public File createImageFile() {
-        final String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        final String imageFileName =  "incident_image_" + timeStamp + ".jpg";
+        final String imageFileName = UUID.randomUUID().toString() + ".png";
 
         final File mediaStorageDir = new File(
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
@@ -458,7 +464,31 @@ public class BaseActivity extends AppCompatActivity {
     }
 
     public void deleteImage(final String bucketName, final String fileName) {
-        amazonS3Helper.deleteImage(bucketName, fileName);
+        new DeleteImageFromS3(bucketName,fileName).execute();
+    }
+
+    private class DeleteImageFromS3 extends AsyncTask<Void,Void,Void> {
+
+        private String bucketName;
+        private String fileName;
+
+        public DeleteImageFromS3(String bucketName, String fileName) {
+            this.bucketName = bucketName;
+            this.fileName = fileName.replace("https://s3-us-west-1.amazonaws.com/"+AppConstants.BUCKET_ROOT+"/","");
+            LogHelper.log("aa","file name to delete --> " + this.fileName);
+        }
+
+        @Override
+        protected Void doInBackground(Void... voids) {
+            amazonS3Helper.deleteImage(bucketName,fileName);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
+            LogHelper.log("aa","image successfully deleted from s3");
+        }
     }
 }
 
