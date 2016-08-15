@@ -16,9 +16,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.GalleryDetailFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
@@ -31,7 +30,7 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
-    private List<LocalGallery> localGalleryList = new ArrayList<>();
+    private List<LocalGallery> localGalleryList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,34 +41,10 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
         apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getCurrentUser().getToken();
+        apiRequestHelper.getPhotos(token);
         initPhotos();
     }
 
-    private List<LocalGallery> mockPhoto() {
-        String id = "1";
-        String title = "General Luna Highway";
-        String imageUrl = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/gallery/highway.jpg";
-        String description = "In terms of geography, the town of  San Mateo is just a heartbeat" +
-                " away from Metro Manila.Barangay Banaba is its gateway, whether approaching it" +
-                " from either Nangka in Marikina City or Batasan Road in Quezon City. Upon" +
-                " driving through the arch above General Luna Highwaymarking the entry point to" +
-                " San Mateo, a marker can be seen by the side of the road saying something like" +
-                " you are now leaving the National Capital Region!  \\n\\nGeneral Luna Highway" +
-                " is San Mateo’s main thoroughfare. It must be a historic road where Andres" +
-                " Bonifacio could have passed by on his way to Pamitinan Cave. The legendary" +
-                " General Licerio Geronimo and his band of tiradores could have marched this" +
-                " road on their way to the victorious Battle of San Mateo.";
-
-        LocalGallery localGallery = new LocalGallery(id, title, imageUrl, description);
-        List<LocalGallery> localGalleryList = new ArrayList<>();
-        localGalleryList.add(localGallery);
-        localGalleryList.add(localGallery);
-        localGalleryList.add(localGallery);
-        localGalleryList.add(localGallery);
-        localGalleryList.add(localGallery);
-        localGalleryList.add(localGallery);
-        return localGalleryList;
-    }
 
     private void initRecycler() {
         GalleryAdapter adapter = new GalleryAdapter(this, localGalleryList);
@@ -82,29 +57,29 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
     }
 
     private void initPhotos() {
+        localGalleryList = new ArrayList<>();
         if (DaoHelper.hasGalleryPhotos()) {
-            LogHelper.log("image_url", "has gallery");
             localGalleryList.clear();
             localGalleryList.addAll(DaoHelper.getAllGalleryPhotos());
         }
         initRecycler();
-        apiRequestHelper.getGalleryPhotos(token);
     }
 
     @Override
     public void onApiRequestBegin(String action) {
-        if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
+        if (action.equals(AppConstants.ACTION_GET_PHOTOS)) {
             showCustomProgress("Fetching gallery photos, Please wait...");
         }
     }
 
     @Override
     public void onApiRequestSuccess(String action, Object result) {
-        if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
-            final List<GalleryPhoto> galleryPhotos = (List<GalleryPhoto>) result;
-            if (galleryPhotos.size() != localGalleryList.size()) {
-                localGalleryList = toLocalGallery(galleryPhotos);
-                DaoHelper.saveFromGalleryPhotos(galleryPhotos);
+        if (action.equals(AppConstants.ACTION_GET_PHOTOS)) {
+            final ArrayList<Photo> photoArrayList = (ArrayList<Photo>) result;
+            if (photoArrayList.size() != localGalleryList.size()) {
+                localGalleryList.clear();
+                localGalleryList.addAll(toLocalGallery(photoArrayList));
+                DaoHelper.saveFromGalleryPhotos(photoArrayList);
                 rvPhotos.getAdapter().notifyDataSetChanged();
             }
         }

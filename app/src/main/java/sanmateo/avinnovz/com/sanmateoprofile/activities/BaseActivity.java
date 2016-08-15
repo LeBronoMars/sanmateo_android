@@ -60,9 +60,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 
 /**
@@ -412,16 +411,16 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public List<LocalGallery> toLocalGallery(List<GalleryPhoto> galleryPhotoList) {
+    public List<LocalGallery> toLocalGallery(List<Photo> photoList) {
         List<LocalGallery> localGalleryList = new ArrayList<>();
-        for (GalleryPhoto gp: galleryPhotoList) {
-            String id = gp.getGalleryId();
-            String createdAt = gp.getCreatedAt();
-            String updatedAt = gp.getUpdatedAt();
-            String deletedAt = gp.getDeletedAt();
-            String title = gp.getTitle();
-            String imageUrl = gp.getImageUrl();
-            String description = gp.getDescription();
+        for (Photo p: photoList) {
+            String id = p.getId();
+            String createdAt = p.getCreatedAt();
+            String updatedAt = p.getUpdatedAt();
+            String deletedAt = p.getDeletedAt();
+            String title = p.getTitle();
+            String imageUrl = p.getImageUrl();
+            String description = p.getDescription();
             localGalleryList.add(new LocalGallery(null, id, createdAt, updatedAt, deletedAt, title,
                     imageUrl, description));
         }

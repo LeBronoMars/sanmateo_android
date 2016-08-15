@@ -3,7 +3,6 @@ package sanmateo.avinnovz.com.sanmateoprofile.interfaces;
 import java.util.ArrayList;
 import java.util.List;
 
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
@@ -14,10 +13,8 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 import rx.Observable;
-import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -311,15 +308,6 @@ public interface ApiInterface {
     Observable<GenericMessage> changeProfilePic(@Header("Authorization") String token,
                                               @Field("user_id") int userId,
                                               @Field("new_pic_url") String newPicUrl);
-
-    /**
-     * get all gallery photos
-     *
-     * @param token represents the user that trying to make the request
-     *
-     * */
-    @GET("/api/v1/galleries")
-    Observable<List<GalleryPhoto>> getGalleryPhotos(@Header("Authorization") String token);
 
     /**
      * get all gallery photos
