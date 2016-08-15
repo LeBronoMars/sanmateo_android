@@ -31,6 +31,7 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
+    private List<LocalGallery> localGalleryList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,14 +71,11 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
         return localGalleryList;
     }
 
-    private void initRecycler(List<LocalGallery> localGalleryList) {
+    private void initRecycler() {
         GalleryAdapter adapter = new GalleryAdapter(this, localGalleryList);
-        adapter.setOnGalleryClickListener(new GalleryAdapter.OnGalleryClickListener() {
-            @Override
-            public void onPhotoSelected(LocalGallery localGallery) {
-                GalleryDetailFragment fragment = GalleryDetailFragment.newInstance(localGallery);
-                fragment.show(getFragmentManager(), "Photo Details");
-            }
+        adapter.setOnGalleryClickListener(localGallery -> {
+            GalleryDetailFragment fragment = GalleryDetailFragment.newInstance(localGallery);
+            fragment.show(getFragmentManager(), "Photo Details");
         });
         rvPhotos.setAdapter(adapter);
         rvPhotos.setLayoutManager(new LinearLayoutManager(this));
@@ -86,11 +84,11 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
     private void initPhotos() {
         if (DaoHelper.hasGalleryPhotos()) {
             LogHelper.log("image_url", "has gallery");
-            initRecycler(DaoHelper.getAllGalleryPhotos());
-        } else {
-            LogHelper.log("image_url", "no gallery");
-            apiRequestHelper.getGalleryPhotos(token);
+            localGalleryList.clear();
+            localGalleryList.addAll(DaoHelper.getAllGalleryPhotos());
         }
+        initRecycler();
+        apiRequestHelper.getGalleryPhotos(token);
     }
 
     @Override
@@ -104,8 +102,11 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
     public void onApiRequestSuccess(String action, Object result) {
         if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
             final List<GalleryPhoto> galleryPhotos = (List<GalleryPhoto>) result;
-            DaoHelper.saveFromGalleryPhotos(galleryPhotos);
-            rvPhotos.getAdapter().notifyDataSetChanged();
+            if (galleryPhotos.size() != localGalleryList.size()) {
+                localGalleryList = toLocalGallery(galleryPhotos);
+                DaoHelper.saveFromGalleryPhotos(galleryPhotos);
+                rvPhotos.getAdapter().notifyDataSetChanged();
+            }
         }
         dismissCustomProgress();
     }

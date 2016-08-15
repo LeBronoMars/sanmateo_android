@@ -167,7 +167,7 @@ public class ApiRequestHelper {
 
     public void getPhotos(final String token) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_PHOTOS);
-        final Observable<ArrayList<Photo>> observable = AppConstants.API_INTERFACE.getGalleryPhotos(token);
+        final Observable<ArrayList<Photo>> observable = AppConstants.API_INTERFACE.getPhotos(token);
         handleObservableResult(AppConstants.ACTION_GET_PHOTOS, observable);
     }
 

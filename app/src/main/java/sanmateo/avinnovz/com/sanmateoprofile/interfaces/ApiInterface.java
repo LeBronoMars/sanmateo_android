@@ -21,6 +21,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
 /**
@@ -319,6 +320,15 @@ public interface ApiInterface {
      * */
     @GET("/api/v1/galleries")
     Observable<List<GalleryPhoto>> getGalleryPhotos(@Header("Authorization") String token);
+
+    /**
+     * get all gallery photos
+     *
+     * @param token represents the user that trying to make the request
+     *
+     * */
+    @GET("/api/v1/galleries")
+    Observable<ArrayList<Photo>> getPhotos(@Header("Authorization") String token);
 }
 
 

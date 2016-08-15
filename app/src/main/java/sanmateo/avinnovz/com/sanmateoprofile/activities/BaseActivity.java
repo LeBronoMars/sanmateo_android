@@ -44,14 +44,18 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -393,6 +397,23 @@ public class BaseActivity extends AppCompatActivity {
         } else {
             LogHelper.log("book","do not show");
         }
+    }
+
+    public List<LocalGallery> toLocalGallery(List<GalleryPhoto> galleryPhotoList) {
+        List<LocalGallery> localGalleryList = new ArrayList<>();
+        for (GalleryPhoto gp: galleryPhotoList) {
+            String id = gp.getGalleryId();
+            String createdAt = gp.getCreatedAt();
+            String updatedAt = gp.getUpdatedAt();
+            String deletedAt = gp.getDeletedAt();
+            String title = gp.getTitle();
+            String imageUrl = gp.getImageUrl();
+            String description = gp.getDescription();
+            localGalleryList.add(new LocalGallery(null, id, createdAt, updatedAt, deletedAt, title,
+                    imageUrl, description));
+        }
+
+        return localGalleryList;
     }
 }
 
