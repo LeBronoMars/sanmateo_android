@@ -234,8 +234,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         menu.add("Water Level Monitoring");
                         menu.add("Global Disaster Monitoring");
                         menu.add("Emergency Numbers");
-                        menu.add("Emergency Flashlight");
-                        menu.add("SOS Signal");
+                        menu.add("Emergency Kit");
+                        menu.add("How to CPR");
                         final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
                                 .newInstance(headerDisasterManagement,menu);
                         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
@@ -251,6 +251,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                     moveToOtherActivity(GlobalDisasterActivity.class);
                                 } else if (position == 4) {
                                     moveToOtherActivity(HotlinesActivity.class);
+                                } else if (position == 5) {
+                                    moveToOtherActivity(EmergencyKitActivity.class);
+                                } else if (position == 6) {
+
                                 }
                             }
 

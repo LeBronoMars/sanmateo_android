@@ -165,4 +165,8 @@
 
     <string name="or">OR</string>
     <string name="select_from_gallery">Select from gallery</string>
+
+    <string name="emergency_kit_header">Recommended items to be included in your emergency
+        \nsupply kit. This list shows you to check items that you currently
+        \nhave in your kit.</string>
 </resources>
