@@ -169,4 +169,6 @@
     <string name="emergency_kit_header">Recommended items to be included in your emergency
         \nsupply kit. This list shows you to check items that you currently
         \nhave in your kit.</string>
+
+    <string name="cpr_header">How to perform Cardiopulmonary Resuscitation (CPR)</string>
 </resources>

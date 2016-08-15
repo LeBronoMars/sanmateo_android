@@ -254,7 +254,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 } else if (position == 5) {
                                     moveToOtherActivity(EmergencyKitActivity.class);
                                 } else if (position == 6) {
-
+                                    moveToOtherActivity(CprActivity.class);
                                 }
                             }
 
