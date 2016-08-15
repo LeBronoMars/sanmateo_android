@@ -28,6 +28,8 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
+import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
@@ -52,9 +54,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -64,6 +69,14 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  * Created by rsbulanon on 6/22/16.
  */
 public class BaseActivity extends AppCompatActivity {
+
+    private AmazonS3Helper amazonS3Helper;
+    private OnS3UploadListener onS3UploadListener;
+
+    public void initAmazonS3Helper(final OnS3UploadListener onS3UploadListener) {
+        amazonS3Helper = new AmazonS3Helper(this);
+        this.onS3UploadListener = onS3UploadListener;
+    }
 
     @Override
     protected void attachBaseContext(Context newBase) {
@@ -414,6 +427,39 @@ public class BaseActivity extends AppCompatActivity {
         }
 
         return localGalleryList;
+    }
+
+    public void uploadImageToS3(final String bucketName, final File fileToUpload) {
+        if (isNetworkAvailable()) {
+            showCustomProgress("Preparing, Please wait...");
+            LogHelper.log("aa","upload to bucket --> " + bucketName);
+            amazonS3Helper.uploadImage(bucketName,fileToUpload).setTransferListener(new TransferListener() {
+                @Override
+                public void onStateChanged(int id, TransferState state) {
+                    if (state.name().equals("COMPLETED")) {
+                        dismissCustomProgress();
+                        final String url = amazonS3Helper.getResourceUrl(bucketName,fileToUpload.getName());
+                        onS3UploadListener.onUploadFinished(bucketName, url);
+                    }
+                }
+
+                @Override
+                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
+                    updateCustomProgress("Uploading image " + bytesCurrent + "/" + bytesTotal);
+                }
+
+                @Override
+                public void onError(int id, Exception ex) {
+                    dismissCustomProgress();
+                }
+            });
+        } else {
+            showConfirmDialog("","No Connection",AppConstants.WARN_CONNECTION,"Close","",null);
+        }
+    }
+
+    public void deleteImage(final String bucketName, final String fileName) {
+        amazonS3Helper.deleteImage(bucketName, fileName);
     }
 }
 
