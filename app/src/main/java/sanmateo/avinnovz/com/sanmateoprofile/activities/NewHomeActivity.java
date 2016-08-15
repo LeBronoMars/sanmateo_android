@@ -42,7 +42,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager;
-import it.gmariotti.recyclerview.itemanimator.SlideInOutLeftItemAnimator;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity;
@@ -318,7 +317,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         rvHomeMenu.setAdapter(newsAdapter);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvHomeMenu.setLayoutManager(linearLayoutManager);
-        rvHomeMenu.setItemAnimator(new SlideInOutLeftItemAnimator(rvHomeMenu));
         rvHomeMenu.addOnScrollListener(new RecyclerView.OnScrollListener() {
             @Override
             public void onScrollStateChanged(RecyclerView recyclerView, int newState) {

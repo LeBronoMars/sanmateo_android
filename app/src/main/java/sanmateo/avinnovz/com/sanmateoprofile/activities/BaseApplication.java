@@ -1,24 +1,17 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Application;
-import android.support.multidex.MultiDex;
-import android.support.multidex.MultiDexApplication;
 
-import com.crashlytics.android.Crashlytics;
 import com.facebook.FacebookSdk;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.concurrent.Executors;
 
-import io.fabric.sdk.android.Fabric;
 import okhttp3.Cache;
-import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
-import okhttp3.Response;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -32,18 +25,16 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class BaseApplication extends MultiDexApplication {
+public class BaseApplication extends Application {
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Fabric.with(this, new Crashlytics());
         CalligraphyConfig.initDefault(new CalligraphyConfig.Builder()
                 .setDefaultFontPath("fonts/Roboto-Regular.ttf")
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
-        MultiDex.install(this);
         /** initialize DAO Helper */
         DaoHelper.initialize(this);
 
