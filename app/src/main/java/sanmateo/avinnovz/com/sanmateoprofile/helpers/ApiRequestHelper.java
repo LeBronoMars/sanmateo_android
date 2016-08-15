@@ -5,19 +5,15 @@ import java.util.List;
 
 import okhttp3.ResponseBody;
 import rx.Observable;
-import rx.Subscriber;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
-import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.User;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
 
 /**
@@ -184,25 +180,25 @@ public class ApiRequestHelper {
                         () -> LogHelper.log("api","Api request completed --> " + action));
     }
 
-    public void getGalleryPhotos(final String token) {
-        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_GALLERY_PHOTOS);
-        Observable<List<GalleryPhoto>> observable = AppConstants.API_INTERFACE.getGalleryPhotos(token);
-        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
-                .subscribe(new Subscriber<List<GalleryPhoto>>() {
-                    @Override
-                    public void onCompleted() {
-
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_GALLERY_PHOTOS, e);
-                    }
-
-                    @Override
-                    public void onNext(List<GalleryPhoto> galleryPhotos) {
-                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_GALLERY_PHOTOS, galleryPhotos);
-                    }
-                });
-    }
+//    public void getGalleryPhotos(final String token) {
+//        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_GALLERY_PHOTOS);
+//        Observable<List<GalleryPhoto>> observable = AppConstants.API_INTERFACE.getGalleryPhotos(token);
+//        observable.observeOn(AndroidSchedulers.mainThread()).subscribeOn(Schedulers.io())
+//                .subscribe(new Subscriber<List<GalleryPhoto>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        onApiRequestListener.onApiRequestFailed(AppConstants.ACTION_GET_GALLERY_PHOTOS, e);
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<GalleryPhoto> galleryPhotos) {
+//                        onApiRequestListener.onApiRequestSuccess(AppConstants.ACTION_GET_GALLERY_PHOTOS, galleryPhotos);
+//                    }
+//                });
+//    }
 }

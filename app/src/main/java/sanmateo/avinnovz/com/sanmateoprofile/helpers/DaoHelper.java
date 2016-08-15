@@ -15,7 +15,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGalleryDao;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContactDao;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 
 
 /**
@@ -100,10 +100,10 @@ public class DaoHelper {
         }
     }
 
-    public static void saveFromGalleryPhotos(List<GalleryPhoto> galleryPhotos) {
+    public static void saveFromGalleryPhotos(ArrayList<Photo> galleryPhotos) {
         DAO_LOCAL_GALLERY.deleteAll();
-        for (GalleryPhoto gp: galleryPhotos) {
-            String id = gp.getGalleryId();
+        for (Photo gp: galleryPhotos) {
+            String id = gp.getId();
             String createdAt = gp.getCreatedAt();
             String updatedAt = gp.getUpdatedAt();
             String deletedAt = gp.getDeletedAt();
@@ -114,23 +114,6 @@ public class DaoHelper {
             DAO_LOCAL_GALLERY.insert(new LocalGallery(null, id, createdAt, updatedAt, deletedAt,
                     title, imageUrl, description));
         }
-    }
-
-    public static List<GalleryPhoto> getAsGalleryPhotos() {
-        List<GalleryPhoto> galleryPhotos = new ArrayList<>();
-        for (LocalGallery l: DAO_LOCAL_GALLERY.loadAll()) {
-            String id = l.getGalleryId();
-            String createdAt = l.getCreatedAt();
-            String updatedAt = l.getUpdatedAt();
-            String deletedAt = l.getDeletedAt();
-            String title = l.getTitle();
-            String imageUrl = l.getImageUrl();
-            String description = l.getDescription();
-
-            galleryPhotos.add(new GalleryPhoto(id, createdAt, updatedAt, deletedAt, title, imageUrl,
-                    description));
-        }
-        return galleryPhotos;
     }
 
     public static List<LocalGallery> getAllGalleryPhotos() {

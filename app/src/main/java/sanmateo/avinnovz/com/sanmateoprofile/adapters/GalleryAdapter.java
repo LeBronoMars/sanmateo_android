@@ -1,8 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Point;
 import android.support.v7.widget.RecyclerView;
 import android.view.Display;
@@ -25,7 +23,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
 
 /**
  * Created by ctmanalo on 8/5/16.

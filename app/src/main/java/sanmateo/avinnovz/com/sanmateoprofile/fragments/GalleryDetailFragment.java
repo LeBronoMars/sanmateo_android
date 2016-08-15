@@ -3,7 +3,6 @@ package sanmateo.avinnovz.com.sanmateoprofile.fragments;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,15 +13,14 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
-
-import com.squareup.picasso.Callback;
 
 /**
  * Created by ctmanalo on 8/12/16.
@@ -32,7 +30,6 @@ public class GalleryDetailFragment extends DialogFragment {
     private View mView;
     private Dialog mDialog;
     private LocalGallery localGallery;
-//    private GalleryPhoto localGallery;
 
     @BindView(R.id.ivImage) ImageView ivImage;
     @BindView(R.id.pbLoadImage) ProgressBar pbLoadImage;

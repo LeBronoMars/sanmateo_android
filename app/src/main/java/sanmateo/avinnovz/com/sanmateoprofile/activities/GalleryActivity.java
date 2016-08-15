@@ -16,9 +16,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.GalleryDetailFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.GalleryPhoto;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
@@ -42,7 +41,7 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
         apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getCurrentUser().getToken();
-        apiRequestHelper.getGalleryPhotos(token);
+        apiRequestHelper.getPhotos(token);
         initPhotos();
     }
 
@@ -68,19 +67,19 @@ public class GalleryActivity extends BaseActivity implements OnApiRequestListene
 
     @Override
     public void onApiRequestBegin(String action) {
-        if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
+        if (action.equals(AppConstants.ACTION_GET_PHOTOS)) {
             showCustomProgress("Fetching gallery photos, Please wait...");
         }
     }
 
     @Override
     public void onApiRequestSuccess(String action, Object result) {
-        if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
-            final List<GalleryPhoto> galleryPhotos = (List<GalleryPhoto>) result;
-            if (galleryPhotos.size() != localGalleryList.size()) {
+        if (action.equals(AppConstants.ACTION_GET_PHOTOS)) {
+            final ArrayList<Photo> photoArrayList = (ArrayList<Photo>) result;
+            if (photoArrayList.size() != localGalleryList.size()) {
                 localGalleryList.clear();
-                localGalleryList.addAll(toLocalGallery(galleryPhotos));
-                DaoHelper.saveFromGalleryPhotos(galleryPhotos);
+                localGalleryList.addAll(toLocalGallery(photoArrayList));
+                DaoHelper.saveFromGalleryPhotos(photoArrayList);
                 rvPhotos.getAdapter().notifyDataSetChanged();
             }
         }
