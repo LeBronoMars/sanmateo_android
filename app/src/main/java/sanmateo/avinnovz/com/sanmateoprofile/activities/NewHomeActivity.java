@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -187,92 +188,101 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         tvProfileName.setText(currentUserSingleton.getCurrentUser().getFirstName() + " " +
                 currentUserSingleton.getCurrentUser().getLastName());
 
-        navigationView.setNavigationItemSelectedListener(item -> {
-            switch (item.getItemId()) {
-                case R.id.menu_panic_emergency:
-                    setPanicContacts();
-                    break;
-                case R.id.menu_incident_report:
-                    moveToOtherActivity(IncidentsActivity.class);
-                    break;
-                case R.id.menu_information:
-                    moveToOtherActivity(InformationActivity.class);
-                    break;
-                case R.id.menu_map:
-                    moveToOtherActivity(MapActivity.class);
-                    break;
-                case R.id.menu_directories:
-                    moveToOtherActivity(DirectoriesActivity.class);
-                    break;
-                case R.id.menu_gallery:
-                    moveToOtherActivity(GalleryActivity.class);
-                    break;
-                /*case R.id.menu_news_events:
-                    moveToOtherAcitivity(NewsEventsManagementActivity.class);
-                    break;*/
-                case R.id.menu_social_media:
-                    showToast("social media");
-                    break;
-                case R.id.menu_disaster_management:
-                    final ArrayList<String> menu = new ArrayList<>();
-                    menu.add("Public Announcements");
-                    menu.add("Typhoon Watch");
-                    menu.add("Water Level Monitoring");
-                    menu.add("Global Disaster Monitoring");
-                    menu.add("Emergency Numbers");
-                    menu.add("Emergency Flashlight");
-                    menu.add("SOS Signal");
-                    final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
-                            .newInstance(headerDisasterManagement,menu);
-                    fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
-                        @Override
-                        public void onSelectedMenu(int position) {
-                            if (position == 0) {
-                                moveToOtherActivity(PublicAnnouncementsActivity.class);
-                            } else if (position == 1) {
-                                moveToOtherActivity(TyphoonWatchActivity.class);
-                            } else if (position == 2) {
-                                moveToOtherActivity(WaterLevelMonitoringActivity.class);
-                            } else if (position == 3) {
-                                moveToOtherActivity(GlobalDisasterActivity.class);
-                            } else if (position == 4) {
-                                moveToOtherActivity(HotlinesActivity.class);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.menu_panic_emergency:
+                        setPanicContacts();
+                        break;
+                    case R.id.menu_incident_report:
+                        moveToOtherActivity(IncidentsActivity.class);
+                        break;
+                    case R.id.menu_information:
+                        moveToOtherActivity(InformationActivity.class);
+                        break;
+                    case R.id.menu_map:
+                        moveToOtherActivity(MapActivity.class);
+                        break;
+                    case R.id.menu_directories:
+                        moveToOtherActivity(DirectoriesActivity.class);
+                        break;
+                    case R.id.menu_gallery:
+                        moveToOtherActivity(GalleryActivity.class);
+                        break;
+                    /*case R.id.menu_news_events:
+                        moveToOtherAcitivity(NewsEventsManagementActivity.class);
+                        break;*/
+                    case R.id.menu_social_media:
+                        showToast("social media");
+                        break;
+                    case R.id.menu_disaster_management:
+                        final ArrayList<String> menu = new ArrayList<>();
+                        menu.add("Public Announcements");
+                        menu.add("Typhoon Watch");
+                        menu.add("Water Level Monitoring");
+                        menu.add("Global Disaster Monitoring");
+                        menu.add("Emergency Numbers");
+                        menu.add("Emergency Kit");
+                        menu.add("How to CPR");
+                        final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
+                                .newInstance(headerDisasterManagement, menu);
+                        fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
+                            @Override
+                            public void onSelectedMenu(int position) {
+                                if (position == 0) {
+                                    moveToOtherActivity(PublicAnnouncementsActivity.class);
+                                } else if (position == 1) {
+                                    moveToOtherActivity(TyphoonWatchActivity.class);
+                                } else if (position == 2) {
+                                    moveToOtherActivity(WaterLevelMonitoringActivity.class);
+                                } else if (position == 3) {
+                                    moveToOtherActivity(GlobalDisasterActivity.class);
+                                } else if (position == 4) {
+                                    moveToOtherActivity(HotlinesActivity.class);
+                                } else if (position == 5) {
+                                    moveToOtherActivity(EmergencyKitActivity.class);
+                                } else if (position == 6) {
+                                    moveToOtherActivity(CprActivity.class);
+                                }
+
                             }
-                        }
 
-                        @Override
-                        public void onClose() {
-                            fragment.dismiss();
-                        }
-                    });
-                    fragment.show(getFragmentManager(),"disaster menu");
-                    break;
-                case R.id.menu_contact_us:
-                    showToast("contact us");
-                    break;
-                case R.id.menu_change_pass:
-                    changePassword();
-                    break;
-                case R.id.menu_logout:
-                    showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
-                            "Yes", "No", new OnConfirmDialogListener() {
-                                @Override
-                                public void onConfirmed(String action) {
-                                    DaoHelper.deleteCurrentUser();
-                                    startActivity(new Intent(NewHomeActivity.this, LoginActivity.class));
-                                    finish();
-                                    animateToRight(NewHomeActivity.this);
-                                }
 
-                                @Override
-                                public void onCancelled(String action) {
+                            @Override
+                            public void onClose() {
+                                fragment.dismiss();
+                            }
+                        });
+                        fragment.show(getFragmentManager(), "disaster menu");
+                        break;
+                    case R.id.menu_contact_us:
+                        showToast("contact us");
+                        break;
+                    case R.id.menu_change_pass:
+                        changePassword();
+                        break;
+                    case R.id.menu_logout:
+                        showConfirmDialog("", "Logout", "Are you sure you want to logout from the app?",
+                                "Yes", "No", new OnConfirmDialogListener() {
+                                    @Override
+                                    public void onConfirmed(String action) {
+                                        DaoHelper.deleteCurrentUser();
+                                        startActivity(new Intent(NewHomeActivity.this, LoginActivity.class));
+                                        finish();
+                                        animateToRight(NewHomeActivity.this);
+                                    }
 
-                                }
-                            });
-                    break;
+                                    @Override
+                                    public void onCancelled(String action) {
+
+                                    }
+                                });
+                        break;
+                }
+                drawerLayout.closeDrawers();
+                return true;
             }
-            drawerLayout.closeDrawers();
-            return true;
         });
     }
 
