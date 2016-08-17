@@ -59,7 +59,7 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
         } else if (incidentsSingleton.getIncidents().size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,null);
+            apiRequestHelper.getAllIncidents(token,0,null,"pending");
         }
         initIncidents();
     }
@@ -108,29 +108,23 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
 
     private void initIncidents() {
         final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(this,incidentsSingleton.getIncidents());
-        adapter.setOnBlockReportListener(new ReviewIncidentsAdapter.OnBlockReportListener() {
-            @Override
-            public void onBlockReport(int index) {
-                final Incident incident = incidentsSingleton.getIncidents().get(index);
-                final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
-                fragment.setOnBlockReportListener(new BlockIncidentReportDialogFragment.OnBlockReportListener() {
+        adapter.setOnBlockReportListener(index -> {
+            final Incident incident = incidentsSingleton.getIncidents().get(index);
+            final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
+            fragment.setOnBlockReportListener(remarks -> {
+                fragment.dismiss();
+                showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+                        " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
                     @Override
-                    public void onBlockReport(final String remarks) {
-                        fragment.dismiss();
-                        showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
-                                " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
-                            @Override
-                            public void onConfirmed(String action) {
-                                apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
-                            }
-
-                            @Override
-                            public void onCancelled(String action) {}
-                        });
+                    public void onConfirmed(String action) {
+                        apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
                     }
+
+                    @Override
+                    public void onCancelled(String action) {}
                 });
-                fragment.show(getFragmentManager(),"block report");
-            }
+            });
+            fragment.show(getFragmentManager(),"block report");
         });
         rvReviewIncidents.setLayoutManager(new LinearLayoutManager(this));
         rvReviewIncidents.setAdapter(adapter);
@@ -138,30 +132,27 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
 
     @Subscribe
     public void handleApiResponse(final HashMap<String,Object> map) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final JSONObject json = new JSONObject(map.get("data").toString());
-                    if (json.has("action")) {
-                        final String action = json.getString("action");
+        runOnUiThread(() -> {
+            try {
+                final JSONObject json = new JSONObject(map.get("data").toString());
+                if (json.has("action")) {
+                    final String action = json.getString("action");
 
-                        /** new incident notification */
-                        if (action.equals("new incident")) {
-                            LogHelper.log("api","must fetch latest incident reports");
-                            if (incidentsSingleton.getIncidents().size() == 0) {
-                                //if incidents is empty, fetch it from api
-                                LogHelper.log("api","must get all");
-                                apiRequestHelper.getAllIncidents(token,0,null,null);
-                            } else {
-                                apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
-                            }
+                    /** new incident notification */
+                    if (action.equals("new incident")) {
+                        LogHelper.log("api","must fetch latest incident reports");
+                        if (incidentsSingleton.getIncidents().size() == 0) {
+                            //if incidents is empty, fetch it from api
+                            LogHelper.log("api","must get all");
+                            apiRequestHelper.getAllIncidents(token,0,null,"pending");
+                        } else {
+                            apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
                         }
-                        rvReviewIncidents.getAdapter().notifyDataSetChanged();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    rvReviewIncidents.getAdapter().notifyDataSetChanged();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
     }
