@@ -41,7 +41,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     private static final int REQUEST_PERMISSIONS = 1;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mp;
-    private int video_bg = R.raw.login_bg;
+    //private int video_bg = R.raw.login_bg;
+    private int video_bg = R.raw.new_video_bg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
