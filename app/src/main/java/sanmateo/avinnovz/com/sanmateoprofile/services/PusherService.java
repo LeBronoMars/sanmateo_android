@@ -59,8 +59,9 @@ public class PusherService extends Service implements OnApiRequestListener {
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         final Pusher pusher = new Pusher("d37253507ae4d71dee6b",options);
-        final Channel channel = pusher.subscribe("client");
-        channel.bind("san_mateo_event", (channelName, eventName, data) -> {
+        /** listen to public channel */
+        final Channel publicChannel = pusher.subscribe("client");
+        publicChannel.bind("san_mateo_event", (channelName, eventName, data) -> {
             /** manage, construct and display local push notification */
             try {
                 final JSONObject json = new JSONObject(data);
@@ -122,6 +123,35 @@ public class PusherService extends Service implements OnApiRequestListener {
             map.put("channel",channelName);
             map.put("data",data);
             BusSingleton.getInstance().post(map);
+        });
+
+        /** listen to private channel using user's email */
+        LogHelper.log("pusher","subscribe to private channel --> " + currentUserSingleton.getCurrentUser().getEmail());
+        final Channel privateChannel = pusher.subscribe(currentUserSingleton.getCurrentUser().getEmail());
+        privateChannel.bind("san_mateo_event", (channelName, eventName, data) -> {
+            try {
+                final JSONObject json = new JSONObject(data);
+                LogHelper.log("pusher","JSON ---> " + json.toString());
+                if (json.has("action")) {
+                    final String action = json.getString("action");
+                    final int id = Integer.valueOf(json.getInt("id"));
+
+                    if (action.equals("incident_approval")) {
+                        LogHelper.log("pusher","new incident report needed for approval");
+                        NotificationHelper.displayNotification(id,PusherService.this,
+                                json.getString("title"),json.getString("content"), null);
+                    }
+                } else {
+
+                }
+                /** broadcast received push notification */
+                final HashMap<String,Object> map = new HashMap<>();
+                map.put("channel",channelName);
+                map.put("data",data);
+                BusSingleton.getInstance().post(map);
+            } catch (JSONException e) {
+                LogHelper.log("pusher","unable to listen to own channel using email --> " + e);
+            }
         });
 
         pusher.connect(new ConnectionEventListener() {
