@@ -41,7 +41,8 @@ public class ApiRequestHelper {
 
     public void getLatestIncidents(final String token, final int incidentId) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_LATEST_INCIDENTS);
-        final Observable<List<Incident>> observable = AppConstants.API_INTERFACE.getLatestIncidents(token,incidentId);
+        final Observable<List<Incident>> observable = AppConstants.API_INTERFACE
+                .getLatestIncidents(token,incidentId);
         handleObservableResult(AppConstants.ACTION_GET_LATEST_INCIDENTS, observable);
     }
 
@@ -81,6 +82,12 @@ public class ApiRequestHelper {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_BLOCK_REPORT);
         final Observable<Incident> observable = AppConstants.API_INTERFACE.blockReport(token,incidentId,remarks);
         handleObservableResult(AppConstants.ACTION_PUT_BLOCK_REPORT, observable);
+    }
+
+    public void approveReport(final String token, final int incidentId) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_APPROVE_REPORT);
+        final Observable<Incident> observable = AppConstants.API_INTERFACE.approveReport(token,incidentId);
+        handleObservableResult(AppConstants.ACTION_PUT_APPROVE_REPORT, observable);
     }
 
     public void getNews(final String token, final int start, final int limit, final String status, final String when) {

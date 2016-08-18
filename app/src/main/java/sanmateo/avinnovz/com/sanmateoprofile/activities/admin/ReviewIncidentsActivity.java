@@ -41,6 +41,7 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
     private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
     private String token;
+    private int selectedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +56,8 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
 
         //check if there are new incidents needed to be fetched from api
         if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
-            apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
+            apiRequestHelper.getLatestIncidents(token,incidentsSingleton
+                    .getIncidents().get(0).getIncidentId());
         } else if (incidentsSingleton.getIncidents().size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
@@ -73,6 +75,8 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             showCustomProgress("Fetching latest incident reports, Please wait...");
         } else if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
             showCustomProgress("Blocking malicious report, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
+            showCustomProgress("Approving report, Please wait...");
         }
     }
 
@@ -91,6 +95,12 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             LogHelper.log("api","BLOCKED!!");
             showConfirmDialog("","Block Incident Report","Malicious incident report successfully blocked" +
                     " and deleted","Close","",null);
+        } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
+            LogHelper.log("api","APPROVED");
+            final Incident incident = (Incident)result;
+            incidentsSingleton.getIncidents().set(selectedIndex, incident);
+            rvReviewIncidents.getAdapter().notifyDataSetChanged();
+            showToast("Incident report successfully approved!");
         }
     }
 
@@ -108,23 +118,42 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
 
     private void initIncidents() {
         final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(this,incidentsSingleton.getIncidents());
-        adapter.setOnBlockReportListener(index -> {
-            final Incident incident = incidentsSingleton.getIncidents().get(index);
-            final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
-            fragment.setOnBlockReportListener(remarks -> {
-                fragment.dismiss();
-                showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+        adapter.setOnReportListener(new ReviewIncidentsAdapter.OnReportListener() {
+            @Override
+            public void onBlockReport(int index) {
+                final Incident incident = incidentsSingleton.getIncidents().get(index);
+                final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
+                fragment.setOnBlockReportListener(remarks -> {
+                    fragment.dismiss();
+                    showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+                            " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
+                        @Override
+                        public void onConfirmed(String action) {
+                            apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
+                        }
+
+                        @Override
+                        public void onCancelled(String action) {}
+                    });
+                });
+                fragment.show(getFragmentManager(),"block report");
+            }
+
+            @Override
+            public void onApproveReport(int index) {
+                final Incident incident = incidentsSingleton.getIncidents().get(index);
+                showConfirmDialog("", "Approve Incident Report", "You are about to approve this incident report," +
                         " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
                     @Override
                     public void onConfirmed(String action) {
-                        apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
+                        selectedIndex = index;
+                        apiRequestHelper.approveReport(token,incident.getIncidentId());
                     }
 
                     @Override
                     public void onCancelled(String action) {}
                 });
-            });
-            fragment.show(getFragmentManager(),"block report");
+            }
         });
         rvReviewIncidents.setLayoutManager(new LinearLayoutManager(this));
         rvReviewIncidents.setAdapter(adapter);
@@ -139,14 +168,15 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
                     final String action = json.getString("action");
 
                     /** new incident notification */
-                    if (action.equals("new incident")) {
+                    if (action.equals("incident_approval")) {
                         LogHelper.log("api","must fetch latest incident reports");
                         if (incidentsSingleton.getIncidents().size() == 0) {
                             //if incidents is empty, fetch it from api
                             LogHelper.log("api","must get all");
                             apiRequestHelper.getAllIncidents(token,0,null,"pending");
                         } else {
-                            apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
+                            apiRequestHelper.getLatestIncidents(token,
+                                    incidentsSingleton.getIncidents().get(0).getIncidentId());
                         }
                     }
                     rvReviewIncidents.getAdapter().notifyDataSetChanged();

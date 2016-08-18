@@ -35,7 +35,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
     private ArrayList<Incident> incidents;
     private Context context;
     private BaseActivity activity;
-    private OnBlockReportListener onBlockReportListener;
+    private OnReportListener onReportListener;
 
     public ReviewIncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
@@ -65,6 +65,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
         @BindView(R.id.rvImages) RecyclerView rvImages;
         @BindView(R.id.llBlock) LinearLayout llBlock;
+        @BindView(R.id.llApprove) LinearLayout llApprove;
 
         ViewHolder(View view) {
             super(view);
@@ -107,22 +108,25 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
                 .into(holder.civReporterImage);
 
         final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
-        adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
-            @Override
-            public void onSelectedImage(int position) {
-                final Intent intent = new Intent(context, ImageFullViewActivity.class);
-                intent.putExtra("incident",incident);
-                intent.putExtra("selectedImagePosition",position);
-                activity.startActivity(intent);
-                activity.animateToLeft(activity);
+        adapter.setOnSelectImageListener(position -> {
+            final Intent intent = new Intent(context, ImageFullViewActivity.class);
+            intent.putExtra("incident",incident);
+            intent.putExtra("selectedImagePosition",position);
+            activity.startActivity(intent);
+            activity.animateToLeft(activity);
+        });
+
+        holder.llBlock.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
+        holder.llApprove.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
+
+        holder.llBlock.setOnClickListener(view -> {
+            if (onReportListener != null) {
+                onReportListener.onBlockReport(i);
             }
         });
-        holder.llBlock.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onBlockReportListener != null) {
-                    onBlockReportListener.onBlockReport(i);
-                }
+        holder.llApprove.setOnClickListener(view -> {
+            if (onReportListener != null) {
+                onReportListener.onApproveReport(i);
             }
         });
         holder.rvImages.setAdapter(adapter);
@@ -133,11 +137,12 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    public interface OnBlockReportListener {
+    public interface OnReportListener {
         void onBlockReport(int index);
+        void onApproveReport(int index);
     }
 
-    public void setOnBlockReportListener(OnBlockReportListener onBlockReportListener) {
-        this.onBlockReportListener = onBlockReportListener;
+    public void setOnReportListener(OnReportListener onReportListener) {
+        this.onReportListener = onReportListener;
     }
 }
