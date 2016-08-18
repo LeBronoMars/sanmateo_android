@@ -152,7 +152,18 @@ public interface ApiInterface {
                                      @Field("remarks") String remarks);
 
     /**
-     * approve a malicious incident report
+     * unblock a malicious incident report
+     *
+     * @param token represents the user that trying to make the request
+     * @param incidentId identification of incident report
+     *
+     * */
+    @PUT("/api/v1/incidents/unblock/{incident_id}")
+    Observable<Incident> unblockReport(@Header("Authorization") String token,
+                                     @Path("incident_id") int incidentId);
+
+    /**
+     * approve an incident report
      *
      * @param token represents the user that trying to make the request
      * @param incidentId identification of incident report

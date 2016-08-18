@@ -101,6 +101,78 @@ public class Incident implements Parcelable {
         return reporterPicUrl;
     }
 
+    public void setReporterId(int reporterId) {
+        this.reporterId = reporterId;
+    }
+
+    public void setReporterName(String reporterName) {
+        this.reporterName = reporterName;
+    }
+
+    public void setReporterContactNo(String reporterContactNo) {
+        this.reporterContactNo = reporterContactNo;
+    }
+
+    public void setReporterEmail(String reporterEmail) {
+        this.reporterEmail = reporterEmail;
+    }
+
+    public void setReportedAddress(String reportedAddress) {
+        this.reportedAddress = reportedAddress;
+    }
+
+    public void setReporterPicUrl(String reporterPicUrl) {
+        this.reporterPicUrl = reporterPicUrl;
+    }
+
+    public void setIncidentId(int incidentId) {
+        this.incidentId = incidentId;
+    }
+
+    public void setImages(String images) {
+        this.images = images;
+    }
+
+    public void setLatitude(double latitude) {
+        this.latitude = latitude;
+    }
+
+    public void setLongitude(double longitude) {
+        this.longitude = longitude;
+    }
+
+    public void setIncidentAddress(String incidentAddress) {
+        this.incidentAddress = incidentAddress;
+    }
+
+    public void setIncidentDescription(String incidentDescription) {
+        this.incidentDescription = incidentDescription;
+    }
+
+    public void setIncidentStatus(String incidentStatus) {
+        this.incidentStatus = incidentStatus;
+    }
+
+    public void setIncidentType(String incidentType) {
+        this.incidentType = incidentType;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public void setIncidentDateReported(String incidentDateReported) {
+        this.incidentDateReported = incidentDateReported;
+    }
+
+    public void setIncidentDateUpdated(String incidentDateUpdated) {
+        this.incidentDateUpdated = incidentDateUpdated;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     @Override
     public int describeContents() {
         return 0;

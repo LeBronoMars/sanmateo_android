@@ -41,4 +41,5 @@
     <color name="black_translucent">#80000000</color>
 
     <color name="yellow">#FFCC00</color>
+    <color name="metro_orange">#da532c</color>
 </resources>

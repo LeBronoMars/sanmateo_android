@@ -61,7 +61,7 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
         } else if (incidentsSingleton.getIncidents().size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,"pending");
+            apiRequestHelper.getAllIncidents(token,0,null,null);
         }
         initIncidents();
     }
@@ -77,6 +77,8 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             showCustomProgress("Blocking malicious report, Please wait...");
         } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
             showCustomProgress("Approving report, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
+            showCustomProgress("Unblocking report, Please wait...");
         }
     }
 
@@ -87,21 +89,22 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
             final ArrayList<Incident> incidents = (ArrayList<Incident>)result;
             LogHelper.log("api","success size --> " + incidents);
             incidentsSingleton.getIncidents().addAll(0,incidents);
-            rvReviewIncidents.getAdapter().notifyDataSetChanged();
+
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
-        } else if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
-            LogHelper.log("api","BLOCKED!!");
-            showConfirmDialog("","Block Incident Report","Malicious incident report successfully blocked" +
-                    " and deleted","Close","",null);
-        } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
-            LogHelper.log("api","APPROVED");
+        } else {
             final Incident incident = (Incident)result;
             incidentsSingleton.getIncidents().set(selectedIndex, incident);
-            rvReviewIncidents.getAdapter().notifyDataSetChanged();
-            showToast("Incident report successfully approved!");
+            if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
+                showToast("Malicious incident report successfully blocked");
+            } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
+                showToast("Incident report successfully unblocked!");
+            } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
+                showToast("Incident report successfully approved!");
+            }
         }
+        rvReviewIncidents.getAdapter().notifyDataSetChanged();
     }
 
     @Override
@@ -118,10 +121,10 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
 
     private void initIncidents() {
         final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(this,incidentsSingleton.getIncidents());
-        adapter.setOnReportListener(new ReviewIncidentsAdapter.OnReportListener() {
-            @Override
-            public void onBlockReport(int index) {
-                final Incident incident = incidentsSingleton.getIncidents().get(index);
+        adapter.setOnReportListener((index, action) -> {
+            selectedIndex = index;
+            final Incident incident = incidentsSingleton.getIncidents().get(index);
+            if (action.equals("Block")) {
                 final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
                 fragment.setOnBlockReportListener(remarks -> {
                     fragment.dismiss();
@@ -137,22 +140,22 @@ public class ReviewIncidentsActivity extends BaseActivity implements OnApiReques
                     });
                 });
                 fragment.show(getFragmentManager(),"block report");
-            }
+            } else {
+                showConfirmDialog("", action +" Incident Report", "You are about to "+ action.toLowerCase()
+                                +" this incident report, are you sure you want to proceed?",
+                        "Yes", "No", new OnConfirmDialogListener() {
+                            @Override
+                            public void onConfirmed(String a) {
+                                if (action.equals("Unblock")) {
+                                    apiRequestHelper.unblockMaliciousReport(token, incident.getIncidentId());
+                                } else if (action.equals("Approve")) {
+                                    apiRequestHelper.approveReport(token,incident.getIncidentId());
+                                }
+                            }
 
-            @Override
-            public void onApproveReport(int index) {
-                final Incident incident = incidentsSingleton.getIncidents().get(index);
-                showConfirmDialog("", "Approve Incident Report", "You are about to approve this incident report," +
-                        " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
-                    @Override
-                    public void onConfirmed(String action) {
-                        selectedIndex = index;
-                        apiRequestHelper.approveReport(token,incident.getIncidentId());
-                    }
-
-                    @Override
-                    public void onCancelled(String action) {}
-                });
+                            @Override
+                            public void onCancelled(String action) {}
+                        });
             }
         });
         rvReviewIncidents.setLayoutManager(new LinearLayoutManager(this));

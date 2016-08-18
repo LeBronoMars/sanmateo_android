@@ -66,6 +66,8 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
         @BindView(R.id.rvImages) RecyclerView rvImages;
         @BindView(R.id.llBlock) LinearLayout llBlock;
         @BindView(R.id.llApprove) LinearLayout llApprove;
+        @BindView(R.id.llUnblockReport) LinearLayout llUnblockReport;
+        @BindView(R.id.llApproveBlock) LinearLayout llApproveBlock;
 
         ViewHolder(View view) {
             super(view);
@@ -116,17 +118,25 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
             activity.animateToLeft(activity);
         });
 
+        holder.llUnblockReport.setVisibility(incident.getStatus().equals("blocked") ? View.VISIBLE : View.GONE);
+        holder.llApproveBlock.setVisibility(incident.getStatus().equals("blocked") ? View.GONE : View.VISIBLE);
+
         holder.llBlock.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
         holder.llApprove.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
 
         holder.llBlock.setOnClickListener(view -> {
             if (onReportListener != null) {
-                onReportListener.onBlockReport(i);
+                onReportListener.onUpdateReport(i,"Block");
             }
         });
         holder.llApprove.setOnClickListener(view -> {
             if (onReportListener != null) {
-                onReportListener.onApproveReport(i);
+                onReportListener.onUpdateReport(i,"Approve");
+            }
+        });
+        holder.llUnblockReport.setOnClickListener(view -> {
+            if (onReportListener != null) {
+                onReportListener.onUpdateReport(i,"Unblock");
             }
         });
         holder.rvImages.setAdapter(adapter);
@@ -138,8 +148,7 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
     }
 
     public interface OnReportListener {
-        void onBlockReport(int index);
-        void onApproveReport(int index);
+        void onUpdateReport(int index, String action);
     }
 
     public void setOnReportListener(OnReportListener onReportListener) {
