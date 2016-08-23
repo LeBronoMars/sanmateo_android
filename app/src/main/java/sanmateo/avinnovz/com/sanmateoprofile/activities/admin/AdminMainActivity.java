@@ -276,21 +276,23 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_announcement),"Public Announcements"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_water_level),"Water Level Monitoring"));
         homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_gallery),"Manage Gallery"));
+        homeMenus.add(new HomeMenu(getImageById(R.drawable.menu_officials),"Manage Officials"));
 
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(position -> {
             if (position == 0) {
-                startActivity(new Intent(AdminMainActivity.this, ReviewIncidentsActivity.class));
+                moveToOtherActivity(ReviewIncidentsActivity.class);
             } else if (position == 1) {
-                startActivity(new Intent(AdminMainActivity.this, NewsEventsManagementActivity.class));
+                moveToOtherActivity(NewsEventsManagementActivity.class);
             } else if (position == 2) {
-                startActivity(new Intent(AdminMainActivity.this, PublicAnnouncementsActivity.class));
+                moveToOtherActivity(PublicAnnouncementsActivity.class);
             } else if (position == 3) {
-                startActivity(new Intent(AdminMainActivity.this, WaterLevelMonitoringActivity.class));
+                moveToOtherActivity(WaterLevelMonitoringActivity.class);
             } else if (position == 4) {
-                startActivity(new Intent(AdminMainActivity.this, ManageGalleryActivity.class));
+                moveToOtherActivity(ManageGalleryActivity.class);
+            } else if (position == 5) {
+                moveToOtherActivity(ManageOfficialsActivity.class);
             }
-            animateToLeft(AdminMainActivity.this);
         });
         rvHomeMenu.setAdapter(adapter);
         rvHomeMenu.setLayoutManager(new LinearLayoutManager(this));
