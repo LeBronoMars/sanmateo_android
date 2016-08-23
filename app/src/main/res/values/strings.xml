@@ -63,8 +63,10 @@
          for this incident report is still be reviewed by the admins.</i></string>
 
     <!-- review incident report -->
-    <string name="block_this_report">Block this report</string>
+    <string name="block_this_report">Block</string>
+    <string name="approve_report">Approve</string>
     <string name="block">Block</string>
+    <string name="Unblock">Unblock</string>
 
     <string name="san_mateo_govt">The existing organizational structure of the Municipal Government of San Mateo is typical of the present structure of all local governments in the country. The Chief Executive of the Municipal organization is the Municipal Mayor.
         The main function of the Mayor is the administration and supervision of operations of the Municipal Government. Ordinances passed by the Sangguniang Bayan are approved by the Mayor for execution and implementation. The Chief Executive also implements decrees, letter of instructions, circulars, memorandums and order of authorities.

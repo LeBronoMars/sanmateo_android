@@ -16,6 +16,7 @@ public class AppConstants {
    public static final String BASE_URL = "http://192.168.1.7:8080";
 //   public static final String BASE_URL = "http://192.168.1.7:9000";
     //public static final String BASE_URL = "http://192.168.10.6:9000";
+    //public static final String BASE_URL = "http://192.168.43.172:8080";
     //public static final String BASE_URL = "http://54.169.17.222:8080";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
@@ -33,6 +34,8 @@ public class AppConstants {
     public static final String ACTION_POST_CREATE_USER = "create new user account";
     public static final String ACTION_POST_REPORT_MALICIOUS_INCIDENT = "report malicious incident";
     public static final String ACTION_PUT_BLOCK_REPORT = "block malicious report";
+    public static final String ACTION_PUT_UNBLOCK_REPORT = "unblock malicious report";
+    public static final String ACTION_PUT_APPROVE_REPORT = "approve incident report";
     public static final String ACTION_POST_NEWS = "create news";
     public static final String ACTION_GET_NEWS = "get news";
     public static final String ACTION_GET_NEWS_BY_ID = "get news by id";
