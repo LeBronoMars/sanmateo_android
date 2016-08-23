@@ -8,10 +8,9 @@
     android:paddingRight="@dimen/_10sdp">
 
     <CheckBox
+        android:id="@+id/cbEmergencyKit"
         android:layout_width="@dimen/_22sdp"
-        android:layout_height="@dimen/_22sdp"
-        android:checked="true"
-        android:clickable="false"/>
+        android:layout_height="@dimen/_22sdp"/>
 
     <TextView
         android:id="@+id/tvEmergencyKit"
