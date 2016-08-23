@@ -22,13 +22,6 @@ public class LocalGallery {
         this.id = id;
     }
 
-    public LocalGallery(String galleryId, String title, String imageUrl, String description) {
-        this.galleryId = galleryId;
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.description = description;
-    }
-
     public LocalGallery(Long id, String galleryId, String createdAt, String updatedAt, String deletedAt, String title, String imageUrl, String description) {
         this.id = id;
         this.galleryId = galleryId;
