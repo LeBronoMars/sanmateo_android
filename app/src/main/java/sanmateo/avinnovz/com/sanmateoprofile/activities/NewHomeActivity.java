@@ -267,6 +267,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 "Yes", "No", new OnConfirmDialogListener() {
                                     @Override
                                     public void onConfirmed(String action) {
+                                        PrefsHelper.setString(NewHomeActivity.this,
+                                                AppConstants.PREFS_LOCAL_EMERGENCY_KITS, "");
                                         DaoHelper.deleteCurrentUser();
                                         startActivity(new Intent(NewHomeActivity.this, LoginActivity.class));
                                         finish();
