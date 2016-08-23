@@ -48,6 +48,7 @@ public class AppConstants {
     public static final String ACTION_PUT_CHANGE_PROFILE_PIC = "change profile pic";
     public static final String ACTION_GET_PHOTOS = "get photos";
     public static final String ACTION_GET_GALLERY_PHOTOS = "get all gallery photo";
+    public static final String ACTION_GET_OFFICIALS = "get all official";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

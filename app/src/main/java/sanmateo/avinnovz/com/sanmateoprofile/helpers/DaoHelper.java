@@ -12,6 +12,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoMaster;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.DaoSession;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGalleryDao;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficialDao;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContactDao;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
@@ -27,6 +29,7 @@ public class DaoHelper {
     private static PanicContactDao DAO_PANIC_CONTACT;
     private static CurrentUserDao DAO_CURRENT_USER;
     private static LocalGalleryDao DAO_LOCAL_GALLERY;
+    private static LocalOfficialDao DAO_LOCAL_OFFICIAL;
 
     public static void initialize(Context context) {
         DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(context, "dev-profile-app-db-v1.0", null);
@@ -36,6 +39,7 @@ public class DaoHelper {
         DAO_PANIC_CONTACT = daoSession.getPanicContactDao();
         DAO_CURRENT_USER = daoSession.getCurrentUserDao();
         DAO_LOCAL_GALLERY = daoSession.getLocalGalleryDao();
+        DAO_LOCAL_OFFICIAL = daoSession.getLocalOfficialDao();
     }
 
     public static void addContact(PanicContact panicContact) {
@@ -118,6 +122,12 @@ public class DaoHelper {
 
     public static List<LocalGallery> getAllGalleryPhotos() {
         return DAO_LOCAL_GALLERY.loadAll();
+    }
+
+    public static List<LocalOfficial> getAllOfficials() { return DAO_LOCAL_OFFICIAL.loadAll(); }
+
+    public static void createOfficial(final LocalOfficial localOfficial) {
+        DAO_LOCAL_OFFICIAL.insert(localOfficial);
     }
 }
 
