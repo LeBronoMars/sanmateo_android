@@ -17,6 +17,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsRecyclerViewAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.AddOfficialDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
@@ -60,7 +61,20 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
 
     @OnClick(R.id.btnAdd)
     public void addNewOfficial() {
+        final AddOfficialDialogFragment addOfficialDialogFragment = AddOfficialDialogFragment.newInstance();
+        addOfficialDialogFragment.setOnCreateNewsListener(new AddOfficialDialogFragment.OnCreateOfficialListener() {
+            @Override
+            public void onCreateNews(String firstName, String lastName, String nickName,
+                                     String position, String background, String picUrl) {
 
+            }
+
+            @Override
+            public void onCancel() {
+
+            }
+        });
+        addOfficialDialogFragment.show(getFragmentManager(),"add official");
     }
 
     @Override

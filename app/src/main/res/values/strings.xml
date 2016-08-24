@@ -12,6 +12,7 @@
     <string name="user_account">Your Account</string>
     <string name="first_name">First Name</string>
     <string name="last_name">Last Name</string>
+    <string name="nick_name">Nick Name</string>
     <string name="gender">Gender</string>
     <string name="female">Female</string>
     <string name="male">Male</string>
@@ -173,4 +174,10 @@
         \nhave in your kit.</string>
 
     <string name="cpr_header">How to perform Cardiopulmonary Resuscitation (CPR)</string>
+
+    <!-- create official dialog fragment -->
+    <string name="create_official_header">Create official record</string>
+    <string name="official_position">Position</string>
+    <string name="official_background">Background</string>
+    <string name="official_pic_url">Enter official\'s pic url</string>
 </resources>
