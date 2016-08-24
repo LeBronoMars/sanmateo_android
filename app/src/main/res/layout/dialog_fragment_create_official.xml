@@ -1,0 +1,285 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@android:color/white"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scrollbars="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="@dimen/_10sdp">
+
+            <!-- header -->
+            <TextView
+                fontPath="fonts/Roboto-Medium.ttf"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_centerVertical="true"
+                android:layout_marginBottom="@dimen/_20sdp"
+                android:text="@string/create_official_header"
+                android:textColor="@color/colorPrimaryDark"
+                android:textSize="@dimen/_25sdp" />
+
+            <!-- first name -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:theme="@style/FieldsStyle"
+                app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/etFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/first_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+
+            <!-- last name -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:theme="@style/FieldsStyle"
+                app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/etLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/last_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- nick name -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal"
+                android:theme="@style/FieldsStyle"
+                app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/etNickName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/nick_name"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- position -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/FieldsStyle"
+                app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/etPosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/official_position"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:singleLine="true"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <!-- background -->
+            <android.support.design.widget.TextInputLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:theme="@style/FieldsStyle"
+                app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                <EditText
+                    android:id="@+id/etBackground"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/official_background"
+                    android:imeOptions="actionNext"
+                    android:inputType="textCapWords"
+                    android:paddingTop="@dimen/_10sdp"
+                    android:textColor="@android:color/black"
+                    android:textSize="@dimen/_10sdp" />
+            </android.support.design.widget.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/llManualInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <!-- image url -->
+                <android.support.design.widget.TextInputLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:orientation="horizontal"
+                    android:theme="@style/FieldsStyle"
+                    app:hintTextAppearance="@style/FloatingLabelStyle">
+
+                    <EditText
+                        android:id="@+id/etImageURL"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/official_pic_url"
+                        android:imeOptions="actionDone"
+                        android:inputType="textCapWords"
+                        android:paddingTop="@dimen/_10sdp"
+                        android:singleLine="true"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/_10sdp" />
+                </android.support.design.widget.TextInputLayout>
+
+                <!-- or select from gallery -->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_marginLeft="@dimen/_20sdp"
+                    android:layout_marginRight="@dimen/_20sdp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:gravity="center_vertical"
+                    android:orientation="horizontal">
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_weight="45"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="10"
+                        android:gravity="center"
+                        android:text="@string/or"
+                        android:textColor="@android:color/black" />
+
+                    <View
+                        android:layout_width="0dp"
+                        android:layout_height="1px"
+                        android:layout_weight="45"
+                        android:background="@android:color/darker_gray" />
+
+                </LinearLayout>
+
+                <!-- select from gallery -->
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnSelectFromGallery"
+                    fontPath="fonts/Roboto-Light.ttf"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/select_from_gallery"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:rd_enable="true"
+                    app:rd_maxRippleRadius="match_view"
+                    app:rd_rippleType="touch" />
+
+            </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/rlImagePreview"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/_150sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/ivImagePreview"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/ivRemove"
+                    android:layout_width="@dimen/_20sdp"
+                    android:layout_height="@dimen/_20sdp"
+                    android:layout_alignParentRight="true"
+                    android:src="@drawable/close" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:orientation="horizontal">
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnCreate"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="50"
+            android:background="@color/colorPrimary"
+            android:text="@string/create"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_14sdp"
+            app:rd_enable="true"
+            app:rd_maxRippleRadius="match_view"
+            app:rd_rippleType="touch" />
+
+        <com.rey.material.widget.Button
+            android:id="@+id/btnCancel"
+            fontPath="fonts/Roboto-Light.ttf"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="50"
+            android:background="@color/colorPrimaryDark"
+            android:text="@string/cancel"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/_14sdp"
+            app:rd_enable="true"
+            app:rd_maxRippleRadius="match_view"
+            app:rd_rippleType="touch" />
+
+    </LinearLayout>
+
+</LinearLayout>
+
