@@ -187,6 +187,15 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_GET_OFFICIALS, observable);
     }
 
+    public void createOfficial(final String token, final String firstName, final String lastName,
+                               final String nickName, final String position, final int zindex,
+                               final String background, final String picurl) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_CREATE_OFFICIAL_RECORD);
+        final Observable<Official> observable = AppConstants.API_INTERFACE.createOfficialRecord(token,
+                firstName,lastName,nickName, position, zindex, background, picurl);
+        handleObservableResult(AppConstants.ACTION_CREATE_OFFICIAL_RECORD, observable);
+    }
+
     /**
      * handle api result using lambda
      *

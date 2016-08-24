@@ -348,6 +348,21 @@ public interface ApiInterface {
      * */
     @GET("/api/v1/officials")
     Observable<List<Official>> getOfficials(@Header("Authorization") String token);
+
+    /**
+     * create new official record
+     * */
+    @POST("/api/v1/official")
+    @FormUrlEncoded
+    Observable<Official> createOfficialRecord(@Header("Authorization") String token,
+                                              @Field("first_name") String firstName,
+                                              @Field("last_name") String lastName,
+                                              @Field("nick_name") String nickName,
+                                              @Field("position") String position,
+                                              @Field("zindex") int index,
+                                              @Field("background") String background,
+                                              @Field("pic") String pic);
+
 }
 
 

@@ -51,6 +51,7 @@ public class AppConstants {
     public static final String ACTION_GET_PHOTOS = "get photos";
     public static final String ACTION_GET_GALLERY_PHOTOS = "get all gallery photo";
     public static final String ACTION_GET_OFFICIALS = "get all official";
+    public static final String ACTION_CREATE_OFFICIAL_RECORD = "create official record";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";
@@ -75,6 +76,7 @@ public class AppConstants {
     public static final String BUCKET_ROOT = "sanmateoprofileapp";
     public static final String BUCKET_INCIDENTS = BUCKET_ROOT + "/incidents";
     public static final String BUCKET_PROFILE_PIC = BUCKET_ROOT + "/profilepics";
+    public static final String BUCKET_OFFICIALS_PIC = BUCKET_ROOT + "/officials";
 
     /** prefs key */
     public static final String PREFS_LOCAL_EMERGENCY_KITS = "local emergency kits";

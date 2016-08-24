@@ -490,5 +490,9 @@ public class BaseActivity extends AppCompatActivity {
             LogHelper.log("aa","image successfully deleted from s3");
         }
     }
+
+    public AmazonS3Helper getAmazonS3Helper() {
+        return amazonS3Helper;
+    }
 }
 
