@@ -180,4 +180,5 @@
     <string name="official_position">Position</string>
     <string name="official_background">Background</string>
     <string name="official_pic_url">Enter official\'s pic url</string>
+    <string name="uploading_image">Uploading image, Please wait...</string>
 </resources>

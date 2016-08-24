@@ -48,17 +48,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import rx.Observable;
-import rx.Scheduler;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func0;
-import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressBarDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
@@ -76,6 +71,8 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
  */
 public class BaseActivity extends AppCompatActivity {
 
+    private CustomProgressDialogFragment customProgressDialogFragment;
+    private CustomProgressBarDialogFragment customProgressBarDialogFragment;
     private AmazonS3Helper amazonS3Helper;
     private OnS3UploadListener onS3UploadListener;
 
@@ -102,8 +99,6 @@ public class BaseActivity extends AppCompatActivity {
         return email != null && android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches();
     }
 
-    private CustomProgressDialogFragment customProgressDialogFragment;
-
     public void showCustomProgress(final String message) {
         if (customProgressDialogFragment == null) {
             customProgressDialogFragment = CustomProgressDialogFragment.newInstance(message);
@@ -112,9 +107,23 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void showCustomProgressBar(final int max) {
+        if (customProgressBarDialogFragment == null) {
+            customProgressBarDialogFragment = CustomProgressBarDialogFragment.newInstance(max);
+            customProgressBarDialogFragment.setCancelable(false);
+            customProgressBarDialogFragment.show(getFragmentManager(),"progress");
+        }
+    }
+
     public void updateCustomProgress(final String message) {
         if (customProgressDialogFragment != null) {
             customProgressDialogFragment.updateMessage(message);
+        }
+    }
+
+    public void updateCustomProgressBar(final int progress, final int max) {
+        if (customProgressBarDialogFragment != null) {
+            customProgressBarDialogFragment.updateProgress(progress,max);
         }
     }
 
@@ -125,6 +134,12 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
+    public void dismissCustomProgressBar() {
+        if (customProgressBarDialogFragment != null) {
+            customProgressBarDialogFragment.dismiss();
+            customProgressBarDialogFragment = null;
+        }
+    }
 
     public void showConfirmDialog(final String action, final String header, final String message,
                                   final String positiveText, final String negativeText,
@@ -436,13 +451,12 @@ public class BaseActivity extends AppCompatActivity {
 
     public void uploadImageToS3(final String bucketName, final File fileToUpload) {
         if (isNetworkAvailable()) {
-            showCustomProgress("Preparing, Please wait...");
-            LogHelper.log("aa","upload to bucket --> " + bucketName);
+            showCustomProgressBar(0);
             amazonS3Helper.uploadImage(bucketName,fileToUpload).setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {
                     if (state.name().equals("COMPLETED")) {
-                        dismissCustomProgress();
+                        dismissCustomProgressBar();
                         final String url = amazonS3Helper.getResourceUrl(bucketName,fileToUpload.getName());
                         onS3UploadListener.onUploadFinished(bucketName, url);
                     }
@@ -450,12 +464,12 @@ public class BaseActivity extends AppCompatActivity {
 
                 @Override
                 public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    updateCustomProgress("Uploading image " + bytesCurrent + "/" + bytesTotal);
+                    updateCustomProgressBar((int)bytesCurrent,(int)bytesTotal);
                 }
 
                 @Override
                 public void onError(int id, Exception ex) {
-                    dismissCustomProgress();
+                    dismissCustomProgressBar();
                 }
             });
         } else {

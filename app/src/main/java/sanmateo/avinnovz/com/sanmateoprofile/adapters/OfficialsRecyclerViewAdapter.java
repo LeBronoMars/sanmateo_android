@@ -69,11 +69,13 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
                 .into(holder.civPic, new Callback() {
                     @Override
                     public void onSuccess() {
+                        LogHelper.log("pic","ON LOAD SUCCESS --> " + official.getFirstName());
                         holder.pbLoadImage.setVisibility(View.GONE);
                     }
 
                     @Override
                     public void onError() {
+                        LogHelper.log("pic","ON LOAD FAILED --> " + official.getFirstName());
                         holder.pbLoadImage.setVisibility(View.GONE);
                     }
                 });
