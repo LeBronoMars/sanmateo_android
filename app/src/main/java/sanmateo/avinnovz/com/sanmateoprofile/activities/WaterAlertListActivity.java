@@ -151,9 +151,9 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
         final WaterLevelNotifDialogFragment fragment = WaterLevelNotifDialogFragment.newInstance();
         fragment.setOnWaterLevelNotificationListener(new WaterLevelNotifDialogFragment.OnWaterLevelNotificationListener() {
             @Override
-            public void onAnnounceNotif(double level) {
+            public void onAnnounceNotif(final String area, double level) {
                 fragment.dismiss();
-                apiRequestHelper.createWaterLevelNotification(token, level);
+                apiRequestHelper.createWaterLevelNotification(token,area,level);
             }
 
             @Override

@@ -295,11 +295,13 @@ public interface ApiInterface {
      * create new water level notification
      *
      * @param token represents the user that trying to make the request
+     * @param area name of flood prone area
      * @param level water level amount
      * */
     @POST("/api/v1/water_level")
     @FormUrlEncoded
     Observable<WaterLevel> createWaterLevelNotification(@Header("Authorization") String token,
+                                                        @Field("area") String area,
                                                         @Field("water_level") double level);
 
     /**

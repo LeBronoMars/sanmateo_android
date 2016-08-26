@@ -25,6 +25,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rey.material.app.Dialog;
+import com.rey.material.widget.Spinner;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -508,5 +510,12 @@ public class BaseActivity extends AppCompatActivity {
     public AmazonS3Helper getAmazonS3Helper() {
         return amazonS3Helper;
     }
+
+    public void initSpinner(Spinner spinner, int userRoles) {
+        final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                userRoles, android.R.layout.simple_spinner_item);
+        spinner.setAdapter(adapter);
+    }
+
 }
 

@@ -11,14 +11,18 @@ public class WaterLevel {
     @SerializedName("created_at") private String createdAt;
     @SerializedName("updated_at") private String udpatedAt;
     @SerializedName("deleted_at") private String deletedAt;
+    private String area;
     @SerializedName("water_level") private double waterLevel;
     private String alert;
 
-    public WaterLevel(int id, String createdAt, String udpatedAt, String deletedAt, double waterLevel, String alert) {
+
+    public WaterLevel(int id, String createdAt, String udpatedAt, String deletedAt,
+                      String area, double waterLevel, String alert) {
         this.id = id;
         this.createdAt = createdAt;
         this.udpatedAt = udpatedAt;
         this.deletedAt = deletedAt;
+        this.area = area;
         this.waterLevel = waterLevel;
         this.alert = alert;
     }
@@ -37,6 +41,10 @@ public class WaterLevel {
 
     public String getDeletedAt() {
         return deletedAt;
+    }
+
+    public String getArea() {
+        return area;
     }
 
     public double getWaterLevel() {

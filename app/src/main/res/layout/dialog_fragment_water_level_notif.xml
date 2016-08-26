@@ -24,6 +24,18 @@
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/_25sdp" />
 
+        <!-- select area -->
+        <com.rey.material.widget.Spinner
+            android:id="@+id/spnrArea"
+            android:layout_marginTop="@dimen/_10sdp"
+            app:spn_labelEnable="true"
+            app:spn_label="@string/select_area"
+            app:spn_labelTextColor="@android:color/black"
+            app:spn_labelTextSize="@dimen/_12sdp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/Material.Drawable.Ripple.Wave" />
+
         <!-- water level -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"

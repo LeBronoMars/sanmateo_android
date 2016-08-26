@@ -155,9 +155,10 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS_LATEST, observable);
     }
 
-    public void createWaterLevelNotification(final String token, final double level) {
+    public void createWaterLevelNotification(final String token, final String area, final double level) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS);
-        final Observable<WaterLevel> observable = AppConstants.API_INTERFACE.createWaterLevelNotification(token,level);
+        final Observable<WaterLevel> observable = AppConstants.API_INTERFACE
+                .createWaterLevelNotification(token,area,level);
         handleObservableResult(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS, observable);
     }
 

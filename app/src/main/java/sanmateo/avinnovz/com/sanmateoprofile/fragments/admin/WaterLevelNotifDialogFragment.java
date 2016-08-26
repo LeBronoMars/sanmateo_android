@@ -9,8 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+
+import com.rey.material.widget.Spinner;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,6 +27,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
  */
 public class WaterLevelNotifDialogFragment extends DialogFragment {
 
+    @BindView(R.id.spnrArea) Spinner spnrArea;
     @BindView(R.id.etWaterLevel) EditText etWaterLevel;
     private View view;
     private Dialog mDialog;
@@ -48,6 +52,7 @@ public class WaterLevelNotifDialogFragment extends DialogFragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_water_level_notif, null);
         ButterKnife.bind(this, view);
         activity = (BaseActivity) getActivity();
+        activity.initSpinner(spnrArea,R.array.array_flood_prone_areas);
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(view);
@@ -60,13 +65,14 @@ public class WaterLevelNotifDialogFragment extends DialogFragment {
 
     @OnClick(R.id.btnAnnounce)
     public void sendNotif() {
+        final String area = spnrArea.getSelectedItem().toString();
         final String level = etWaterLevel.getText().toString().trim();
 
         if (level.isEmpty()) {
             activity.setError(etWaterLevel, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onWaterLevelNotificationListener != null) {
-                onWaterLevelNotificationListener.onAnnounceNotif(Double.valueOf(level));
+                onWaterLevelNotificationListener.onAnnounceNotif(area,Double.valueOf(level));
             }
         }
     }
@@ -79,7 +85,7 @@ public class WaterLevelNotifDialogFragment extends DialogFragment {
     }
 
     public interface OnWaterLevelNotificationListener {
-        void onAnnounceNotif(final double level);
+        void onAnnounceNotif(final String area, final double level);
         void onCancel();
     }
 
