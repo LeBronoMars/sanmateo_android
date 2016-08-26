@@ -137,10 +137,11 @@ public class WaterAlertListActivity extends BaseActivity implements OnApiRequest
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
-        LogHelper.log("err", "error in ---> " + action + " cause ---> " + t.getMessage());
+        handleApiException(t);
         if (t instanceof HttpException) {
             if (action.equals(AppConstants.ACTION_LOGIN)) {
-                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
+                final HttpException ex = (HttpException) t;
+                final ApiError apiError = ApiErrorHelper.parseError((ex).response());
                 showConfirmDialog(action, "Login Failed", apiError.getMessage(), "Close", "", null);
             }
         }

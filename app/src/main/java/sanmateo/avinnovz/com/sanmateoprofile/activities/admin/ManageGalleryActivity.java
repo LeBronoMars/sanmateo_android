@@ -62,5 +62,6 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
     }
 }

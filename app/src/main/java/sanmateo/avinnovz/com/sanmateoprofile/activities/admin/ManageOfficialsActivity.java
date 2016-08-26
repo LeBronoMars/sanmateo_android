@@ -119,6 +119,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
         LogHelper.log("err","error in fetching list of officials --> " + t.getMessage());
     }
 

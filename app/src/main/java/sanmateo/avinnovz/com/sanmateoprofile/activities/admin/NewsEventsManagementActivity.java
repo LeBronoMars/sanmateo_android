@@ -124,6 +124,7 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
             final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());

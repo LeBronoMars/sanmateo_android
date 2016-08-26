@@ -53,17 +53,23 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+import retrofit2.adapter.rxjava.HttpException;
+import sanmateo.avinnovz.com.sanmateoprofile.BuildConfig;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.AdminLoginActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressBarDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -517,5 +523,30 @@ public class BaseActivity extends AppCompatActivity {
         spinner.setAdapter(adapter);
     }
 
+    public void handleApiException(final Throwable t) {
+        final HttpException ex = (HttpException) t;
+        if (ex.code() == 401) {
+            showConfirmDialog("", "Session Expired", "Sorry, but your session has expired", "Close",
+                    "", new OnConfirmDialogListener() {
+                        @Override
+                        public void onConfirmed(String action) {
+                           Intent intent = null;
+                            if (BuildConfig.FLAVOR.equals("admin")) {
+                                intent = new Intent(BaseActivity.this, AdminLoginActivity.class);
+                            } else {
+                                intent = new Intent(BaseActivity.this, LoginActivity.class);
+                            }
+                            DaoHelper.deleteCurrentUser();
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancelled(String action) {
+
+                        }
+                    });
+        }
+    }
 }
 
