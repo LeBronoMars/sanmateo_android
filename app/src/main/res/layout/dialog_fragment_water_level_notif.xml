@@ -30,7 +30,7 @@
             android:layout_marginTop="@dimen/_10sdp"
             app:spn_labelEnable="true"
             app:spn_label="@string/select_area"
-            app:spn_labelTextColor="@android:color/black"
+            app:spn_labelTextColor="@color/colorPrimary"
             app:spn_labelTextSize="@dimen/_12sdp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_20sdp"
             android:orientation="horizontal"
             android:theme="@style/FieldsStyle"
             app:hintTextAppearance="@style/FloatingLabelStyle">

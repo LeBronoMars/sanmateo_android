@@ -525,6 +525,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void handleApiException(final Throwable t) {
         final HttpException ex = (HttpException) t;
+        LogHelper.log("err","CODE ---> " + ex.code() + " message --> " + ex.getMessage());
         if (ex.code() == 401) {
             showConfirmDialog("", "Session Expired", "Sorry, but your session has expired", "Close",
                     "", new OnConfirmDialogListener() {
