@@ -122,6 +122,7 @@ public class RegistrationActivity extends BaseActivity implements OnApiRequestLi
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
         LogHelper.log("registration", "failed >>> " + action);
         LogHelper.log("registration", "failed >>> " + t);
         if (t instanceof HttpException) {

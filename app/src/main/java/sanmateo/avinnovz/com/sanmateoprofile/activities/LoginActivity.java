@@ -123,6 +123,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
             if (action.equals(AppConstants.ACTION_LOGIN)) {
