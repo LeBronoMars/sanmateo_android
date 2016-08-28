@@ -221,6 +221,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         menu.add("Public Announcements");
                         menu.add("Typhoon Watch");
                         menu.add("Water Level Monitoring");
+                        menu.add("Alert Level(Water Level)");
                         menu.add("Global Disaster Monitoring");
                         menu.add("Emergency Numbers");
                         menu.add("Emergency Kit");
@@ -237,12 +238,14 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 } else if (position == 2) {
                                     moveToOtherActivity(WaterLevelMonitoringActivity.class);
                                 } else if (position == 3) {
-                                    moveToOtherActivity(GlobalDisasterActivity.class);
+                                    moveToOtherActivity(AlertLevelActivity.class);
                                 } else if (position == 4) {
-                                    moveToOtherActivity(HotlinesActivity.class);
+                                    moveToOtherActivity(GlobalDisasterActivity.class);
                                 } else if (position == 5) {
-                                    moveToOtherActivity(EmergencyKitActivity.class);
+                                    moveToOtherActivity(HotlinesActivity.class);
                                 } else if (position == 6) {
+                                    moveToOtherActivity(EmergencyKitActivity.class);
+                                } else if (position == 7) {
                                     moveToOtherActivity(CprActivity.class);
                                 }
 
