@@ -41,8 +41,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     private static final int REQUEST_PERMISSIONS = 1;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mp;
-    //private int video_bg = R.raw.login_bg;
-    private int video_bg = R.raw.new_video_bg;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +49,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
 
-        mp = new MediaPlayer();
+        mp = MediaPlayer.create(this, R.raw.new_video_bg);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
@@ -79,12 +78,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     public void showLoginDialogFragment() {
         if (isNetworkAvailable()) {
             final LoginDialogFragment loginDialogFragment = LoginDialogFragment.newInstance();
-            loginDialogFragment.setOnLoginListener(new LoginDialogFragment.OnLoginListener() {
-                @Override
-                public void OnLogin(String email, String password) {
-                    loginDialogFragment.dismiss();
-                    apiRequestHelper.authenticateUser(email,password);
-                }
+            loginDialogFragment.setOnLoginListener((email, password) -> {
+                loginDialogFragment.dismiss();
+                apiRequestHelper.authenticateUser(email,password);
             });
             loginDialogFragment.show(getFragmentManager(),"login");
         } else {
@@ -172,10 +168,8 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
-        final Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + video_bg);
 
         try {
-            mp.setDataSource(this,video);
             mp.setDisplay(surfaceHolder);
             mp.prepare();
             mp.setLooping(true);
