@@ -149,7 +149,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         final LocalOfficial localOfficial = new LocalOfficial(null,
                 o.getId(),o.getCreatedAt(),o.getUpdatedAt(),o.getDeletedAt(),
                 o.getFirstName(),o.getLastName(),o.getNickName(),o.getPosition(),
-                o.getBackground(),o.getPic(),o.getStatus());
+                o.getZindex(),o.getBackground(),o.getPic(),o.getStatus());
         DaoHelper.createOfficial(localOfficial);
         officialList.add(localOfficial);
     }

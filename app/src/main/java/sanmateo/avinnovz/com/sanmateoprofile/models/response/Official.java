@@ -14,6 +14,7 @@ public class Official {
     @SerializedName("first_name") private String firstName;
     @SerializedName("last_name") private String lastName;
     @SerializedName("nick_name") private String nickName;
+    private int zindex;
     @SerializedName("position") private String position;
     @SerializedName("background") private String background;
     @SerializedName("pic") private String pic;
@@ -105,5 +106,9 @@ public class Official {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public int getZindex() {
+        return zindex;
     }
 }
