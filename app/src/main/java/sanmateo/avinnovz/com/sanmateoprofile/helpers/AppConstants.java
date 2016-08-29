@@ -60,6 +60,7 @@ public class AppConstants {
     public static final String WARN_INVALID_EMAIL_FORMAT = "Invalid email format";
     public static final String WARN_CANT_GET_IMAGE = "We can't get your image. Please try again.";
     public static final String WARN_INVALID_ACCOUNT = "Invalid account!";
+    public static final String WARN_INVALID_CONTACT_NO = "Invalid contact no";
 
     /** categories */
     public static final String CATEGORY_PEACE_AND_SECURITY = "Peace & Security";

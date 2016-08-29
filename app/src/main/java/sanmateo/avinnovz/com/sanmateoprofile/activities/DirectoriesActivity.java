@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.widget.ExpandableListView;
 
@@ -9,6 +11,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.DirectoriesAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 
 /**
  * Created by ctmanalo on 7/6/16.
@@ -23,102 +26,135 @@ public class DirectoriesActivity extends BaseActivity {
         setContentView(R.layout.activity_directories);
         ButterKnife.bind(this);
         setToolbarTitle("Directories");
-        lvDirectories.setAdapter(new DirectoriesAdapter(this, getHeaders(), getData(), getEmail()));
+        final DirectoriesAdapter adapter = new DirectoriesAdapter(this, getDepartments(),
+                getContactNos(), getEmail());
+        adapter.setOnDirectoryActionListener(new DirectoriesAdapter.OnDirectoryActionListener() {
+            @Override
+            public void onCallDirectory(String contactNo) {
+                if (contactNo.equals("N/A")) {
+                    showToast(AppConstants.WARN_INVALID_CONTACT_NO);
+                } else {
+                    final Intent intent = new Intent(Intent.ACTION_DIAL);
+                    intent.setData(Uri.parse("tel:" + contactNo));
+                    startActivity(intent);
+                }
+            }
+
+            @Override
+            public void onSendEmailToDirectory(String email) {
+                final Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
+                        email, null));
+                startActivity(Intent.createChooser(intent, "Send email..."));
+            }
+        });
+        lvDirectories.setAdapter(adapter);
     }
 
-    private ArrayList<String> getHeaders () {
+    private ArrayList<String> getDepartments () {
         ArrayList<String> header = new ArrayList<>();
-        header.add("Office of the Mayor");
-        header.add("Sanguniang Bayan");
-        header.add("Committees and Chairperson");
-        header.add("Municipal Accounting Office");
-        header.add("Municipal Budget Office");
-        header.add("Municipal Planning and Development Office");
-        header.add("Municipal Engineering Office");
-        header.add("Municipal Civil Registrar Office");
-        header.add("Municipal Health Office");
-        header.add("Municipal Treasurer's Office");
         header.add("Business Permit and Licensing Office");
-        header.add("Municipal Social Welfare and Development Office");
-        header.add("Municipal Department Heads");
-        header.add("Municipal Assessor");
-        header.add("Municipal Peso");
-        header.add("Department of Agriculture");
-        header.add("IT-Department");
-        header.add("Sanitary Unit");
-        header.add("DILG");
+        header.add("Human Resource Department");
+        header.add("ICCO");
+        header.add("ICTO");
+        header.add("Local Civil Registrars Office");
+        header.add("Mayor's Office");
+        header.add("Motorpool");
         header.add("MTFRO");
-        header.add("MDRRMO");
-        header.add("OPSS/TEG");
-        header.add("Eagle Base Unit");
-        header.add("UPAO/CDO");
-        header.add("Rizal Parole and Probation Office No.2");
-        header.add("Rizal Parole and Probation in Action");
-        header.add("Rizal Parole and Probation in Action 2");
+        header.add("Municipal Accounting Office");
+        header.add("Municipal Administrators Office");
+        header.add("Municipal Agriculture Office");
+        header.add("Municipal Assessors Office");
+        header.add("Municipal Budget Office");
+        header.add("Municipal DILG");
+        header.add("Municipal Engineering Office");
+        header.add("Municipal Environment Office");
+        header.add("Municipal Health Office");
+        header.add("Municipal Planning and Development Office");
+        header.add("Municipal Risk Reduction Management Office");
+        header.add("Municipal Social Welfare");
+        header.add("Municipal Tourism Office");
+        header.add("Municipal Treasurers Office");
+        header.add("OPSS");
+        header.add("PAESO");
+        header.add("PESO");
+        header.add("Procurement Office");
+        header.add("Sangguniang Bayan");
+        header.add("Sanitary Office");
+        header.add("Solid Waste");
+        header.add("Traffic Management Office");
+        header.add("Vice Mayor's Office");
         return header;
     }
 
-    private ArrayList<String> getData () {
+    private ArrayList<String> getContactNos () {
         ArrayList<String> data = new ArrayList<>();
-        data.add("0915-123-0001");
-        data.add("0915-123-0002");
-        data.add("0915-123-0003");
-        data.add("0915-123-0004");
-        data.add("0915-123-0005");
-        data.add("0915-123-0006");
-        data.add("0915-123-0007");
-        data.add("0915-123-0008");
-        data.add("0915-123-0009");
-        data.add("0915-123-0010");
-        data.add("0915-123-0011");
-        data.add("0915-123-0012");
-        data.add("0915-123-0013");
-        data.add("0915-123-0014");
-        data.add("0915-123-0015");
-        data.add("0915-123-0016");
-        data.add("0915-123-0017");
-        data.add("0915-123-0018");
-        data.add("0915-123-0019");
-        data.add("0915-123-0020");
-        data.add("0915-123-0021");
-        data.add("0915-123-0022");
-        data.add("0915-123-0023");
-        data.add("0915-123-0024");
-        data.add("0915-123-0025");
-        data.add("0915-123-0026");
-        data.add("0915-123-0027");
+        data.add("706-7924");
+        data.add("N/A");
+        data.add("706-7921");
+        data.add("212-6498");
+        data.add("570-2080");
+        data.add("706-7920");
+        data.add("N/A");
+        data.add("N/A");
+        data.add("997-3840");
+        data.add("N/A");
+        data.add("696-9241");
+        data.add("570-2079");
+        data.add("570-6943");
+        data.add("570-6952");
+        data.add("570-2070");
+        data.add("N/A");
+        data.add("N/A");
+        data.add("N/A");
+        data.add("570-6846");
+        data.add("703-4494");
+        data.add("N/A");
+        data.add("941-7728");
+        data.add("706-7921");
+        data.add("N/A");
+        data.add("N/A");
+        data.add("706-7922");
+        data.add("570-2069");
+        data.add("N/A");
+        data.add("N/A");
+        data.add("706-7921");
+        data.add("997-6658");
         return data;
     }
 
     private ArrayList<String> getEmail () {
         ArrayList<String> email = new ArrayList<>();
-        email.add("sample1@gmail.com");
-        email.add("sample2@gmail.com");
-        email.add("sample3@gmail.com");
-        email.add("sample4@gmail.com");
-        email.add("sample5@gmail.com");
-        email.add("sample6@gmail.com");
-        email.add("sample7@gmail.com");
-        email.add("sample8@gmail.com");
-        email.add("sample9@gmail.com");
-        email.add("sample10@gmail.com");
-        email.add("sample11@gmail.com");
-        email.add("sample12@gmail.com");
-        email.add("sample13@gmail.com");
-        email.add("sample14@gmail.com");
-        email.add("sample15@gmail.com");
-        email.add("sample16@gmail.com");
-        email.add("sample17@gmail.com");
-        email.add("sample18@gmail.com");
-        email.add("sample19@gmail.com");
-        email.add("sample20@gmail.com");
-        email.add("sample21@gmail.com");
-        email.add("sample22@gmail.com");
-        email.add("sample23@gmail.com");
-        email.add("sample24@gmail.com");
-        email.add("sample25@gmail.com");
-        email.add("sample26@gmail.com");
-        email.add("sample27@gmail.com");
+        email.add("bplo@sanmateo.gov.ph");
+        email.add("hroffice@sanmateo.gov.ph");
+        email.add("iccoffice@sanmateo.gov.ph");
+        email.add("ICTO@sanmateo.gov.ph");
+        email.add("civilregistrarsoffice@sanmateo.gov.ph");
+        email.add("mayorsoffice@sanmateo.gov.ph");
+        email.add("motorpooloffice@sanmateo.gov.ph");
+        email.add("mtfro@sanmateo.gov.ph");
+        email.add("accountingoffice@sanmateo.gov.ph");
+        email.add("adminoffice@sanmateo.gov.ph");
+        email.add("agricultureoffice@sanmateo.gov.ph");
+        email.add("assessorsoffice@sanmateo.gov.ph");
+        email.add("budgetoffice@sanmateo.gov.ph");
+        email.add("dilg@sanmateo.gov.ph");
+        email.add("engineeringoffice@sanmateo.gov.ph");
+        email.add("environmentoffice@sanmateo.gov.ph");
+        email.add("healthoffice@sanmateo.gov.ph");
+        email.add("mpdo@sanmateo.gov.ph");
+        email.add("mdrrmoffice@sanmateo.gov.ph");
+        email.add("mswdo@sanmateo.gov.ph");
+        email.add("tourismoffice@sanmateo.gov.ph");
+        email.add("treasuryoffice@sanmateo.gov.ph");
+        email.add("opss@sanmateo.gov.ph");
+        email.add("paiso@sanmateo.gov.ph");
+        email.add("pesoffice@sanmateo.gov.ph");
+        email.add("procurementoffice@sanmateo.gov.ph");
+        email.add("sboffice@sanmateo.gov.ph");
+        email.add("sanitaryoffice@sanmateo.gov.ph");
+        email.add("solidwasteoffice@sanmateo.gov.ph");
+        email.add("tmoffice@sanmateo.gov.ph");
+        email.add("vicemayorsoffice@sanmateo.gov.ph");
         return email;
     }
 }

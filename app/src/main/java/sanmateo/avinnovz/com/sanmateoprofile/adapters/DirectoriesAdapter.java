@@ -25,6 +25,7 @@ public class DirectoriesAdapter extends BaseExpandableListAdapter {
     private ArrayList<String> header;
     private ArrayList<String> contacts;
     private ArrayList<String> email;
+    private OnDirectoryActionListener onDirectoryActionListener;
 
     public DirectoriesAdapter(Context context, ArrayList<String> header, ArrayList<String> contacts,
                               ArrayList<String> email) {
@@ -85,20 +86,14 @@ public class DirectoriesAdapter extends BaseExpandableListAdapter {
         final TextView tvEmail = (TextView)view.findViewById(R.id.tvEmail);
         tvContact.setText(contacts.get(i));
         tvEmail.setText(email.get(i));
-        tvContact.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_DIAL);
-                intent.setData(Uri.parse("tel:" + tvContact.getText().toString()));
-                activity.startActivity(intent);
+        tvContact.setOnClickListener(view1 -> {
+            if (onDirectoryActionListener != null) {
+                onDirectoryActionListener.onCallDirectory(contacts.get(i));
             }
         });
-        tvEmail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(Intent.ACTION_SENDTO, Uri.fromParts("mailto",
-                        tvEmail.getText().toString(), null));
-                activity.startActivity(Intent.createChooser(intent, "Send email..."));
+        tvEmail.setOnClickListener(view1 -> {
+            if (onDirectoryActionListener != null) {
+                onDirectoryActionListener.onSendEmailToDirectory(email.get(i));
             }
         });
         return view;
@@ -107,5 +102,14 @@ public class DirectoriesAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int i, int i1) {
         return false;
+    }
+
+    public interface OnDirectoryActionListener {
+        void onCallDirectory(final String contactNo);
+        void onSendEmailToDirectory(final String email);
+    }
+
+    public void setOnDirectoryActionListener(OnDirectoryActionListener onDirectoryActionListener) {
+        this.onDirectoryActionListener = onDirectoryActionListener;
     }
 }
