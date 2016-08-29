@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -21,14 +22,18 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.SimpleItemTouchHelperCallback;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
  * Created by rsbulanon on 8/23/16.
  */
-public class ManageOfficialsActivity extends BaseActivity implements OnApiRequestListener, OnS3UploadListener {
+public class ManageOfficialsActivity extends BaseActivity implements OnApiRequestListener,
+                                                                    OnS3UploadListener,
+                                                                    OnStartDragListener {
 
     @BindView(R.id.rvOfficials) RecyclerView rvOfficials;
     private CurrentUser currentUser;
@@ -36,6 +41,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     private ApiRequestHelper apiRequestHelper;
     private ArrayList<LocalOfficial> officialList = new ArrayList<>();
     private Bundle bundle = new Bundle();
+    private ItemTouchHelper mItemTouchHelper;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +57,10 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     }
 
     private void initOfficialsListing() {
-        rvOfficials.setAdapter(new OfficialsRecyclerViewAdapter(officialList));
+        final OfficialsRecyclerViewAdapter adapter = new OfficialsRecyclerViewAdapter(officialList, this);
+        rvOfficials.setAdapter(adapter);
+        rvOfficials.setHasFixedSize(true);
+
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
         officialList.addAll(DaoHelper.getAllOfficials());
         if (officialList.size() > 0) {
@@ -59,6 +68,10 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         } else {
             apiRequestHelper.getOfficials(token);
         }
+
+        final ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
+        mItemTouchHelper = new ItemTouchHelper(callback);
+        mItemTouchHelper.attachToRecyclerView(rvOfficials);
     }
 
     @OnClick(R.id.btnAdd)
@@ -139,5 +152,10 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
                 o.getBackground(),o.getPic(),o.getStatus());
         DaoHelper.createOfficial(localOfficial);
         officialList.add(localOfficial);
+    }
+
+    @Override
+    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
+        mItemTouchHelper.startDrag(viewHolder);
     }
 }

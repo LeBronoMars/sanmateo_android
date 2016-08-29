@@ -46,7 +46,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     }
 
     private void initOfficialsListing() {
-        rvOfficials.setAdapter(new OfficialsRecyclerViewAdapter(officialList));
+        rvOfficials.setAdapter(new OfficialsRecyclerViewAdapter(officialList,null));
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
         officialList.addAll(DaoHelper.getAllOfficials());
         if (officialList.size() > 0) {

@@ -10,6 +10,7 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -18,17 +19,21 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
 
 
 /**
  * Created by rsbulanon on 8/23/16.
  */
-public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<OfficialsRecyclerViewAdapter.OfficialHolder> {
+public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<OfficialsRecyclerViewAdapter.OfficialHolder>
+                                            implements ItemTouchHelperAdapter {
 
     private ArrayList<LocalOfficial> officials;
+    private final OnStartDragListener mDragStartListener;
 
-    public OfficialsRecyclerViewAdapter(ArrayList<LocalOfficial> officials) {
+    public OfficialsRecyclerViewAdapter(ArrayList<LocalOfficial> officials,OnStartDragListener dragStartListener) {
         this.officials = officials;
+        this.mDragStartListener = dragStartListener;
     }
 
     @Override
@@ -84,5 +89,24 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
     @Override
     public void onAttachedToRecyclerView(RecyclerView recyclerView) {
         super.onAttachedToRecyclerView(recyclerView);
+    }
+
+    @Override
+    public boolean onItemMove(int fromPosition, int toPosition) {
+        if (mDragStartListener != null) {
+            Collections.swap(officials, fromPosition, toPosition);
+            notifyItemMoved(fromPosition, toPosition);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public void onItemDismiss(int position) {
+        if (mDragStartListener != null) {
+            officials.remove(position);
+            notifyItemRemoved(position);
+        }
     }
 }
