@@ -1,6 +1,8 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.widget.ListView;
 
 import java.util.ArrayList;
@@ -10,14 +12,26 @@ import butterknife.ButterKnife;
 import rx.annotations.Beta;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsRecyclerViewAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
  * Created by ctmanalo on 7/7/16.
  */
-public class OfficialsActivity extends BaseActivity {
+public class OfficialsActivity extends BaseActivity implements OnApiRequestListener{
 
-    @BindView(R.id.lvOfficials) ListView lvOfficials;
-    private ArrayList<String> dummyText;
+    @BindView(R.id.rvOfficials) RecyclerView rvOfficials;
+    private CurrentUser currentUser;
+    private String token;
+    private ApiRequestHelper apiRequestHelper;
+    private ArrayList<LocalOfficial> officialList = new ArrayList<>();
+    private Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -25,17 +39,54 @@ public class OfficialsActivity extends BaseActivity {
         setContentView(R.layout.activity_officials);
         ButterKnife.bind(this);
         setToolbarTitle("Officials");
-        initDummyDisplay();
+        currentUser = DaoHelper.getCurrentUser();
+        token = currentUser.getToken();
+        apiRequestHelper = new ApiRequestHelper(this);
+        initOfficialsListing();
     }
 
-    private void initDummyDisplay() {
-        dummyText = new ArrayList<>();
-        dummyText.add("San Mateo App");
-        dummyText.add("San Mateo App");
-        dummyText.add("San Mateo App");
-        dummyText.add("San Mateo App");
-        dummyText.add("San Mateo App");
-        OfficialsAdapter adapter = new OfficialsAdapter(this, dummyText);
-        lvOfficials.setAdapter(adapter);
+    private void initOfficialsListing() {
+        rvOfficials.setAdapter(new OfficialsRecyclerViewAdapter(officialList));
+        rvOfficials.setLayoutManager(new LinearLayoutManager(this));
+        officialList.addAll(DaoHelper.getAllOfficials());
+        if (officialList.size() > 0) {
+            rvOfficials.getAdapter().notifyDataSetChanged();
+        } else {
+            apiRequestHelper.getOfficials(token);
+        }
+    }
+
+    @Override
+    public void onApiRequestBegin(String action) {
+        if (action.equals(AppConstants.ACTION_GET_OFFICIALS)) {
+            showCustomProgress("Fetching list of officials, Please wait...");
+        }
+    }
+
+    @Override
+    public void onApiRequestSuccess(String action, Object result) {
+        dismissCustomProgress();
+        if (action.equals(AppConstants.ACTION_GET_OFFICIALS)) {
+            final ArrayList<Official> officials = (ArrayList<Official>)result;
+            for (Official o : officials) {
+                addOfficialToList(o);
+            }
+        }
+        rvOfficials.getAdapter().notifyDataSetChanged();
+    }
+
+    @Override
+    public void onApiRequestFailed(String action, Throwable t) {
+        dismissCustomProgress();
+        handleApiException(t);
+    }
+
+    private void addOfficialToList(final Official o) {
+        final LocalOfficial localOfficial = new LocalOfficial(null,
+                o.getId(),o.getCreatedAt(),o.getUpdatedAt(),o.getDeletedAt(),
+                o.getFirstName(),o.getLastName(),o.getNickName(),o.getPosition(),
+                o.getBackground(),o.getPic(),o.getStatus());
+        DaoHelper.createOfficial(localOfficial);
+        officialList.add(localOfficial);
     }
 }
