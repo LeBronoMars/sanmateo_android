@@ -33,8 +33,14 @@
         <ImageView
             android:id="@+id/ivImage"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:src="@drawable/placeholder_image"/>
+            android:layout_height="match_parent"/>
+
+        <ProgressBar
+            android:id="@+id/pbLoadImage"
+            android:indeterminate="true"
+            android:layout_centerInParent="true"
+            android:layout_width="@dimen/_150sdp"
+            android:layout_height="@dimen/_150sdp"/>
 
     </RelativeLayout>
 
