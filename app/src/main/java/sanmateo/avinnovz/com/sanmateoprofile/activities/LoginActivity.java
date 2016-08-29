@@ -170,7 +170,6 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         if (mp == null) {
             mp = MediaPlayer.create(this, R.raw.new_video_bg);
             mp.setDisplay(surfaceHolder);
-            mp.setLooping(true);
 
             final Display display = getWindowManager().getDefaultDisplay();
             final Point size = new Point();
@@ -192,6 +191,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
             //Start video
             mp.start();
+            mp.setLooping(true);
         }
     }
 
@@ -208,6 +208,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     @Override
     protected void onDestroy() {
         mp.stop();
+        mp.release();
         super.onDestroy();
     }
 
