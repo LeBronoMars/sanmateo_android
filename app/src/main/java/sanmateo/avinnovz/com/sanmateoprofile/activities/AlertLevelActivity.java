@@ -54,8 +54,8 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
 
     private void initMapMarker() {
         appMarkers.clear();
-        appMarkers.add(new AppMarker(14.6969916, 121.1197769, "San Mateo Public Market", "", ""));
-        appMarkers.add(new AppMarker(14.6776636, 121.1113037, "Batasan-San Mateo Bridge", "", ""));
+        appMarkers.add(new AppMarker(14.6969916, 121.1197769, "San Mateo Public Market", "", "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/gallery/poon.jpg"));
+        appMarkers.add(new AppMarker(14.6776636, 121.1113037, "Batasan-San Mateo Bridge", "", "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/gallery/kakanin2.jpg"));
     }
 
     private void initTabs() {

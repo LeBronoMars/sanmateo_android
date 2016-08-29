@@ -9,13 +9,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.squareup.picasso.Callback;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.AppMarker;
 
 /**
@@ -28,6 +33,8 @@ public class AppMarkerDialogFragment extends DialogFragment {
     private AppMarker appMarker;
 
     @BindView(R.id.tvTitle) TextView tvTitle;
+    @BindView(R.id.ivImage) ImageView ivImage;
+    @BindView(R.id.pbLoadImage) ProgressBar pbLoadImage;
 
     public static AppMarkerDialogFragment newInstance(AppMarker appMarker) {
         final AppMarkerDialogFragment fragment = new AppMarkerDialogFragment();
@@ -60,6 +67,25 @@ public class AppMarkerDialogFragment extends DialogFragment {
 
     private void initViews() {
         tvTitle.setText(appMarker.getTitle());
+        initPhoto();
+    }
+
+    private void initPhoto() {
+        pbLoadImage.setVisibility(View.VISIBLE);
+        AppConstants.PICASSO.load(appMarker.getImageUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .fit()
+                .into(ivImage, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        pbLoadImage.setVisibility(View.GONE);
+                    }
+
+                    @Override
+                    public void onError() {
+                        pbLoadImage.setVisibility(View.GONE);
+                    }
+                });
     }
 
     @OnClick(R.id.rlClose)
