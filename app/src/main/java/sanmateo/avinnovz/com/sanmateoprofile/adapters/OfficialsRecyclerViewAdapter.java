@@ -1,5 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.adapters;
 
+import android.graphics.Color;
+import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,6 +21,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ItemTouchHelperViewHolder;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
 
 
@@ -47,7 +50,8 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
         return new OfficialHolder(v);
     }
 
-    public static class OfficialHolder extends RecyclerView.ViewHolder {
+    public static class OfficialHolder extends RecyclerView.ViewHolder
+                            implements ItemTouchHelperViewHolder {
 
         @BindView(R.id.civPic) CircleImageView civPic;
         @BindView(R.id.tvOfficialName) TextView tvOfficialName;
@@ -57,6 +61,16 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
         OfficialHolder(View view) {
             super(view);
             ButterKnife.bind(this,view);
+        }
+
+        @Override
+        public void onItemSelected() {
+            itemView.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            itemView.setBackgroundColor(Color.WHITE);
         }
     }
 
@@ -94,6 +108,7 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
     @Override
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (mDragStartListener != null) {
+            LogHelper.log("swap","from pos --> " + fromPosition + " to pos --> " + toPosition);
             Collections.swap(officials, fromPosition, toPosition);
             notifyItemMoved(fromPosition, toPosition);
             return true;
