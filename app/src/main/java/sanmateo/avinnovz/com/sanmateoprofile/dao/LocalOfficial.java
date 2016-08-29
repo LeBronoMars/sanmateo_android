@@ -15,6 +15,7 @@ public class LocalOfficial {
     private String lastName;
     private String nickName;
     private String position;
+    private Integer zindex;
     private String background;
     private String pic;
     private String status;
@@ -26,7 +27,7 @@ public class LocalOfficial {
         this.id = id;
     }
 
-    public LocalOfficial(Long id, Integer officialId, String createdAt, String updatedAt, String deletedAt, String firstName, String lastName, String nickName, String position, String background, String pic, String status) {
+    public LocalOfficial(Long id, Integer officialId, String createdAt, String updatedAt, String deletedAt, String firstName, String lastName, String nickName, String position, Integer zindex, String background, String pic, String status) {
         this.id = id;
         this.officialId = officialId;
         this.createdAt = createdAt;
@@ -36,6 +37,7 @@ public class LocalOfficial {
         this.lastName = lastName;
         this.nickName = nickName;
         this.position = position;
+        this.zindex = zindex;
         this.background = background;
         this.pic = pic;
         this.status = status;
@@ -111,6 +113,14 @@ public class LocalOfficial {
 
     public void setPosition(String position) {
         this.position = position;
+    }
+
+    public Integer getZindex() {
+        return zindex;
+    }
+
+    public void setZindex(Integer zindex) {
+        this.zindex = zindex;
     }
 
     public String getBackground() {

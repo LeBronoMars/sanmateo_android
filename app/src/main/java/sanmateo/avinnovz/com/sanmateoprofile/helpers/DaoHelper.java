@@ -129,5 +129,9 @@ public class DaoHelper {
     public static void createOfficial(final LocalOfficial localOfficial) {
         DAO_LOCAL_OFFICIAL.insert(localOfficial);
     }
+
+    public static void updateOfficial(final LocalOfficial localOfficial) {
+        DAO_LOCAL_OFFICIAL.update(localOfficial);
+    }
 }
 

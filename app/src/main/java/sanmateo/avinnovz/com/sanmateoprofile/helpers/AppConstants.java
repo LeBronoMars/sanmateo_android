@@ -13,7 +13,7 @@ public class AppConstants {
     /** static instance of Picasso */
     public static Picasso PICASSO = null;
 
-   public static final String BASE_URL = "http://192.168.1.7:8080";
+   public static final String BASE_URL = "http://192.168.1.4:8080";
 //   public static final String BASE_URL = "http://192.168.1.7:9000";
     //public static final String BASE_URL = "http://192.168.10.6:9000";
     //public static final String BASE_URL = "http://192.168.43.172:8080";

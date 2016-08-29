@@ -32,9 +32,10 @@ public class LocalOfficialDao extends AbstractDao<LocalOfficial, Long> {
         public final static Property LastName = new Property(6, String.class, "lastName", false, "LAST_NAME");
         public final static Property NickName = new Property(7, String.class, "nickName", false, "NICK_NAME");
         public final static Property Position = new Property(8, String.class, "position", false, "POSITION");
-        public final static Property Background = new Property(9, String.class, "background", false, "BACKGROUND");
-        public final static Property Pic = new Property(10, String.class, "pic", false, "PIC");
-        public final static Property Status = new Property(11, String.class, "status", false, "STATUS");
+        public final static Property Zindex = new Property(9, Integer.class, "zindex", false, "ZINDEX");
+        public final static Property Background = new Property(10, String.class, "background", false, "BACKGROUND");
+        public final static Property Pic = new Property(11, String.class, "pic", false, "PIC");
+        public final static Property Status = new Property(12, String.class, "status", false, "STATUS");
     };
 
 
@@ -59,9 +60,10 @@ public class LocalOfficialDao extends AbstractDao<LocalOfficial, Long> {
                 "'LAST_NAME' TEXT," + // 6: lastName
                 "'NICK_NAME' TEXT," + // 7: nickName
                 "'POSITION' TEXT," + // 8: position
-                "'BACKGROUND' TEXT," + // 9: background
-                "'PIC' TEXT," + // 10: pic
-                "'STATUS' TEXT);"); // 11: status
+                "'ZINDEX' INTEGER," + // 9: zindex
+                "'BACKGROUND' TEXT," + // 10: background
+                "'PIC' TEXT," + // 11: pic
+                "'STATUS' TEXT);"); // 12: status
     }
 
     /** Drops the underlying database table. */
@@ -120,19 +122,24 @@ public class LocalOfficialDao extends AbstractDao<LocalOfficial, Long> {
             stmt.bindString(9, position);
         }
  
+        Integer zindex = entity.getZindex();
+        if (zindex != null) {
+            stmt.bindLong(10, zindex);
+        }
+ 
         String background = entity.getBackground();
         if (background != null) {
-            stmt.bindString(10, background);
+            stmt.bindString(11, background);
         }
  
         String pic = entity.getPic();
         if (pic != null) {
-            stmt.bindString(11, pic);
+            stmt.bindString(12, pic);
         }
  
         String status = entity.getStatus();
         if (status != null) {
-            stmt.bindString(12, status);
+            stmt.bindString(13, status);
         }
     }
 
@@ -155,9 +162,10 @@ public class LocalOfficialDao extends AbstractDao<LocalOfficial, Long> {
             cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6), // lastName
             cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7), // nickName
             cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8), // position
-            cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9), // background
-            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // pic
-            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11) // status
+            cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9), // zindex
+            cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10), // background
+            cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11), // pic
+            cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12) // status
         );
         return entity;
     }
@@ -174,9 +182,10 @@ public class LocalOfficialDao extends AbstractDao<LocalOfficial, Long> {
         entity.setLastName(cursor.isNull(offset + 6) ? null : cursor.getString(offset + 6));
         entity.setNickName(cursor.isNull(offset + 7) ? null : cursor.getString(offset + 7));
         entity.setPosition(cursor.isNull(offset + 8) ? null : cursor.getString(offset + 8));
-        entity.setBackground(cursor.isNull(offset + 9) ? null : cursor.getString(offset + 9));
-        entity.setPic(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
-        entity.setStatus(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setZindex(cursor.isNull(offset + 9) ? null : cursor.getInt(offset + 9));
+        entity.setBackground(cursor.isNull(offset + 10) ? null : cursor.getString(offset + 10));
+        entity.setPic(cursor.isNull(offset + 11) ? null : cursor.getString(offset + 11));
+        entity.setStatus(cursor.isNull(offset + 12) ? null : cursor.getString(offset + 12));
      }
     
     /** @inheritdoc */

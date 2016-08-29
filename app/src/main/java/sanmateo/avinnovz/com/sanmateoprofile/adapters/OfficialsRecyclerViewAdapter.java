@@ -20,6 +20,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ItemTouchHelperViewHolder;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
@@ -109,8 +110,18 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
     public boolean onItemMove(int fromPosition, int toPosition) {
         if (mDragStartListener != null) {
             LogHelper.log("swap","from pos --> " + fromPosition + " to pos --> " + toPosition);
+            final int fromZIndex = officials.get(fromPosition).getZindex();
+            final int toZIndex = officials.get(toPosition).getZindex();
             Collections.swap(officials, fromPosition, toPosition);
             notifyItemMoved(fromPosition, toPosition);
+            final LocalOfficial fromOfficial = officials.get(fromPosition);
+            final LocalOfficial toOfficial = officials.get(toPosition);
+
+            fromOfficial.setZindex(toZIndex);
+            toOfficial.setZindex(fromZIndex);
+
+            DaoHelper.updateOfficial(fromOfficial);
+            DaoHelper.updateOfficial(toOfficial);
             return true;
         } else {
             return false;
