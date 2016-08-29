@@ -508,16 +508,21 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         if (resultCode == RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
                 fileToUpload = getFile(data.getData(),UUID.randomUUID().toString()+".png");
+                uploadFileToAmazon();
             } else if (requestCode == CAPTURE_IMAGE) {
                 fileToUpload = rotateBitmap(fileUri.getPath());
+                uploadFileToAmazon();
             }
-            /** delete previous profile pic from s3 if it's not the default profile pic using gravatar */
-            if (!currentUserSingleton.getCurrentUser().getPicUrl()
-                    .contains("http://www.gravatar.com/avatar/")) {
-                deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
-            }
-            uploadImageToS3(uploadToBucket,fileToUpload);
         }
+    }
+
+    private void uploadFileToAmazon() {
+        /** delete previous profile pic from s3 if it's not the default profile pic using gravatar */
+        if (!currentUserSingleton.getCurrentUser().getPicUrl()
+                .contains("http://www.gravatar.com/avatar/")) {
+            deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
+        }
+        uploadImageToS3(uploadToBucket,fileToUpload);
     }
 
     @Override
