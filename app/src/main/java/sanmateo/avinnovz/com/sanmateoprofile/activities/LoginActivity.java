@@ -49,7 +49,6 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
 
-        mp = MediaPlayer.create(this, R.raw.new_video_bg);
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
@@ -168,10 +167,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
-
-        try {
+        if (mp == null) {
+            mp = MediaPlayer.create(this, R.raw.new_video_bg);
             mp.setDisplay(surfaceHolder);
-            mp.prepare();
             mp.setLooping(true);
 
             final Display display = getWindowManager().getDefaultDisplay();
@@ -194,8 +192,6 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
             //Start video
             mp.start();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
     }
 
