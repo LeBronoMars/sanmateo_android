@@ -62,7 +62,7 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
         int markers = appMarkers.size();
         String[] titles = new String[markers];
         for (int i = 0; i < markers; i++) {
-            fragments.add(AlertLevelFragment.newInstance());
+            fragments.add(AlertLevelFragment.newInstance(appMarkers.get(i).getTitle()));
             titles[i] = appMarkers.get(i).getTitle();
         }
         viewPager.setAdapter(new TabPagerAdapter(getSupportFragmentManager(), fragments, titles));
