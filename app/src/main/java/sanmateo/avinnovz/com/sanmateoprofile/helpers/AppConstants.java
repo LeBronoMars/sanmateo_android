@@ -95,4 +95,10 @@ public class AppConstants {
     public static final String IMAGE_URL_EQ_BEFORE = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/BEFORE_EQ.png";
     public static final String IMAGE_URL_EQ_DURING = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/DURING_EQ.png";
     public static final String IMAGE_URL_EQ_AFTER = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/AFTER_EQ.png";
+    public static final String IMAGE_URL_MARKER_BRIDGE_1 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/Batasan-SanMateoBridge1.png";
+    public static final String IMAGE_URL_MARKER_BRIDGE_2 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/Batasan-SanMateoBridge2.png";
+    public static final String IMAGE_URL_MARKER_BRIDGE_3 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/Batasan-SanMateoBridge3.png";
+    public static final String IMAGE_URL_MARKER_MARKET_1 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/PublicMarket_pic1.png";
+    public static final String IMAGE_URL_MARKER_MARKET_2 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/PublicMarket_pic2.png";
+    public static final String IMAGE_URL_MARKER_MARKET_3 = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/alert_level/PublicMarket_pic3.png";
 }
