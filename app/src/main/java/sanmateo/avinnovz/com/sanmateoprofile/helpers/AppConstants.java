@@ -82,4 +82,17 @@ public class AppConstants {
 
     /** prefs key */
     public static final String PREFS_LOCAL_EMERGENCY_KITS = "local emergency kits";
+
+    /** image url */
+    public static final String IMAGE_URL_FLOOD_CAUSE = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/causes_flood.png";
+    public static final String IMAGE_URL_FLOOD_BEFORE = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/before_flood.png";
+    public static final String IMAGE_URL_FLOOD_DURING = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/during_flood.png";
+    public static final String IMAGE_URL_FLOOD_AFTER = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/after_flood.png";
+    public static final String IMAGE_URL_TIPS_EMERGENCY_KIT = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/emergencykit.png";
+    public static final String IMAGE_URL_TIPS_REMINDERS = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/Reminder.png";
+    public static final String IMAGE_URL_EQ_HAZARDS = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/HAZARDS_EQ.png";
+    public static final String IMAGE_URL_EQ_GRAPHIC_AID = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/Graphic_AID.png";
+    public static final String IMAGE_URL_EQ_BEFORE = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/BEFORE_EQ.png";
+    public static final String IMAGE_URL_EQ_DURING = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/DURING_EQ.png";
+    public static final String IMAGE_URL_EQ_AFTER = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/disaster_management/AFTER_EQ.png";
 }
