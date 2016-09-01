@@ -24,8 +24,32 @@ public class WaterLevelSingleton {
         return waterLevels;
     }
 
+    public ArrayList<WaterLevel> getWaterLevelsByArea(String area) {
+        ArrayList<WaterLevel> filteredWaterLevel = new ArrayList<>();
+        for (WaterLevel w: waterLevels) {
+            if (w.getArea().equals(area)) {
+                filteredWaterLevel.add(w);
+            }
+        }
+        return filteredWaterLevel;
+    }
+
     public void setIncidents(ArrayList<WaterLevel> waterLevels) {
         this.waterLevels.clear();
         this.waterLevels.addAll(waterLevels);
+    }
+
+    public void replaceSpecificArea(String area, ArrayList<WaterLevel> newWaterLevels) {
+        ArrayList<WaterLevel> filteredWaterLevel = new ArrayList<>();
+        if (waterLevels.size() > 0) {
+            for (WaterLevel w: waterLevels) {
+                if (!w.getArea().equals(area)) {
+                    filteredWaterLevel.add(w);
+                }
+            }
+            waterLevels.clear();
+            waterLevels.addAll(filteredWaterLevel);
+        }
+        waterLevels.addAll(newWaterLevels);
     }
 }

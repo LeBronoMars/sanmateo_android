@@ -197,6 +197,13 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_CREATE_OFFICIAL_RECORD, observable);
     }
 
+    public void getWaterLevelByArea(final String token, final String area) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_WATER_LEVEL_BY_AREA);
+        final Observable<List<WaterLevel>> observable = AppConstants.API_INTERFACE.getWaterLevelByArea(token,
+                area);
+        handleObservableResult(AppConstants.ACTION_GET_WATER_LEVEL_BY_AREA, observable);
+    }
+
     /**
      * handle api result using lambda
      *

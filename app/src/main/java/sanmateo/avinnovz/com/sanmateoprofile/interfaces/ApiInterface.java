@@ -365,6 +365,16 @@ public interface ApiInterface {
                                               @Field("background") String background,
                                               @Field("pic") String pic);
 
+
+    /**
+     * get all water level by area
+     *
+     * @param token represents the user that trying to make the request
+     * @param area defines the area of the requested water level
+     * */
+    @GET("/api/v1/water_level/filter")
+    Observable<List<WaterLevel>> getWaterLevelByArea(@Header("Authorization") String token,
+                                                     @Query("area") String area);
 }
 
 

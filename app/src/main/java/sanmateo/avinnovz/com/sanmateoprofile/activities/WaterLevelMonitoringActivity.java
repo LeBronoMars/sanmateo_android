@@ -40,7 +40,7 @@ public class WaterLevelMonitoringActivity extends BaseActivity {
                 onBackPressed();
                 break;
             case R.id.menu_alert_list:
-                startActivity(new Intent(this, WaterAlertListActivity.class));
+                startActivity(new Intent(this, AlertLevelActivity.class));
                 animateToLeft(this);
                 break;
         }
