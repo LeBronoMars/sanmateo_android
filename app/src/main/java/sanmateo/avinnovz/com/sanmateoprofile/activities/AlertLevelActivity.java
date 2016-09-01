@@ -27,6 +27,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabPagerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.AlertLevelFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.AppMarkerDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.AppMarker;
 
 /**
@@ -54,8 +55,12 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
 
     private void initMapMarker() {
         appMarkers.clear();
-        appMarkers.add(new AppMarker(14.6969916, 121.1197769, "San Mateo Public Market", "", "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/gallery/poon.jpg"));
-        appMarkers.add(new AppMarker(14.6776636, 121.1113037, "Batasan-San Mateo Bridge", "", "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/gallery/kakanin2.jpg"));
+        appMarkers.add(new AppMarker(14.6969916, 121.1197769, "San Mateo Public Market", "",
+                AppConstants.IMAGE_URL_MARKER_MARKET_1, AppConstants.IMAGE_URL_MARKER_MARKET_2,
+                AppConstants.IMAGE_URL_MARKER_MARKET_3));
+        appMarkers.add(new AppMarker(14.6776636, 121.1113037, "Batasan-San Mateo Bridge", "",
+                AppConstants.IMAGE_URL_MARKER_BRIDGE_1, AppConstants.IMAGE_URL_MARKER_BRIDGE_2,
+                AppConstants.IMAGE_URL_MARKER_BRIDGE_3));
     }
 
     private void initTabs() {
@@ -152,7 +157,7 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
         tabLayout.getTabAt(tabPosition).select();
 
         AppMarkerDialogFragment fragment = AppMarkerDialogFragment
-                .newInstance(appMarkers.get(tabPosition));
+                .newInstance(this   , appMarkers.get(tabPosition));
         fragment.show(getFragmentManager(), "Marker Details");
     }
 }

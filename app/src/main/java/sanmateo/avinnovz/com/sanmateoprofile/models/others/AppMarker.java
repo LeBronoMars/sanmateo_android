@@ -11,22 +11,30 @@ public class AppMarker {
     double longitude;
     String title;
     String snippet;
-    String imageUrl;
+    String imageUrl1;
+    String imageUrl2;
+    String imageUrl3;
 
-    public AppMarker(LatLng latLng, String title, String snippet, String imageUrl) {
+    public AppMarker(LatLng latLng, String title, String snippet, String imageUrl1, String imageUrl2,
+                     String imageUrl3) {
         this.latitude = latLng.latitude;
         this.longitude = latLng.longitude;
         this.title = title;
         this.snippet = snippet;
-        this.imageUrl = imageUrl;
+        this.imageUrl1 = imageUrl1;
+        this.imageUrl2 = imageUrl2;
+        this.imageUrl3 = imageUrl3;
     }
 
-    public AppMarker(double latitude, double longitude, String title, String snippet, String imageUrl) {
+    public AppMarker(double latitude, double longitude, String title, String snippet, String imageUrl1,
+                     String imageUrl2, String imageUrl3) {
         this.latitude = latitude;
         this.longitude = longitude;
         this.title = title;
         this.snippet = snippet;
-        this.imageUrl = imageUrl;
+        this.imageUrl1 = imageUrl1;
+        this.imageUrl2 = imageUrl2;
+        this.imageUrl3 = imageUrl3;
     }
 
     public LatLng getLatLng() {
@@ -70,11 +78,27 @@ public class AppMarker {
         this.snippet = snippet;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public String getImageUrl1() {
+        return imageUrl1;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public void setImageUrl1(String imageUrl) {
+        this.imageUrl1 = imageUrl;
+    }
+
+    public String getImageUrl2() {
+        return imageUrl2;
+    }
+
+    public void setImageUrl2(String imageUrl2) {
+        this.imageUrl2 = imageUrl2;
+    }
+
+    public String getImageUrl3() {
+        return imageUrl3;
+    }
+
+    public void setImageUrl3(String imageUrl3) {
+        this.imageUrl3 = imageUrl3;
     }
 }

@@ -39,7 +39,26 @@ public class BannerFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         final View view = inflater.inflate(R.layout.fragment_banner, container, false);
         final ImageView imageView = (ImageView)view.findViewById(R.id.ivImage);
-        imageView.setImageDrawable(drawable);
+        initImage(imageView);
         return view;
+    }
+
+    private void initImage(ImageView imageView) {
+        if (drawable != null) {
+            imageView.setImageDrawable(drawable);
+        } else if (url != null) {
+            AppConstants.PICASSO.load(url)
+                    .placeholder(R.drawable.placeholder_image)
+                    .fit()
+                    .into(imageView, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                        }
+
+                        @Override
+                        public void onError() {
+                        }
+                    });
+        }
     }
 }

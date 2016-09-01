@@ -23,26 +23,11 @@
         android:layout_margin="@dimen/_2sdp"
         android:layout_below="@id/tvTitle"/>
 
-    <RelativeLayout
-        android:id="@+id/rlPhotoContainer"
+    <cn.trinea.android.view.autoscrollviewpager.AutoScrollViewPager
+        android:id="@+id/viewPager"
         android:layout_width="match_parent"
         android:layout_height="@dimen/_200sdp"
-        android:layout_margin="@dimen/_5sdp"
-        android:layout_below="@id/line">
-
-        <ImageView
-            android:id="@+id/ivImage"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <ProgressBar
-            android:id="@+id/pbLoadImage"
-            android:indeterminate="true"
-            android:layout_centerInParent="true"
-            android:layout_width="@dimen/_150sdp"
-            android:layout_height="@dimen/_150sdp"/>
-
-    </RelativeLayout>
+        android:layout_below="@id/line"/>
 
     <RelativeLayout
         android:id="@+id/rlClose"
@@ -50,7 +35,7 @@
         android:layout_height="wrap_content"
         android:clickable="true"
         android:background="@drawable/button_white_clickable"
-        android:layout_below="@id/rlPhotoContainer">
+        android:layout_below="@id/viewPager">
 
         <TextView
             fontPath="fonts/Roboto-Medium.ttf"

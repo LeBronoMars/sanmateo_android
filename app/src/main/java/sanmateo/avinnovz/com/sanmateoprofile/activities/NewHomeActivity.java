@@ -15,6 +15,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
@@ -113,7 +114,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         newsSingleton = NewsSingleton.getInstance();
         apiRequestHelper = new ApiRequestHelper(this);
         token = currentUserSingleton.getCurrentUser().getToken();
-
+        Log.d("token", token);
         animateBanners();
         initNavigationDrawer();
         initNews();
@@ -226,6 +227,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         menu.add("Emergency Numbers");
                         menu.add("Emergency Kit");
                         menu.add("How to CPR");
+                        menu.add("Disaster 101");
                         final DisasterMgtMenuDialogFragment fragment = DisasterMgtMenuDialogFragment
                                 .newInstance(headerDisasterManagement, menu);
                         fragment.setOnSelectDisasterMenuListener(new DisasterMgtMenuDialogFragment.OnSelectDisasterMenuListener() {
@@ -247,6 +249,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                     moveToOtherActivity(EmergencyKitActivity.class);
                                 } else if (position == 7) {
                                     moveToOtherActivity(CprActivity.class);
+                                } else if (position == 8) {
+                                    moveToOtherActivity(Disaster101Activity.class);
                                 }
 
                             }
