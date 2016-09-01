@@ -207,8 +207,10 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
     @Override
     protected void onDestroy() {
-        mp.stop();
-        mp.release();
+        if (mp != null) {
+            mp.stop();
+            mp.release();
+        }
         super.onDestroy();
     }
 

@@ -215,7 +215,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
                         break;*/
                     case R.id.menu_social_media:
-                        showToast("social media");
+                        moveToOtherActivity(SocialMediaActivity.class);
                         break;
                     case R.id.menu_disaster_management:
                         final ArrayList<String> menu = new ArrayList<>();
@@ -526,7 +526,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 .contains("http://www.gravatar.com/avatar/")) {
             deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
         }
-        uploadImageToS3(uploadToBucket,fileToUpload);
+        uploadImageToS3(uploadToBucket,fileToUpload, 1, 1);
     }
 
     @Override

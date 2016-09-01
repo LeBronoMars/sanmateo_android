@@ -98,14 +98,14 @@ public class CreateNewsDialogFragment extends DialogFragment {
             activity.setError(etReportedBy, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onCreateNewsListener != null) {
-                onCreateNewsListener.onCreateNews(title,body,sourceUrl,imageUrl,reportedBy);
+                onCreateNewsListener.onCreateNews(title,body,sourceUrl,imageUrl,reportedBy, fileToUpload);
             }
         }
     }
 
     public interface OnCreateNewsListener {
         void onCreateNews(final String title, final String body, final String sourceUrl,
-                          final String imageUrl, final String reportedBy);
+                          final String imageUrl, final String reportedBy, final File file);
         void onCancel();
     }
 

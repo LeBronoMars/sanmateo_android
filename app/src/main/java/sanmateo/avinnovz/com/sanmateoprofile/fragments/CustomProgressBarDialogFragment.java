@@ -23,14 +23,20 @@ import sanmateo.avinnovz.com.sanmateoprofile.R;
 public class CustomProgressBarDialogFragment extends DialogFragment {
 
     @BindView(R.id.progressBar) ProgressBar progressBar;
+    @BindView(R.id.tvProgress) TextView tvProgress;
     private View view;
     private Dialog mDialog;
     private String message;
     private int max;
+    private int current;
+    private int total;
 
-    public static CustomProgressBarDialogFragment newInstance(final int max) {
+    public static CustomProgressBarDialogFragment newInstance(final int max, final int current,
+                                                              final int total) {
         final CustomProgressBarDialogFragment frag = new CustomProgressBarDialogFragment();
         frag.max = max;
+        frag.current = current;
+        frag.total = total;
         return frag;
     }
 
@@ -52,6 +58,7 @@ public class CustomProgressBarDialogFragment extends DialogFragment {
         if (max == 0) {
             progressBar.setVisibility(View.GONE);
         } else {
+            tvProgress.setText("Uploading " + current + "/" + max + ", Please wait...");
             progressBar.setMax(max);
         }
         mDialog = new Dialog(getActivity());
