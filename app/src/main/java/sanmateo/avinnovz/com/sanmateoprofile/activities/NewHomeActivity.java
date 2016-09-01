@@ -522,7 +522,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 .contains("http://www.gravatar.com/avatar/")) {
             deleteImage(AppConstants.BUCKET_ROOT, currentUserSingleton.getCurrentUser().getPicUrl());
         }
-        uploadImageToS3(uploadToBucket,fileToUpload);
+        uploadImageToS3(uploadToBucket,fileToUpload, 1, 1);
     }
 
     @Override

@@ -217,49 +217,49 @@
 
             </RelativeLayout>
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:orientation="horizontal">
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnCreate"
+                    fontPath="fonts/Roboto-Light.ttf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="50"
+                    android:background="@color/colorPrimary"
+                    android:text="@string/create"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:rd_enable="true"
+                    app:rd_maxRippleRadius="match_view"
+                    app:rd_rippleType="touch" />
+
+                <com.rey.material.widget.Button
+                    android:id="@+id/btnCancel"
+                    fontPath="fonts/Roboto-Light.ttf"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_weight="50"
+                    android:background="@color/colorPrimaryDark"
+                    android:text="@string/cancel"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/_14sdp"
+                    app:rd_enable="true"
+                    app:rd_maxRippleRadius="match_view"
+                    app:rd_rippleType="touch" />
+
+            </LinearLayout>
+
         </LinearLayout>
 
     </ScrollView>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:orientation="horizontal">
-
-        <com.rey.material.widget.Button
-            android:id="@+id/btnCreate"
-            fontPath="fonts/Roboto-Light.ttf"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50"
-            android:background="@color/colorPrimary"
-            android:text="@string/create"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14sdp"
-            app:rd_enable="true"
-            app:rd_maxRippleRadius="match_view"
-            app:rd_rippleType="touch" />
-
-        <com.rey.material.widget.Button
-            android:id="@+id/btnCancel"
-            fontPath="fonts/Roboto-Light.ttf"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="50"
-            android:background="@color/colorPrimaryDark"
-            android:text="@string/cancel"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/_14sdp"
-            app:rd_enable="true"
-            app:rd_maxRippleRadius="match_view"
-            app:rd_rippleType="touch" />
-
-    </LinearLayout>
 
 </LinearLayout>
 

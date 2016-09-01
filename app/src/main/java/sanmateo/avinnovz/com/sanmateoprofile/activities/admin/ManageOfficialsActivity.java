@@ -90,7 +90,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
                     bundle.putString("position",position);
                     bundle.putString("background",background);
                     bundle.putString("picUrl",picUrl);
-                    uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload);
+                    uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
                 } else {
                     apiRequestHelper.createOfficial(token,firstName,lastName,nickName,position,
                             officialList.size()+1,background,picUrl);

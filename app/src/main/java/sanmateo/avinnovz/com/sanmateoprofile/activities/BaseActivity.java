@@ -115,9 +115,10 @@ public class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void showCustomProgressBar(final int max) {
+    public void showCustomProgressBar(final int max, final int current, final int total) {
         if (customProgressBarDialogFragment == null) {
-            customProgressBarDialogFragment = CustomProgressBarDialogFragment.newInstance(max);
+            customProgressBarDialogFragment = CustomProgressBarDialogFragment
+                    .newInstance(max, current, total);
             customProgressBarDialogFragment.setCancelable(false);
             customProgressBarDialogFragment.show(getFragmentManager(),"progress");
         }
@@ -457,9 +458,10 @@ public class BaseActivity extends AppCompatActivity {
         return localGalleryList;
     }
 
-    public void uploadImageToS3(final String bucketName, final File fileToUpload) {
+    public void uploadImageToS3(final String bucketName, final File fileToUpload, final int current,
+                                final int total) {
         if (isNetworkAvailable()) {
-            showCustomProgressBar(0);
+            showCustomProgressBar(0,current,total);
             amazonS3Helper.uploadImage(bucketName,fileToUpload).setTransferListener(new TransferListener() {
                 @Override
                 public void onStateChanged(int id, TransferState state) {

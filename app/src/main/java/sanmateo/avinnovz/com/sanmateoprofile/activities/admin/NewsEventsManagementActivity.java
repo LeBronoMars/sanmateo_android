@@ -6,6 +6,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -24,6 +25,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
@@ -33,7 +35,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 /**
  * Created by rsbulanon on 7/6/16.
  */
-public class NewsEventsManagementActivity extends BaseActivity implements OnApiRequestListener {
+public class NewsEventsManagementActivity extends BaseActivity implements OnApiRequestListener,
+                                                                            OnS3UploadListener {
 
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
@@ -46,12 +49,14 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
     private String token;
     private ArrayList<News> newsToday = new ArrayList<>();
     private ArrayList<News> newPrevious = new ArrayList<>();
+    private Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news_event_management);
         ButterKnife.bind(this);
+        initAmazonS3Helper(this);
         apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         newsSingleton = NewsSingleton.getInstance();
@@ -150,12 +155,21 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
         fragment.setOnCreateNewsListener(new CreateNewsDialogFragment.OnCreateNewsListener() {
 
             @Override
-            public void onCreateNews(String title, String body, String sourceUrl, String imageUrl, String reportedBy) {
+            public void onCreateNews(String title, String body, String sourceUrl,
+                                     String imageUrl, String reportedBy, File file) {
                 fragment.dismiss();
-                if (isNetworkAvailable()) {
-                    apiRequestHelper.createNews(token,title,body,sourceUrl,imageUrl,reportedBy);
+                if (file != null) {
+                    bundle.putString("title",title);
+                    bundle.putString("body",body);
+                    bundle.putString("sourceUrl",sourceUrl);
+                    bundle.putString("reportedBy",reportedBy);
+                    uploadImageToS3(AppConstants.BUCKET_NEWS, file, 1, 1);
                 } else {
-                    showSnackbar(btnCreateNews, AppConstants.WARN_CONNECTION);
+                    if (isNetworkAvailable()) {
+                        apiRequestHelper.createNews(token,title,body,sourceUrl,imageUrl,reportedBy);
+                    } else {
+                        showSnackbar(btnCreateNews, AppConstants.WARN_CONNECTION);
+                    }
                 }
             }
 
@@ -165,5 +179,14 @@ public class NewsEventsManagementActivity extends BaseActivity implements OnApiR
             }
         });
         fragment.show(getFragmentManager(),"create news");
+    }
+
+    @Override
+    public void onUploadFinished(String bucketName, String imageUrl) {
+        if (bucketName.equals(AppConstants.BUCKET_NEWS)) {
+            apiRequestHelper.createNews(token, bundle.getString("title"),
+                                        bundle.getString("body"), bundle.getString("sourceUrl"),
+                                        imageUrl, bundle.getString("reportedBy"));
+        }
     }
 }
