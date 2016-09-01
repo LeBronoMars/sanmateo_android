@@ -214,7 +214,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
                         break;*/
                     case R.id.menu_social_media:
-                        showToast("social media");
+                        moveToOtherActivity(SocialMediaActivity.class);
                         break;
                     case R.id.menu_disaster_management:
                         final ArrayList<String> menu = new ArrayList<>();

@@ -71,7 +71,7 @@ dependencies {
     compile 'com.cocosw:bottomsheet:1.2.0@aar'
     compile 'org.ocpsoft.prettytime:prettytime:4.0.1.Final'
     compile 'com.jakewharton.picasso:picasso2-okhttp3-downloader:1.0.2'
-    compile 'com.facebook.android:facebook-android-sdk:4.13.2'
+    compile 'com.facebook.android:facebook-android-sdk:4.15.0'
     compile ('cn.trinea.android.view.autoscrollviewpager:android-auto-scroll-view-pager:1.1.2') {
         exclude module: 'support-v4'
     }
