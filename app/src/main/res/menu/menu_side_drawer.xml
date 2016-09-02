@@ -46,9 +46,9 @@
         android:icon="@drawable/menu_announcement"/>
 
     <item
-        android:id="@+id/menu_contact_us"
-        android:title="@string/menu_contact_us"
-        android:icon="@drawable/menu_contact_us"/>
+        android:id="@+id/menu_rate_us"
+        android:title="@string/menu_rate_us"
+        android:icon="@drawable/menu_rate_us"/>
 
     <item
         android:id="@+id/menu_change_pass"

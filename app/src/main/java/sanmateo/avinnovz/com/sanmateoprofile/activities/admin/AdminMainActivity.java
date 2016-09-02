@@ -225,8 +225,8 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                     });
                     fragment.show(getFragmentManager(),"disaster menu");
                     break;
-                case R.id.menu_contact_us:
-                    showToast("contact us");
+                case R.id.menu_rate_us:
+                    showToast("rate us");
                     break;
                 case R.id.menu_change_pass:
                     changePassword();

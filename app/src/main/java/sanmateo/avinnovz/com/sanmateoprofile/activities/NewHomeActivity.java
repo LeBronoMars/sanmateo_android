@@ -265,8 +265,8 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         });
                         fragment.show(getFragmentManager(), "disaster menu");
                         break;
-                    case R.id.menu_contact_us:
-                        showToast("contact us");
+                    case R.id.menu_rate_us:
+                        showToast("rate us");
                         break;
                     case R.id.menu_change_pass:
                         changePassword();
@@ -539,5 +539,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             }
         });
         fragment.show(getFragmentManager(),"sms");
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }
