@@ -60,6 +60,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PicassoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.EndlessRecyclerViewScrollListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
@@ -94,10 +95,6 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     private NewsSingleton newsSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
-    private boolean loading = true;
-    private int pastVisibleItems;
-    private int visibleItemCount;
-    private int totalItemCount;
     private static final int SELECT_IMAGE = 1;
     private static final int CAPTURE_IMAGE = 2;
     private Uri fileUri;
@@ -216,7 +213,11 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         moveToOtherAcitivity(NewsEventsManagementActivity.class);
                         break;*/
                     case R.id.menu_social_media:
-                        moveToOtherActivity(SocialMediaActivity.class);
+                        if (isNetworkAvailable()) {
+                            moveToOtherActivity(SocialMediaActivity.class);
+                        } else {
+                            showToast(AppConstants.WARN_CONNECTION);
+                        }
                         break;
                     case R.id.menu_disaster_management:
                         final ArrayList<String> menu = new ArrayList<>();
@@ -315,34 +316,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         rvHomeMenu.setAdapter(newsAdapter);
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvHomeMenu.setLayoutManager(linearLayoutManager);
-        rvHomeMenu.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvHomeMenu.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.getChildCount();
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                    if (loading) {
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                            LogHelper.log("paginate","1111");
-                            loading = false;
-                            apiRequestHelper.getNews(token,newsSingleton.getAllNews().size(),
-                                    10,"active",null);
-                        } else {
-                            LogHelper.log("paginate","2222");
-                        }
-                    }
-                } else {
-                    LogHelper.log("paginate","3333");
-                }
-                //int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);Ø
+            public void onLoadMore(int page, int totalItemsCount) {
+                apiRequestHelper.getNews(token,newsSingleton.getAllNews().size(),10,"active",null);
             }
         });
     }
