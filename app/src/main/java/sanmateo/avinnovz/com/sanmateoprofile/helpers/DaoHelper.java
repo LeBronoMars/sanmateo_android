@@ -51,7 +51,7 @@ public class DaoHelper {
                 .eq(number)).limit(1).count() > 0;
     }
 
-    public static List<PanicContact> getAllPanicContacs() {
+    public static List<PanicContact> getAllPanicContacts() {
         return DAO_PANIC_CONTACT.loadAll();
     }
 

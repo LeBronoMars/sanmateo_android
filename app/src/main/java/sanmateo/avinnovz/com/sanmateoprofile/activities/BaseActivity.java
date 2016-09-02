@@ -14,14 +14,17 @@ import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.hardware.SensorManager;
 import android.media.ExifInterface;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.os.Environment;
 import android.os.ParcelFileDescriptor;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -42,6 +45,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.rey.material.app.Dialog;
 import com.rey.material.widget.Spinner;
+import com.squareup.seismic.ShakeDetector;
 
 import org.ocpsoft.prettytime.PrettyTime;
 
@@ -62,18 +66,17 @@ import sanmateo.avinnovz.com.sanmateoprofile.BuildConfig;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.AdminLoginActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalGallery;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.PanicContact;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressBarDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.CustomProgressDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.PanicSettingsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AmazonS3Helper;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
@@ -81,12 +84,25 @@ import uk.co.chrisjenx.calligraphy.CalligraphyContextWrapper;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class BaseActivity extends AppCompatActivity {
+public class BaseActivity extends AppCompatActivity implements ShakeDetector.Listener {
 
     private CustomProgressDialogFragment customProgressDialogFragment;
     private CustomProgressBarDialogFragment customProgressBarDialogFragment;
     private AmazonS3Helper amazonS3Helper;
     private OnS3UploadListener onS3UploadListener;
+    private static SensorManager sensorManager;
+    private static ShakeDetector shakeDetector;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        initShakeDetector();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
 
     public void initAmazonS3Helper(final OnS3UploadListener onS3UploadListener) {
         amazonS3Helper = new AmazonS3Helper(this);
@@ -243,14 +259,14 @@ public class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        BusSingleton.getInstance().unregister(this);
         super.onPause();
+        BusSingleton.getInstance().unregister(this);
     }
 
     @Override
     protected void onResume() {
-        BusSingleton.getInstance().register(this);
         super.onResume();
+        BusSingleton.getInstance().register(this);
     }
 
     @Override
@@ -415,12 +431,9 @@ public class BaseActivity extends AppCompatActivity {
 
     public void setPanicContacts() {
         final PanicSettingsDialogFragment panicSettingsFragment = PanicSettingsDialogFragment.newInstance();
-        panicSettingsFragment.setOnPanicContactListener(new PanicSettingsDialogFragment.OnPanicContactListener() {
-            @Override
-            public void onDismiss() {
-                panicSettingsFragment.dismiss();
-                initPanicContact();
-            }
+        panicSettingsFragment.setOnPanicContactListener(() -> {
+            panicSettingsFragment.dismiss();
+            initPanicContact();
         });
         panicSettingsFragment.show(getSupportFragmentManager(),"panic");
     }
@@ -605,6 +618,23 @@ public class BaseActivity extends AppCompatActivity {
 
         final SmsManager sms = SmsManager.getDefault();
         sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
+    }
+
+    @Override
+    public void hearShake() {
+        for (PanicContact panicContact : DaoHelper.getAllPanicContacts()) {
+            sendSMS(panicContact.getContactNo(),"Help me!");
+        }
+    }
+
+    private void initShakeDetector() {
+        if (sensorManager == null) {
+            sensorManager = (SensorManager)getSystemService(SENSOR_SERVICE);
+            shakeDetector = new ShakeDetector(this);
+            shakeDetector.start(sensorManager);
+            LogHelper.log("shake","on shake initialized!");
+            showToast("Sending SOS to all contacts in your panic phone book...");
+        }
     }
 }
 

@@ -553,7 +553,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                 builder.append("Concern : " + message + "\n\n");
                 builder.append("Sent via San Mateo Profile App");
                 LogHelper.log("sms","CONCERN ---> " + builder.toString());
-                sendSMS("09321622825",builder.toString());
+                sendSMS("09255804848",builder.toString());
             }
 
             @Override

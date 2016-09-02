@@ -65,7 +65,7 @@ public class PanicSettingsDialogFragment extends DialogFragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_panic_settings,null);
         activity = (BaseActivity) getActivity();
         contacts.clear();
-        contacts.addAll((ArrayList) DaoHelper.getAllPanicContacs());
+        contacts.addAll((ArrayList) DaoHelper.getAllPanicContacts());
         ButterKnife.bind(this, view);
         final PanicContactsAdapter adapter = new PanicContactsAdapter(getActivity(), contacts);
         adapter.setOnDeleteContactListener(new PanicContactsAdapter.OnDeleteContactListener() {
@@ -98,7 +98,7 @@ public class PanicSettingsDialogFragment extends DialogFragment {
 
     public void refreshList() {
         contacts.clear();
-        contacts.addAll(DaoHelper.getAllPanicContacs());
+        contacts.addAll(DaoHelper.getAllPanicContacts());
         ((BaseAdapter)lvContacts.getAdapter()).notifyDataSetChanged();
         checkContactSize();
     }
