@@ -10,6 +10,7 @@ import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.GraphRequest;
+import com.facebook.GraphResponse;
 import com.facebook.HttpMethod;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
@@ -32,12 +33,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.others.FacebookFeeds;
 /**
  * Created by rsbulanon on 8/29/16.
  */
-public class SocialMediaActivity extends BaseActivity {
+public class SocialMediaActivity extends BaseActivity implements GraphRequest.Callback {
 
     @BindView(R.id.rvFeeds) RecyclerView rvFeeds;
     private CallbackManager callbackManager;
     private ArrayList<FacebookFeeds> feeds = new ArrayList<>();
-    private String nextPage;
+    private GraphRequest graphRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,7 +53,11 @@ public class SocialMediaActivity extends BaseActivity {
         rvFeeds.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount) {
-                getFeeds(nextPage);
+                if (graphRequest != null) {
+                    showCustomProgress("Fetching feeds from San Mateo's official facebook page, Please wait...");
+                    graphRequest.setCallback(SocialMediaActivity.this);
+                    graphRequest.executeAsync();
+                }
             }
         });
 
@@ -65,7 +70,7 @@ public class SocialMediaActivity extends BaseActivity {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
                     LogHelper.log("fb","on login success --> " + loginResult.getAccessToken());
-                    getFeeds("/sanmateolgu/feed");
+                    getFeeds();
                 }
 
                 @Override
@@ -80,7 +85,7 @@ public class SocialMediaActivity extends BaseActivity {
             });
             LoginManager.getInstance().logInWithPublishPermissions(this, Arrays.asList("publish_actions"));
         } else {
-            getFeeds("/sanmateolgu/feed");
+            getFeeds();
         }
     }
 
@@ -90,39 +95,35 @@ public class SocialMediaActivity extends BaseActivity {
         callbackManager.onActivityResult(requestCode,resultCode,data);
     }
 
-    private void getFeeds(final String graphPath) {
-        LogHelper.log("fb","graph path --> " + graphPath);
+    private void getFeeds() {
         showCustomProgress("Fetching feeds from San Mateo's official facebook page, Please wait...");
-        new GraphRequest(
-                AccessToken.getCurrentAccessToken(),
-                graphPath,
-                null,
-                HttpMethod.GET, response -> {
-                    dismissCustomProgress();
-                    try {
-                        final JSONObject json = new JSONObject(response.getRawResponse());
-                        LogHelper.log("fb","RAW ---> " + response.getRawResponse());
-                        final JSONArray jsonArray = json.getJSONArray("data");
-                        if (json.has("paging")) {
-                            final JSONObject paging = json.getJSONObject("paging");
-                            if (paging.has("next")) {
-                                LogHelper.log("fb","NEXT PAGE --> " + paging.getString("next"));
-                                nextPage = paging.getString("next");
-                            }
-                        }
-                        for (int i = 0 ; i < jsonArray.length() ; i++) {
-                            final JSONObject obj = jsonArray.getJSONObject(i);
-                            if (obj.has("message")) {
-                                feeds.add(new FacebookFeeds(obj.getString("message"),
-                                                            obj.getString("created_time")));
-                            }
-                        }
-                        rvFeeds.getAdapter().notifyDataSetChanged();
-                    } catch (JSONException e) {
-                        LogHelper.log("fb","unable to parse fb feeds ---> " +  e.getMessage());
-                        e.printStackTrace();
-                    }
+        new GraphRequest(AccessToken.getCurrentAccessToken(), "/sanmateolgu/feed",
+                            null, HttpMethod.GET, SocialMediaActivity.this).executeAsync();
+    }
+
+    @Override
+    public void onCompleted(GraphResponse response) {
+        dismissCustomProgress();
+        try {
+            final JSONObject json = new JSONObject(response.getRawResponse());
+            final JSONArray jsonArray = json.getJSONArray("data");
+            graphRequest = null;
+            if (json.has("paging")) {
+                final JSONObject paging = json.getJSONObject("paging");
+                if (paging.has("next")) {
+                    graphRequest = response.getRequestForPagedResults(GraphResponse.PagingDirection.NEXT);
                 }
-        ).executeAsync();
+            }
+            for (int i = 0 ; i < jsonArray.length() ; i++) {
+                final JSONObject obj = jsonArray.getJSONObject(i);
+                if (obj.has("message")) {
+                    feeds.add(new FacebookFeeds(obj.getString("message"),
+                            obj.getString("created_time")));
+                }
+            }
+            rvFeeds.getAdapter().notifyDataSetChanged();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 }
