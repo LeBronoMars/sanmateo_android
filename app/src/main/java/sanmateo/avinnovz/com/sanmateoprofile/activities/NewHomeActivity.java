@@ -547,7 +547,13 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
             @Override
             public void onSendText(String classification, String message) {
                 fragment.dismiss();
-                
+                final StringBuilder builder = new StringBuilder();
+                builder.append("Citizen Concern\n\n");
+                builder.append("Classification : " + classification + "\n\n");
+                builder.append("Concern : " + message + "\n\n");
+                builder.append("Sent via San Mateo Profile App");
+                LogHelper.log("sms","CONCERN ---> " + builder.toString());
+                sendSMS("09321622825",builder.toString());
             }
 
             @Override

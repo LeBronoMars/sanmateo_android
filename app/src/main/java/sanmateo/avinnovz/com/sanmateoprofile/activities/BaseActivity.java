@@ -2,8 +2,11 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -22,6 +25,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.telephony.SmsManager;
 import android.view.Display;
 import android.view.MenuItem;
 import android.view.View;
@@ -551,6 +555,56 @@ public class BaseActivity extends AppCompatActivity {
                         }
                     });
         }
+    }
+
+    public void sendSMS(String phoneNumber, String message) {
+        final String SENT = "SMS_SENT";
+        final String DELIVERED = "SMS_DELIVERED";
+        final PendingIntent sentPI = PendingIntent.getBroadcast(this, 0, new Intent(SENT), 0);
+        final PendingIntent deliveredPI = PendingIntent.getBroadcast(this, 0, new Intent(DELIVERED), 0);
+
+        /** when the SMS has been sent */
+        registerReceiver(new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        LogHelper.log("sms","sms sent!");
+                        showToast("Your concern has been successfully sent to Mayor Tina!");
+                        break;
+                    case SmsManager.RESULT_ERROR_GENERIC_FAILURE:
+                        showToast("Unable to send your text concern, Please check your balance");
+                        break;
+                    case SmsManager.RESULT_ERROR_NO_SERVICE:
+                        showToast("Unable to send your text concern, Please check your network connection");
+                        break;
+                    case SmsManager.RESULT_ERROR_NULL_PDU:
+                        LogHelper.log("sms","null pdu");
+                        break;
+                    case SmsManager.RESULT_ERROR_RADIO_OFF:
+                        LogHelper.log("sms","radio off");
+                        break;
+                }
+            }
+        }, new IntentFilter(SENT));
+
+        /** when the SMS has been delivered */
+        registerReceiver(new BroadcastReceiver(){
+            @Override
+            public void onReceive(Context arg0, Intent arg1) {
+                switch (getResultCode()) {
+                    case Activity.RESULT_OK:
+                        LogHelper.log("sms","sms delivered!");
+                        break;
+                    case Activity.RESULT_CANCELED:
+                        LogHelper.log("sms","sms not delivered");
+                        break;
+                }
+            }
+        }, new IntentFilter(DELIVERED));
+
+        final SmsManager sms = SmsManager.getDefault();
+        sms.sendTextMessage(phoneNumber, null, message, sentPI, deliveredPI);
     }
 }
 
