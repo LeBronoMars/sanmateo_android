@@ -187,4 +187,28 @@
         <item>Batasan-San Mateo Bridge</item>
         <item>San Mateo Public Market</item>
     </string-array>
+
+    <!-- e text si mayor -->
+    <string name="text_si_mayor">I-txt mo si Mayor</string>
+    <string name="text_message">Your message here</string>
+    <string name="send">Send</string>
+    <string name="text_disclaimer">
+        <b>Note:</b>
+            <i>For citizen’s reporting of Incident/Accident (fire, crimes, traffic, disaster, others)
+                please use the Incident Report in the slider menu of the app but will need internet
+                connection to be able to send specific report. </i>\n\n
+        <b>DISCLAIMER : </b>
+        <i>Sending sms message to the Mayor will incur regular sms load to your network credit\n</i>
+    </string>
+    <string name="select_classification">Select Classification</string>
+    <string-array name="array_text_classification">
+        <item>Complaints on National Govt Services</item>
+        <item>Complaints on Municipal Govt. Services</item>
+        <item>Complaints on Barangay Services</item>
+        <item>Complaints on Neighborhood</item>
+        <item>Suggestions</item>
+        <item>Other General Remarks/Observations</item>
+    </string-array>
+
+
 </resources>

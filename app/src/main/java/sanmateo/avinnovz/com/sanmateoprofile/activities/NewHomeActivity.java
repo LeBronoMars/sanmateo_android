@@ -49,6 +49,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.ETextSiMayorDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.MayorMessageDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
@@ -537,5 +538,23 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                     .getCurrentUser().getUserId(), imageUrl);
         }
         uploadToBucket = "";
+    }
+
+    @OnClick(R.id.btnSMS)
+    public void iTextSiMayor() {
+        final ETextSiMayorDialogFragment fragment = ETextSiMayorDialogFragment.newInstance();
+        fragment.setOnTextMayorListener(new ETextSiMayorDialogFragment.OnTextMayorListener() {
+            @Override
+            public void onSendText(String classification, String message) {
+                fragment.dismiss();
+                
+            }
+
+            @Override
+            public void onCancel() {
+                fragment.dismiss();
+            }
+        });
+        fragment.show(getFragmentManager(),"sms");
     }
 }

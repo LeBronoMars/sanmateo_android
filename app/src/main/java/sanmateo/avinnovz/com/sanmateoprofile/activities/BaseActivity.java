@@ -521,7 +521,8 @@ public class BaseActivity extends AppCompatActivity {
 
     public void initSpinner(Spinner spinner, int userRoles) {
         final ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                userRoles, android.R.layout.simple_spinner_item);
+                userRoles, R.layout.row_spinner);
+        adapter.setDropDownViewResource(R.layout.row_spinner_dropdown);
         spinner.setAdapter(adapter);
     }
 

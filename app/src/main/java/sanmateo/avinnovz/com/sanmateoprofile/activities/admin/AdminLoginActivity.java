@@ -65,7 +65,9 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
             final String[] requiredPermission = new String[]{
                     android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
                     android.Manifest.permission.READ_CONTACTS,
-                    android.Manifest.permission.CAMERA
+                    android.Manifest.permission.CAMERA,
+                    android.Manifest.permission.READ_SMS,
+                    android.Manifest.permission.SEND_SMS
             };
             requestPermissions(requiredPermission, REQUEST_PERMISSIONS);
         } else {
@@ -187,13 +189,11 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
                 final boolean writeExternalPermitted = grantResults[0] == PackageManager.PERMISSION_GRANTED;
                 final boolean readContactsPermission = grantResults[1] == PackageManager.PERMISSION_GRANTED;
                 final boolean cameraPermission = grantResults[2] == PackageManager.PERMISSION_GRANTED;
+                final boolean readSMSPermission = grantResults[3] == PackageManager.PERMISSION_GRANTED;
+                final boolean sendSMSPermission = grantResults[4] == PackageManager.PERMISSION_GRANTED;
 
-                LogHelper.log("res","write external --> " + writeExternalPermitted);
-                LogHelper.log("res","read contacts --> " + readContactsPermission);
-                LogHelper.log("res","camera  --> " + cameraPermission);
-
-                if (writeExternalPermitted && readContactsPermission && cameraPermission) {
-                    LogHelper.log("res","must continue with initialization");
+                if (writeExternalPermitted && readContactsPermission && cameraPermission
+                        && readSMSPermission && sendSMSPermission) {
                     initialize();
                 } else {
                     /** close the app since the user denied the required permissions */
