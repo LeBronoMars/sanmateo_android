@@ -110,6 +110,9 @@
         <activity android:name=".activities.SocialMediaActivity"
             android:screenOrientation="portrait"/>
 
+        <activity android:name=".activities.OfficialFullInfoActivity"
+            android:screenOrientation="portrait" />
+
         <!-- google maps -->
         <meta-data android:name="com.google.android.gms.version"
             android:value="@integer/google_play_services_version" />

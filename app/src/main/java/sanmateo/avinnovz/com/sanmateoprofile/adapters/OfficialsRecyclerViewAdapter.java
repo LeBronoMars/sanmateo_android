@@ -34,6 +34,7 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
 
     private ArrayList<LocalOfficial> officials;
     private final OnStartDragListener mDragStartListener;
+    private OnSelectOfficialListener onSelectOfficialListener;
 
     public OfficialsRecyclerViewAdapter(ArrayList<LocalOfficial> officials,OnStartDragListener dragStartListener) {
         this.officials = officials;
@@ -54,6 +55,7 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
     public static class OfficialHolder extends RecyclerView.ViewHolder
                             implements ItemTouchHelperViewHolder {
 
+        @BindView(R.id.cvRoot) CardView cvRoot;
         @BindView(R.id.civPic) CircleImageView civPic;
         @BindView(R.id.tvOfficialName) TextView tvOfficialName;
         @BindView(R.id.tvPosition) TextView tvPosition;
@@ -99,6 +101,11 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
                         holder.pbLoadImage.setVisibility(View.GONE);
                     }
                 });
+        holder.cvRoot.setOnClickListener(v -> {
+            if (onSelectOfficialListener != null) {
+                onSelectOfficialListener.onSelectedOfficial(official);
+            }
+        });
     }
 
     @Override
@@ -134,5 +141,13 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
             officials.remove(position);
             notifyItemRemoved(position);
         }
+    }
+
+    public interface OnSelectOfficialListener {
+        void onSelectedOfficial(final LocalOfficial localOfficial);
+    }
+
+    public void setOnSelectOfficialListener(OnSelectOfficialListener onSelectOfficialListener) {
+        this.onSelectOfficialListener = onSelectOfficialListener;
     }
 }

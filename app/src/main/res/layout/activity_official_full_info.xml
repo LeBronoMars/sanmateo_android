@@ -1,26 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/cvRoot"
-    android:clickable="true"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/_5sdp"
-    android:layout_marginLeft="@dimen/_5sdp"
-    android:layout_marginRight="@dimen/_5sdp"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:elevation="@dimen/_5sdp"
-    app:cardCornerRadius="@dimen/_5sdp"
-    android:orientation="vertical">
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="@dimen/_5sdp"
-        android:orientation="horizontal">
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
 
         <RelativeLayout
-            android:layout_width="@dimen/_60sdp"
-            android:layout_height="@dimen/_60sdp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_width="@dimen/_120sdp"
+            android:layout_height="@dimen/_120sdp"
             android:layout_centerInParent="true">
 
             <de.hdodenhof.circleimageview.CircleImageView
@@ -42,8 +35,8 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/_10sdp"
-            android:layout_gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:gravity="center"
             android:orientation="vertical">
 
             <TextView
@@ -51,19 +44,33 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:gravity="center"
+                fontPaht="fonts/Roboto-Medium.ttf"
                 android:textColor="@color/colorPrimary"
-                android:textSize="@dimen/_14sdp"/>
+                android:textSize="@dimen/_15sdp"/>
 
             <TextView
                 android:id="@+id/tvPosition"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/app_name"
+                android:gravity="center"
                 android:textColor="@android:color/black"
                 android:textSize="@dimen/_12sdp"/>
 
         </LinearLayout>
+
+        <TextView
+            android:id="@+id/tvBackground"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:gravity="center"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_20sdp"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_11sdp"/>
+
     </LinearLayout>
 
-
-</android.support.v7.widget.CardView>
+</ScrollView>

@@ -1,17 +1,15 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.widget.ListView;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import rx.annotations.Beta;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsRecyclerViewAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
@@ -31,7 +29,6 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     private String token;
     private ApiRequestHelper apiRequestHelper;
     private ArrayList<LocalOfficial> officialList = new ArrayList<>();
-    private Bundle bundle = new Bundle();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +43,13 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     }
 
     private void initOfficialsListing() {
-        rvOfficials.setAdapter(new OfficialsRecyclerViewAdapter(officialList,null));
+        final OfficialsRecyclerViewAdapter adapter = new OfficialsRecyclerViewAdapter(officialList,null);
+        adapter.setOnSelectOfficialListener(official -> {
+            final Intent intent = new Intent(OfficialsActivity.this, OfficialFullInfoActivity.class);
+            intent.putExtra("localOfficial", official);
+            startActivity(intent);
+        });
+        rvOfficials.setAdapter(adapter);
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
         officialList.addAll(DaoHelper.getAllOfficials());
         if (officialList.size() > 0) {
