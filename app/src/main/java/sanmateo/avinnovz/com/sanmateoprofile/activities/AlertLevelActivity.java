@@ -1,6 +1,6 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.graphics.drawable.Drawable;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.AppBarLayout;
@@ -18,8 +18,6 @@ import com.google.android.gms.maps.model.Marker;
 
 import java.util.ArrayList;
 
-import butterknife.BindDrawable;
-import butterknife.BindInt;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -28,6 +26,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabPagerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.AlertLevelFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.AppMarkerDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.others.AppMarker;
 
 /**
@@ -51,6 +50,14 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
         initMapMarker();
         initTabs();
         initMap();
+        seen();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        seen();
+        handleArea(intent);
     }
 
     private void initMapMarker() {
@@ -133,6 +140,7 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
             map.moveCamera(CameraUpdateFactory.newLatLngZoom(appMarkers.get(0).getLatLng(), 15));
             map.setOnMarkerClickListener(this);
             initMarkers();
+            handleArea(getIntent());
         }
     }
 
@@ -159,5 +167,21 @@ public class AlertLevelActivity extends BaseActivity implements OnMapReadyCallba
         AppMarkerDialogFragment fragment = AppMarkerDialogFragment
                 .newInstance(this   , appMarkers.get(tabPosition));
         fragment.show(getFragmentManager(), "Marker Details");
+    }
+
+    private void seen() {
+        if (PrefsHelper.getBoolean(this,"has_notifications")) {
+            PrefsHelper.setBoolean(this, "has_notifications", false);
+        }
+    }
+
+    private void handleArea(final Intent intent) {
+        if (intent.hasExtra("area")) {
+            if (intent.getStringExtra("area").equals("Batasan-San Mateo Bridge")) {
+                viewPager.setCurrentItem(1);
+            } else {
+                viewPager.setCurrentItem(0);
+            }
+        }
     }
 }

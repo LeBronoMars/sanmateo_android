@@ -20,6 +20,7 @@ import org.json.JSONObject;
 import java.util.HashMap;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.AlertLevelActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.NewHomeActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
@@ -121,7 +122,8 @@ public class PusherService extends Service {
                         LogHelper.log("pusher","water level created");
                         PrefsHelper.setBoolean(PusherService.this,"refresh_water_level",true);
                         NotificationHelper.displayNotification(id,PusherService.this,
-                                json.getString("title"),json.getString("message"),null);
+                                json.getString("title"),json.getString("message"),
+                                AlertLevelActivity.class, json.getString("area"));
                     }
                 }
             } catch (JSONException e) {

@@ -46,7 +46,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
-    
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
