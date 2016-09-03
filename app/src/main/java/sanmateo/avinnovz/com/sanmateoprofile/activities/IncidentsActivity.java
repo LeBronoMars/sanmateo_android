@@ -113,7 +113,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             }
         } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT) ||
                 action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
-            showSnackbar(btnAdd,"Your report was successfully created!");
+            showConfirmDialog("","Malicious Report","You have successfully filed a complaint about this " +
+                    "incident report.","Close","",null);
         }
     }
 
@@ -123,10 +124,8 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         handleApiException(t);
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
-            if (action.equals(AppConstants.ACTION_LOGIN)) {
-                final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
-                showConfirmDialog(action,"Failed", apiError.getMessage(),"Close","",null);
-            }
+            final ApiError apiError = ApiErrorHelper.parseError(((HttpException) t).response());
+            showConfirmDialog(action,"Failed", apiError.getMessage(),"Close","",null);
         }
     }
 
