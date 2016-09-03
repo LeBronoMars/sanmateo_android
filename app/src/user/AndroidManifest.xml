@@ -71,18 +71,21 @@
 
         <activity android:name=".activities.NewHomeActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.NewsFullPreviewActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.admin.PublicAnnouncementsActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.TyphoonWatchActivity"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.WaterLevelMonitoringActivity"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
         <activity android:name=".activities.AlertLevelActivity"

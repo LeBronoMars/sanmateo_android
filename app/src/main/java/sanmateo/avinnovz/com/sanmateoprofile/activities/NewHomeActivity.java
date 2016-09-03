@@ -68,6 +68,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 
@@ -544,5 +545,16 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     @Override
     public void onBackPressed() {
         moveTaskToBack(true);
+    }
+
+    @Override
+    protected void onResume() {
+        /** display notification if there are any */
+        if (PrefsHelper.getBoolean(this,"has_notifications")) {
+            tvNotification.setVisibility(View.VISIBLE);
+        } else {
+            tvNotification.setVisibility(View.INVISIBLE);
+        }
+        super.onResume();
     }
 }

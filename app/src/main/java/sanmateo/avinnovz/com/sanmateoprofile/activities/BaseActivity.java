@@ -623,6 +623,7 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
     @Override
     public void hearShake() {
         for (PanicContact panicContact : DaoHelper.getAllPanicContacts()) {
+            showToast("Sending SOS to all contacts in your panic phone book...");
             sendSMS(panicContact.getContactNo(),"Help me!");
         }
     }
@@ -633,7 +634,6 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
             shakeDetector = new ShakeDetector(this);
             shakeDetector.start(sensorManager);
             LogHelper.log("shake","on shake initialized!");
-            showToast("Sending SOS to all contacts in your panic phone book...");
         }
     }
 }

@@ -1,14 +1,16 @@
 package sanmateo.avinnovz.com.sanmateoprofile.services;
 
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
 import android.os.IBinder;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
-import com.pusher.client.channel.SubscriptionEventListener;
 import com.pusher.client.connection.ConnectionEventListener;
 import com.pusher.client.connection.ConnectionStateChange;
 
@@ -17,27 +19,26 @@ import org.json.JSONObject;
 
 import java.util.HashMap;
 
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.R;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.NewHomeActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.NotificationHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
 
 
 /**
  * Created by rsbulanon on 6/28/16.
  */
-public class PusherService extends Service implements OnApiRequestListener {
+public class PusherService extends Service {
 
     private CurrentUserSingleton currentUserSingleton;
     private IncidentsSingleton incidentsSingleton;
-    private NewsSingleton newsSingleton;
-    private ApiRequestHelper apiRequestHelper;
 
     @Override
     public IBinder onBind(Intent intent) {
@@ -47,11 +48,19 @@ public class PusherService extends Service implements OnApiRequestListener {
     @Override
     public void onCreate() {
         super.onCreate();
-        apiRequestHelper = new ApiRequestHelper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
         incidentsSingleton = IncidentsSingleton.getInstance();
-        newsSingleton = NewsSingleton.getInstance();
-        LogHelper.log("pusher","pusher service created");
+        /** start fore ground */
+        final Intent notificationIntent = new Intent(this, NewHomeActivity.class);
+        final PendingIntent pendingIntent = PendingIntent.getActivity(this,0,
+                notificationIntent,PendingIntent.FLAG_UPDATE_CURRENT);
+
+        Notification notification = new NotificationCompat.Builder(this)
+                .setSmallIcon(R.drawable.san_mateo_logo)
+                .setContentText(getString(R.string.app_name))
+                .setContentIntent(pendingIntent).build();
+        startForeground(9999, notification);
+        LogHelper.log("pusher","pusher service created and started in fore ground");
     }
 
     @Override
@@ -105,7 +114,8 @@ public class PusherService extends Service implements OnApiRequestListener {
                         PrefsHelper.setBoolean(PusherService.this,"has_notifications",true);
                         PrefsHelper.setBoolean(PusherService.this,"refresh_announcements",true);
                         NotificationHelper.displayNotification(id,PusherService.this,
-                                json.getString("title"),json.getString("message"),null);
+                                json.getString("title"),json.getString("message"),
+                                PublicAnnouncementsActivity.class);
                     } else if (action.equals("water level")) {
                         PrefsHelper.setBoolean(PusherService.this,"has_notifications",true);
                         LogHelper.log("pusher","water level created");
@@ -166,20 +176,5 @@ public class PusherService extends Service implements OnApiRequestListener {
             }
         });
         return Service.START_STICKY;
-    }
-
-    @Override
-    public void onApiRequestBegin(String action) {
-
-    }
-
-    @Override
-    public void onApiRequestSuccess(String action, Object result) {
-
-    }
-
-    @Override
-    public void onApiRequestFailed(String action, Throwable t) {
-
     }
 }

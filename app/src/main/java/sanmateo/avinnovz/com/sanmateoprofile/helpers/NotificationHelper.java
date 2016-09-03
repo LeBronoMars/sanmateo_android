@@ -1,12 +1,10 @@
 package sanmateo.avinnovz.com.sanmateoprofile.helpers;
 
-import android.app.Activity;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v4.app.NotificationCompat;
-import android.support.v4.app.TaskStackBuilder;
 
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 
@@ -23,12 +21,13 @@ public class NotificationHelper {
                         .setContentText(content);
         if (cls != null) {
             final Intent intent = new Intent(context,cls);
-            final PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,PendingIntent.FLAG_UPDATE_CURRENT);
+            final PendingIntent pendingIntent = PendingIntent.getActivity(context,0,intent,
+                    PendingIntent.FLAG_UPDATE_CURRENT);
             mBuilder.setContentIntent(pendingIntent);
+            mBuilder.setAutoCancel(true);
         }
         final NotificationManager mNotificationManager =
                 (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        // mId allows you to update the notification later on.
         mNotificationManager.notify(id, mBuilder.build());
     }
 }

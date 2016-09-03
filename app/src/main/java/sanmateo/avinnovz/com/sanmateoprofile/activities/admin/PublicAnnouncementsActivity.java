@@ -1,7 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -28,10 +28,10 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.EndlessRecyclerViewScrollListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.AnnouncementsSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
@@ -46,11 +46,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
     private CurrentUserSingleton currentUserSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
-    private boolean loading = true;
-    private int pastVisibleItems;
-    private int visibleItemCount;
-    private int totalItemCount;
-
+    
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,6 +68,14 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         if (currentUserSingleton.getCurrentUser().getUserLevel().equals("Regular User")) {
             btnAdd.setVisibility(View.INVISIBLE);
         }
+        seen();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        LogHelper.log("intent","on new intent called");
+        seen();
     }
 
     private void initAnnouncements() {
@@ -79,28 +83,10 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
         final LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         rvAnnouncements.setAdapter(adapter);
         rvAnnouncements.setLayoutManager(linearLayoutManager);
-        rvAnnouncements.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvAnnouncements.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.getChildCount();
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                    if (loading) {
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                            loading = false;
-                            apiRequestHelper.getAnnouncements(token,announcementsSingleton.getAnnouncements().size(),10);
-                        }
-                    }
-                }
-                //int topRowVerticalPosition = (recyclerView == null || recyclerView.getChildCount() == 0) ? 0 : recyclerView.getChildAt(0).getTop();
-                //swipeRefreshItems.setEnabled(topRowVerticalPosition >= 0);
+            public void onLoadMore(int page, int totalItemsCount) {
+                apiRequestHelper.getAnnouncements(token,announcementsSingleton.getAnnouncements().size(),10);
             }
         });
     }
@@ -186,6 +172,7 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
                                 if (announcementsSingleton.getAnnouncements().size() == 0) {
                                     apiRequestHelper.getAnnouncements(token,0,10);
                                 } else {
+                                    seen();
                                     apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
                                 }
                             }
@@ -197,5 +184,11 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
                 }
             }
         });
+    }
+
+    private void seen() {
+        if (PrefsHelper.getBoolean(this,"has_notifications")) {
+            PrefsHelper.setBoolean(this, "has_notifications", false);
+        }
     }
 }
