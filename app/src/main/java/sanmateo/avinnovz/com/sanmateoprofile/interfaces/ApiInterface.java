@@ -283,12 +283,14 @@ public interface ApiInterface {
      * get latest water level notifications
      *
      * @param token represents the user that trying to make the request
-     * @param id offset of query
+     * @param id latest record id
+     * @param area name of flood prone area in san mateo
      *
      * */
     @GET("/api/v1/water_level/latest/{id}")
     Observable<List<WaterLevel>> getLatestWaterLevels(@Header("Authorization") String token,
-                                                      @Path("id") int id);
+                                                      @Path("id") int id,
+                                                      @Query("area") String area);
 
 
     /**
@@ -375,7 +377,7 @@ public interface ApiInterface {
     @GET("/api/v1/water_level/filter")
     Observable<List<WaterLevel>> getWaterLevelByArea(@Header("Authorization") String token,
                                                      @Query("area") String area);
-}
 
+}
 
 

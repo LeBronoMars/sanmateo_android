@@ -93,9 +93,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"/>
 
-        <activity android:name=".activities.WaterAlertListActivity"
-            android:screenOrientation="portrait"/>
-
         <activity android:name=".activities.GlobalDisasterActivity"
             android:screenOrientation="portrait"/>
 

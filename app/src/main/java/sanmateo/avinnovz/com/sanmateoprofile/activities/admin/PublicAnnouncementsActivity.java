@@ -158,29 +158,26 @@ public class PublicAnnouncementsActivity extends BaseActivity implements OnApiRe
 
     @Subscribe
     public void handleApiResponse(final HashMap<String,Object> map) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                if (map.containsKey("data")) {
-                    try {
-                        final JSONObject json = new JSONObject(map.get("data").toString());
-                        if (json.has("action")) {
-                            final String action = json.getString("action");
+        runOnUiThread(() -> {
+            if (map.containsKey("data")) {
+                try {
+                    final JSONObject json = new JSONObject(map.get("data").toString());
+                    if (json.has("action")) {
+                        final String action = json.getString("action");
 
-                            /** new incident notification */
-                            if (action.equals("announcements")) {
-                                if (announcementsSingleton.getAnnouncements().size() == 0) {
-                                    apiRequestHelper.getAnnouncements(token,0,10);
-                                } else {
-                                    seen();
-                                    apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
-                                }
+                        /** new incident notification */
+                        if (action.equals("announcements")) {
+                            if (announcementsSingleton.getAnnouncements().size() == 0) {
+                                apiRequestHelper.getAnnouncements(token,0,10);
+                            } else {
+                                seen();
+                                apiRequestHelper.getLatestAnnouncements(token,announcementsSingleton.getAnnouncements().get(0).getId());
                             }
-                            rvAnnouncements.getAdapter().notifyDataSetChanged();
                         }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
+                        rvAnnouncements.getAdapter().notifyDataSetChanged();
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         });

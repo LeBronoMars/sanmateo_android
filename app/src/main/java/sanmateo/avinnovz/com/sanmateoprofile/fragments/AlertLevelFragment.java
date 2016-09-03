@@ -28,9 +28,11 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.EndlessRecyclerViewScrollListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.WaterLevel;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.WaterLevelSingleton;
 
@@ -45,8 +47,6 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
     private CurrentUserSingleton currentUserSingleton;
     private String token, area;
     private ApiRequestHelper apiRequestHelper;
-    private boolean loading = true;
-    private int pastVisibleItems, visibleItemCount, totalItemCount;
     private ArrayList<WaterLevel> waterLevels = new ArrayList<>();
 
     public static AlertLevelFragment newInstance(String area) {
@@ -57,8 +57,8 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_alert_level, container, false);
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        final View view = inflater.inflate(R.layout.fragment_alert_level, container, false);
         ButterKnife.bind(this, view);
         initResources();
         initWaterListing();
@@ -71,20 +71,13 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getCurrentUser().getToken();
         apiRequestHelper = new ApiRequestHelper(this);
-        waterLevels = waterLevelSingleton.getWaterLevelsByArea(area);
+        waterLevels.clear();
+        waterLevels.addAll(waterLevelSingleton.getWaterLevel(area));
 
         if (PrefsHelper.getBoolean(activity, "refresh_water_level") ||
-                waterLevelSingleton.getWaterLevels().size() == 0) {
+            waterLevelSingleton.getWaterLevel(area).size() == 0) {
             apiRequestHelper.getWaterLevelByArea(token, area);
         }
-
-        /*if (PrefsHelper.getBoolean(activity, "refresh_water_level")
-                && waterLevelSingleton.getWaterLevels().size() > 0) {
-            apiRequestHelper.getLatestWaterLevelNotifications(token,
-                    waterLevelSingleton.getWaterLevels().get(0).getId());
-        } else if (waterLevelSingleton.getWaterLevels().size() == 0) {
-            apiRequestHelper.getWaterLevelNotifications(token, 0, 10);
-        }*/
     }
 
     private void initWaterListing() {
@@ -92,27 +85,11 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
         final WaterLevelAdapter adapter = new WaterLevelAdapter(activity, waterLevels);
         rvListing.setAdapter(adapter);
         rvListing.setLayoutManager(linearLayoutManager);
-        rvListing.addOnScrollListener(new RecyclerView.OnScrollListener() {
+        rvListing.addOnScrollListener(new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                if (dy > 0) {
-                    visibleItemCount = linearLayoutManager.getChildCount();
-                    totalItemCount = linearLayoutManager.getItemCount();
-                    pastVisibleItems = linearLayoutManager.findFirstVisibleItemPosition();
-
-                    if (loading) {
-                        if ((visibleItemCount + pastVisibleItems) >= totalItemCount) {
-                            loading = false;
-                            apiRequestHelper.getWaterLevelNotifications(token,
-                                    waterLevelSingleton.getWaterLevels().size(), 10);
-                        }
-                    }
-                }
+            public void onLoadMore(int page, int totalItemsCount) {
+                apiRequestHelper.getWaterLevelNotifications(token,
+                        waterLevelSingleton.getWaterLevel(area).size(), 10);
             }
         });
     }
@@ -128,15 +105,15 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         activity.dismissCustomProgress();
-
-        if (action.equals(AppConstants.ACTION_GET_WATER_LEVEL_BY_AREA)) {
-            final  ArrayList<WaterLevel> waterLevelsResponese = (ArrayList<WaterLevel>) result;
-            waterLevelSingleton.replaceSpecificArea(area, waterLevelsResponese);
-            waterLevels.clear();
-            waterLevels.addAll(waterLevelsResponese);
-            PrefsHelper.setBoolean(activity, "refresh_water_level", false);
+        if (action.equals(AppConstants.ACTION_GET_WATER_LEVEL_BY_AREA) ||
+                action.equals(AppConstants.ACTION_GET_WATER_LEVEL_NOTIFS_LATEST)) {
+            final  ArrayList<WaterLevel> waterLevels = (ArrayList<WaterLevel>) result;
+            if (waterLevels.size() > 0) {
+                this.waterLevels.addAll(0,waterLevels);
+                PrefsHelper.setBoolean(activity, "refresh_water_level", false);
+                waterLevelSingleton.getWaterLevel(area).addAll(0,waterLevels);
+            }
         }
-
         rvListing.getAdapter().notifyDataSetChanged();
     }
 
@@ -146,6 +123,18 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
         activity.handleApiException(t);
     }
 
+    @Override
+    public void onResume() {
+        BusSingleton.getInstance().register(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        BusSingleton.getInstance().unregister(this);
+        super.onPause();
+    }
+
     @Subscribe
     public void handleEventBus(final HashMap<String,Object> map) {
         if (map.containsKey("data")) {
@@ -153,12 +142,19 @@ public class AlertLevelFragment extends Fragment implements OnApiRequestListener
                 final JSONObject json = new JSONObject(map.get("data").toString());
                 if (json.has("action")) {
                     if (json.getString("action").equals("water level")) {
-                        LogHelper.log("water","action ----> " + json.getString("action"));
-                        apiRequestHelper.getWaterLevelByArea(token, area);
+                        LogHelper.log("ww","action ----> " + json.getString("action"));
+                        if (waterLevelSingleton.getWaterLevel(area).size() == 0) {
+                            apiRequestHelper.getLatestWaterLevelNotifications(token, 0, area);
+                        } else {
+                            final WaterLevel waterLevel = waterLevelSingleton.getWaterLevel(area)
+                                    .get(waterLevelSingleton.getWaterLevel(area).size()-1);
+                            apiRequestHelper.getLatestWaterLevelNotifications(token, waterLevel.getId(),
+                                    area);
+                        }
                     }
                 }
             } catch (JSONException e) {
-
+                LogHelper.log("ww","error ---> " + e.getMessage());
             }
         }
     }
