@@ -44,7 +44,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @BindView(R.id.surfaceView) SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mp;
-    private int video_bg = R.raw.login_bg;
+    private int video_bg = R.raw.new_video_bg;
     private ApiRequestHelper apiRequestHelper;
     private static final int REQUEST_PERMISSIONS = 1;
 
@@ -79,12 +79,9 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     public void showLoginDialogFragment() {
         if (isNetworkAvailable()) {
             final LoginDialogFragment loginDialogFragment = LoginDialogFragment.newInstance();
-            loginDialogFragment.setOnLoginListener(new LoginDialogFragment.OnLoginListener() {
-                @Override
-                public void OnLogin(String email, String password) {
-                    loginDialogFragment.dismiss();
-                    apiRequestHelper.authenticateUser(email,password);
-                }
+            loginDialogFragment.setOnLoginListener((email, password) -> {
+                loginDialogFragment.dismiss();
+                apiRequestHelper.authenticateUser(email,password);
             });
             loginDialogFragment.show(getFragmentManager(),"login");
         } else {
@@ -104,8 +101,13 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final AuthResponse authResponse = (AuthResponse)result;
-            DaoHelper.saveCurrentUser(authResponse);
-            moveToHome();
+            /** dont allow regular user to use the admin app */
+            if (authResponse.getUserLevel().equals("Regular User")) {
+                showConfirmDialog("","Login Error","Invalid account!","Close","",null);
+            } else {
+                DaoHelper.saveCurrentUser(authResponse);
+                moveToHome();
+            }
         }
     }
 

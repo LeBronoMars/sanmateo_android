@@ -1,6 +1,7 @@
 package sanmateo.avinnovz.com.sanmateoprofile.activities;
 
-import android.app.Application;
+import android.support.multidex.MultiDex;
+import android.support.multidex.MultiDexApplication;
 
 import com.facebook.FacebookSdk;
 import com.jakewharton.picasso.OkHttp3Downloader;
@@ -25,7 +26,7 @@ import uk.co.chrisjenx.calligraphy.CalligraphyConfig;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class BaseApplication extends Application {
+public class BaseApplication extends MultiDexApplication {
 
     @Override
     public void onCreate() {
@@ -35,6 +36,8 @@ public class BaseApplication extends Application {
                 .setFontAttrId(R.attr.fontPath)
                 .build()
         );
+        MultiDex.install(this);
+
         /** initialize DAO Helper */
         DaoHelper.initialize(this);
 

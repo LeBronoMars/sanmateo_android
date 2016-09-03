@@ -168,8 +168,21 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     @Override
     public void surfaceCreated(final SurfaceHolder surfaceHolder) {
         if (mp == null) {
-            mp = MediaPlayer.create(this, R.raw.new_video_bg);
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                mp = new MediaPlayer();
+                final Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+                        + R.raw.new_video_bg);
+                try {
+                    mp.setDataSource(LoginActivity.this, video);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                mp = MediaPlayer.create(this, R.raw.new_video_bg);
+
+            }
             mp.setDisplay(surfaceHolder);
+
 
             final Display display = getWindowManager().getDefaultDisplay();
             final Point size = new Point();
