@@ -216,6 +216,18 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_GET_ALL_FOR_REVIEWS, observable);
     }
 
+    public void disapproveMaliciousReport(final String token, final int id) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_DELETE_DISAPPROVE_MALICIOUS_REPORT);
+        final Observable<GenericMessage> observable = AppConstants.API_INTERFACE.disapproveMaliciousReport(token,id);
+        handleObservableResult(AppConstants.ACTION_DELETE_DISAPPROVE_MALICIOUS_REPORT, observable);
+    }
+
+    public void getForReviewReportById(final String token, final int id) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_FOR_REVIEW_REPORT_BY_ID);
+        final Observable<ForReviewIncident> observable = AppConstants.API_INTERFACE.getForReviewReportById(token,id);
+        handleObservableResult(AppConstants.ACTION_GET_FOR_REVIEW_REPORT_BY_ID, observable);
+    }
+
     /**
      * handle api result using lambda
      *

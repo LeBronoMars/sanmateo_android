@@ -22,7 +22,6 @@ import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.admin.ForReviewIncidentAdapter;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.BlockIncidentReportDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
@@ -99,11 +98,7 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                         "Yes", "No", new OnConfirmDialogListener() {
                             @Override
                             public void onConfirmed(String a) {
-                                if (action.equals("Unblock")) {
-                                    apiRequestHelper.unblockMaliciousReport(token, incident.getIncidentId());
-                                } else if (action.equals("Approve")) {
-                                    apiRequestHelper.approveReport(token,incident.getIncidentId());
-                                }
+                                apiRequestHelper.disapproveMaliciousReport(token, incident.getIncidentId());
                             }
 
                             @Override
@@ -135,9 +130,8 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                     final JSONObject json = new JSONObject(map.get("data").toString());
                     if (json.has("action")) {
                         final String action = json.getString("action");
-
                         LogHelper.log("block","action ---> " + action);
-                        rvReviewIncidents.getAdapter().notifyDataSetChanged();
+                        apiRequestHelper.getForReviewReportById(token,json.getInt("id"));
                     }
                 } else if (map.containsKey("action")) {
 
@@ -161,6 +155,10 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             activity.showCustomProgress("Approving report, Please wait...");
         } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
             activity.showCustomProgress("Unblocking report, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_DELETE_DISAPPROVE_MALICIOUS_REPORT)) {
+            activity.showCustomProgress("Dropping malicious report, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_GET_FOR_REVIEW_REPORT_BY_ID)) {
+            activity.showCustomProgress("Refreshing for reviews reports, Please wait...");
         }
     }
 
@@ -179,6 +177,12 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
                 final Incident approvedReport = (Incident)result;
                 activity.showToast("Incident report successfully approved!");
+            } else if (action.equals(AppConstants.ACTION_DELETE_DISAPPROVE_MALICIOUS_REPORT)) {
+                forReviewIncidents.remove(selectedIndex);
+                activity.showToast("Malicious report successfully dropped!");
+            } else if (action.equals(AppConstants.ACTION_GET_FOR_REVIEW_REPORT_BY_ID)) {
+                final ForReviewIncident incident = (ForReviewIncident)result;
+                forReviewIncidents.add(0,incident);
             }
         }
         rvReviewIncidents.getAdapter().notifyDataSetChanged();

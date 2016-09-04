@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import okhttp3.ResponseBody;
+import retrofit2.http.DELETE;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -295,7 +296,6 @@ public interface ApiInterface {
                                                       @Path("id") int id,
                                                       @Query("area") String area);
 
-
     /**
      * create new water level notification
      *
@@ -382,7 +382,7 @@ public interface ApiInterface {
                                                      @Query("area") String area);
 
     /**
-     * Get all incidents
+     * Get all incidents subjected for review
      *
      * @param token represents the user that trying to make the request
      * @param start defines the offset of query (for pagination)
@@ -394,6 +394,29 @@ public interface ApiInterface {
     Observable<List<ForReviewIncident>> getIncidentsForReview(@Header("Authorization") String token,
                                                               @Query("start") int start,
                                                               @Query("incident_type") String incidentType);
+
+    /**
+     * disapprove a malicious incident report
+     *
+     * @param token represents the user that trying to make the request
+     * @param id unique identification of incident report
+     *
+     * */
+    @DELETE("/api/v1/incidents/disapprove/{id}")
+    Observable<GenericMessage> disapproveMaliciousReport(@Header("Authorization") String token,
+                                                           @Path("id") int id);
+
+    /**
+     * get for review incident report by id
+     *
+     * @param token represents the user that trying to make the request
+     * @param id unique identification of incident report
+     *
+     * */
+    @GET("/api/v1/incidents/for_reviews/{id}")
+    Observable<ForReviewIncident> getForReviewReportById(@Header("Authorization") String token,
+                                                         @Path("id") int id);
+
 
 
 }
