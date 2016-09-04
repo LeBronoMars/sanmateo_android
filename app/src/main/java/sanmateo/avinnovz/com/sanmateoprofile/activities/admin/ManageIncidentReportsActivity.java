@@ -18,6 +18,7 @@ import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ForReviewIncidentsDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ManageIncidentReportsFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
@@ -48,7 +49,7 @@ public class ManageIncidentReportsActivity extends BaseActivity {
 
         fragments.add(ManageIncidentReportsFragment.newInstance("active"));
         fragments.add(ManageIncidentReportsFragment.newInstance("for approval"));
-        fragments.add(ManageIncidentReportsFragment.newInstance("for review"));
+        fragments.add(ForReviewIncidentsDialogFragment.newInstance());
 
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);

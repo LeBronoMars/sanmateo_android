@@ -53,6 +53,7 @@ public class AppConstants {
     public static final String ACTION_GET_OFFICIALS = "get all official";
     public static final String ACTION_CREATE_OFFICIAL_RECORD = "create official record";
     public static final String ACTION_GET_WATER_LEVEL_BY_AREA = "get all water levels by area";
+    public static final String ACTION_GET_ALL_FOR_REVIEWS = "get all for reviews";
 
     /** warning messages */
     public static final String WARN_CONNECTION = "Connection error, Check your network connection and try again.";

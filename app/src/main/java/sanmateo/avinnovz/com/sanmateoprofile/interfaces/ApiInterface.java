@@ -15,6 +15,7 @@ import retrofit2.http.Query;
 import rx.Observable;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ForReviewIncident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -377,6 +378,21 @@ public interface ApiInterface {
     @GET("/api/v1/water_level/filter")
     Observable<List<WaterLevel>> getWaterLevelByArea(@Header("Authorization") String token,
                                                      @Query("area") String area);
+
+    /**
+     * Get all incidents
+     *
+     * @param token represents the user that trying to make the request
+     * @param start defines the offset of query (for pagination)
+     * @param incidentType filter incidents by incident type
+     *
+     * @return List of Incidents that matches all the given parameters above
+     * */
+    @GET("/api/v1/incidents/for_reviews")
+    Observable<List<ForReviewIncident>> getIncidentsForReview(@Header("Authorization") String token,
+                                                              @Query("start") int start,
+                                                              @Query("incident_type") String incidentType);
+
 
 }
 

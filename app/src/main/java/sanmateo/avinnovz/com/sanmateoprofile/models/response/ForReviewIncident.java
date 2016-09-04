@@ -1,11 +1,14 @@
 package sanmateo.avinnovz.com.sanmateoprofile.models.response;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.gson.annotations.SerializedName;
 
 /**
  * Created by rsbulanon on 9/4/16.
  */
-public class ForReviewIncident {
+public class ForReviewIncident implements Parcelable {
 
     @SerializedName("uploader_id") int uploaderId;
     @SerializedName("uploader_name") String uploaderName;
@@ -132,4 +135,76 @@ public class ForReviewIncident {
     public long getIncidentLongitude() {
         return incidentLongitude;
     }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeInt(this.uploaderId);
+        parcel.writeString(this.uploaderName);
+        parcel.writeString(this.uploaderEmail);
+        parcel.writeString(this.uploaderContact);
+        parcel.writeString(this.uploaderGender);
+        parcel.writeString(this.uploaderAddress);
+        parcel.writeString(this.uploaderPicUrl);
+        parcel.writeInt(this.reportedId);
+        parcel.writeString(this.reporterName);
+        parcel.writeString(this.reporterEmail);
+        parcel.writeString(this.reporterAddress);
+        parcel.writeString(this.reporterContactNo);
+        parcel.writeString(this.reporterGender);
+        parcel.writeString(this.reporterPicUrl);
+        parcel.writeInt(this.incidentId);
+        parcel.writeString(this.reportStatus);
+        parcel.writeString(this.createdAt);
+        parcel.writeString(this.remarks);
+        parcel.writeString(this.incidentType);
+        parcel.writeString(this.incidentDescription);
+        parcel.writeString(this.incidentImages);
+        parcel.writeString(this.incidentStatus);
+        parcel.writeString(this.incidentAddress);
+        parcel.writeLong(this.incidentLatitude);
+        parcel.writeLong(this.incidentLongitude);
+    }
+
+    public ForReviewIncident(Parcel in) {
+        this.uploaderId = in.readInt();
+        this.uploaderName = in.readString();
+        this.uploaderEmail = in.readString();
+        this.uploaderContact = in.readString();
+        this.uploaderGender = in.readString();
+        this.uploaderAddress = in.readString();
+        this.uploaderPicUrl = in.readString();
+        this.reportedId = in.readInt();
+        this.reporterName = in.readString();
+        this.reporterEmail = in.readString();
+        this.reporterAddress = in.readString();
+        this.reporterContactNo = in.readString();
+        this.reporterGender = in.readString();
+        this.reporterPicUrl = in.readString();
+        this.incidentId = in.readInt();
+        this.reportStatus = in.readString();
+        this.createdAt = in.readString();
+        this.remarks = in.readString();
+        this.incidentType = in.readString();
+        this.incidentDescription = in.readString();
+        this.incidentImages = in.readString();
+        this.incidentStatus = in.readString();
+        this.incidentAddress = in.readString();
+        this.incidentLatitude = in.readLong();
+        this.incidentLongitude = in.readLong();
+    }
+
+    public static final Parcelable.Creator CREATOR = new Parcelable.Creator() {
+        public ForReviewIncident createFromParcel(Parcel in) {
+            return new ForReviewIncident(in);
+        }
+
+        public ForReviewIncident[] newArray(int size) {
+            return new ForReviewIncident[size];
+        }
+    };
 }

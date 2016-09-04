@@ -10,6 +10,7 @@ import rx.schedulers.Schedulers;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ForReviewIncident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
@@ -203,6 +204,14 @@ public class ApiRequestHelper {
         final Observable<List<WaterLevel>> observable = AppConstants.API_INTERFACE.getWaterLevelByArea(token,
                 area);
         handleObservableResult(AppConstants.ACTION_GET_WATER_LEVEL_BY_AREA, observable);
+    }
+
+    public void getAllIncidentsForReview(final String token,final int start,
+                                         final String incidentType) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_ALL_FOR_REVIEWS);
+        final Observable<List<ForReviewIncident>> observable = AppConstants.API_INTERFACE
+                                            .getIncidentsForReview(token,start,incidentType);
+        handleObservableResult(AppConstants.ACTION_GET_ALL_FOR_REVIEWS, observable);
     }
 
     /**

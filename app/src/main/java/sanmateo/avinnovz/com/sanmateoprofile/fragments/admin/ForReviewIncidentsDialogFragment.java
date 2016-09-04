@@ -39,7 +39,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 /**
  * Created by rsbulanon on 9/4/16.
  */
-public class ManageIncidentReportsFragment extends Fragment implements OnApiRequestListener {
+public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiRequestListener {
 
     @BindView(R.id.rvReviewIncidents) RecyclerView rvReviewIncidents;
     private ApiRequestHelper apiRequestHelper;
@@ -48,11 +48,10 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
     private String token;
     private int selectedIndex;
     private BaseActivity activity;
-    private String status;
+    private String status = "for review";
 
-    public static ManageIncidentReportsFragment newInstance(final String status) {
-        final ManageIncidentReportsFragment fragment = new ManageIncidentReportsFragment();
-        fragment.status = status;
+    public static ForReviewIncidentsDialogFragment newInstance() {
+        final ForReviewIncidentsDialogFragment fragment = new ForReviewIncidentsDialogFragment();
         return fragment;
     }
 
@@ -71,10 +70,9 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
                                     .getIncidents(status).size() > 0) {
             apiRequestHelper.getLatestIncidents(token,incidentsSingleton
                     .getIncidents("for approval").get(0).getIncidentId());
-        } else if (incidentsSingleton.getIncidents(status).size() == 0) {
+        } else if (incidentsSingleton.getIncidents("for approval").size() == 0) {
             //if incidents is empty, fetch it from api
-            LogHelper.log("approval",status + " must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,status);
+            apiRequestHelper.getAllIncidentsForReview(token,0,null);
         }
         initIncidents();
         return view;
