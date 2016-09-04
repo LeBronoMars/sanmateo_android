@@ -68,9 +68,10 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.GenericMessage;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.WaterLevelSingleton;
 
 /**
  * Created by rsbulanon on 7/12/16.
@@ -94,6 +95,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
     private ActionBarDrawerToggle actionBarDrawerToggle;
     private CurrentUserSingleton currentUserSingleton;
     private NewsSingleton newsSingleton;
+    private IncidentsSingleton incidentsSingleton;
     private ApiRequestHelper apiRequestHelper;
     private String token;
     private static final int SELECT_IMAGE = 1;
@@ -110,6 +112,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
         initPanicContact();
         initAmazonS3Helper(this);
         currentUserSingleton = CurrentUserSingleton.newInstance();
+        incidentsSingleton = IncidentsSingleton.getInstance();
         newsSingleton = NewsSingleton.getInstance();
         apiRequestHelper = new ApiRequestHelper(this);
         token = currentUserSingleton.getCurrentUser().getToken();
@@ -277,6 +280,10 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                                 "Yes", "No", new OnConfirmDialogListener() {
                                     @Override
                                     public void onConfirmed(String action) {
+                                        /** clear all singletons */
+                                        newsSingleton.clearAll();
+                                        incidentsSingleton.clearAll();
+                                        currentUserSingleton.setCurrentUser(null);
                                         PrefsHelper.setString(NewHomeActivity.this,
                                                 AppConstants.PREFS_LOCAL_EMERGENCY_KITS, "");
                                         DaoHelper.deleteCurrentUser();

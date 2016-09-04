@@ -24,4 +24,8 @@ public class CurrentUserSingleton {
         }
         return currentUser;
     }
+
+    public static void setCurrentUser(CurrentUser currentUser) {
+        CurrentUserSingleton.currentUser = currentUser;
+    }
 }

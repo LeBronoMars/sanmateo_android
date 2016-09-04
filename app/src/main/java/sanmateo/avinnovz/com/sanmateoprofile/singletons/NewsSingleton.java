@@ -45,4 +45,10 @@ public class NewsSingleton {
         }
         return false;
     }
+
+    public void clearAll() {
+        newsToday.clear();
+        newsPrevious.clear();
+        allNews.clear();
+    }
 }

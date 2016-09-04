@@ -92,16 +92,6 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             e.printStackTrace();
             LogHelper.log("err","error in parsing date --> " + e.getMessage());
         }
-        final ArrayList<String> incidentImages = new ArrayList<>();
-        /**
-         * if incident images contains '||' which acts as the delimiter
-         * split incident.getImages() using '||' to get the list of image urls
-         * */
-        if (incident.getImages().contains("###")) {
-            incidentImages.addAll(Arrays.asList(incident.getImages().split("###")));
-        } else {
-            incidentImages.add(incident.getImages());
-        }
 
         AppConstants.PICASSO.load(incident.getReporterPicUrl())
                 .placeholder(R.drawable.placeholder_image)
@@ -109,9 +99,20 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
                 .fit()
                 .into(holder.civReporterImage);
 
-        if (incidentImages.isEmpty()) {
+        if (incident.getImages().isEmpty()) {
             holder.rvImages.setVisibility(View.GONE);
         } else {
+            final ArrayList<String> incidentImages = new ArrayList<>();
+            /**
+             * if incident images contains '||' which acts as the delimiter
+             * split incident.getImages() using '||' to get the list of image urls
+             * */
+            if (incident.getImages().contains("###")) {
+                incidentImages.addAll(Arrays.asList(incident.getImages().split("###")));
+            } else {
+                incidentImages.add(incident.getImages());
+            }
+
             final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
             adapter.setOnSelectImageListener(position -> {
                 final Intent intent = new Intent(context, ImageFullViewActivity.class);
@@ -123,7 +124,7 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
             holder.rvImages.setAdapter(adapter);
             holder.rvImages.setVisibility(View.VISIBLE);
         }
-        
+
         holder.llReport.setVisibility(incident.getReporterId() == currentUser.getUserId() ?
                                         View.GONE : View.VISIBLE);
 

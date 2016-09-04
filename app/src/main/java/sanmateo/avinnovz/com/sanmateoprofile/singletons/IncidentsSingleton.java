@@ -30,4 +30,10 @@ public class IncidentsSingleton {
             return forReviews;
         }
     }
+
+    public void clearAll() {
+        active.clear();
+        forApprovals.clear();
+        forReviews.clear();
+    }
 }

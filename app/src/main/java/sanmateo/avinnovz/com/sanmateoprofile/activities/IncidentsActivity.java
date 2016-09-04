@@ -82,7 +82,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         } else if (incidentsSingleton.getIncidents(status).size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,"active");
+            apiRequestHelper.getAllIncidents(token,0,null,status);
         }
         initIncidents();
     }
