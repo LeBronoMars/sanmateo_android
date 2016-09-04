@@ -180,7 +180,7 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
                     e.printStackTrace();
                 }
             } else {
-                mp = MediaPlayer.create(this, R.raw.bg);
+                mp = MediaPlayer.create(this, R.raw.san_mateo_avp);
             }
             mp.setDisplay(surfaceHolder);
 
