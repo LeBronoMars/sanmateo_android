@@ -81,7 +81,8 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             selectedIndex = index;
             final ForReviewIncident incident = forReviewIncidents.get(index);
             if (action.equals("Approve")) {
-                activity.showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+                activity.showConfirmDialog("", "Approve malicious Report", "You are about to approve this" +
+                        " malicious incident report. By doing so, this report will be tagged as blocked," +
                         " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
                     @Override
                     public void onConfirmed(String action) {
@@ -93,8 +94,8 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                     public void onCancelled(String action) {}
                 });
             } else {
-                activity.showConfirmDialog("", action +" Incident Report", "You are about to "+ action.toLowerCase()
-                                +" this incident report, are you sure you want to proceed?",
+                activity.showConfirmDialog("", "Disapprove malicious report", "You are about to "+ action.toLowerCase()
+                                +" this malicious incident report, are you sure you want to proceed?",
                         "Yes", "No", new OnConfirmDialogListener() {
                             @Override
                             public void onConfirmed(String a) {
@@ -174,6 +175,7 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             forReviewIncidents.set(selectedIndex, incident);
             if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
                 activity.showToast("Malicious incident report successfully blocked");
+                forReviewIncidents.remove(selectedIndex);
             } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
                 activity.showToast("Incident report successfully unblocked!");
             } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {

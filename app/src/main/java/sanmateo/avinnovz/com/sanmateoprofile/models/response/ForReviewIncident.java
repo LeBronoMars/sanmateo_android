@@ -24,6 +24,7 @@ public class ForReviewIncident implements Parcelable {
     @SerializedName("reporter_contact_no") String reporterContactNo;
     @SerializedName("reporter_gender") String reporterGender;
     @SerializedName("reporter_pic_url") String reporterPicUrl;
+    @SerializedName("incident_report_id") int incidentReportId;
     @SerializedName("incident_id") int incidentId;
     @SerializedName("report_status") String reportStatus;
     @SerializedName("created_at") String createdAt;
@@ -136,6 +137,10 @@ public class ForReviewIncident implements Parcelable {
         return incidentLongitude;
     }
 
+    public int getIncidentReportId() {
+        return incidentReportId;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -157,6 +162,7 @@ public class ForReviewIncident implements Parcelable {
         parcel.writeString(this.reporterContactNo);
         parcel.writeString(this.reporterGender);
         parcel.writeString(this.reporterPicUrl);
+        parcel.writeInt(this.incidentReportId);
         parcel.writeInt(this.incidentId);
         parcel.writeString(this.reportStatus);
         parcel.writeString(this.createdAt);
@@ -185,6 +191,7 @@ public class ForReviewIncident implements Parcelable {
         this.reporterContactNo = in.readString();
         this.reporterGender = in.readString();
         this.reporterPicUrl = in.readString();
+        this.incidentReportId = in.readInt();
         this.incidentId = in.readInt();
         this.reportStatus = in.readString();
         this.createdAt = in.readString();
