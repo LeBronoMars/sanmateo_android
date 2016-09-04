@@ -33,8 +33,8 @@
     <string name="welcome">Welcome!</string>
 
     <!-- incident row -->
-    <string name="incident_report_by">Incident report By</string>
-    <string name="malicious_report_by">Malicious report By</string>
+    <string name="incident_report_by">Incident report by</string>
+    <string name="malicious_report_by">Malicious report by</string>
     <string name="reported_by">Reported By</string>
     <string name="share_via_fb">Share</string>
     <string name="report_this">Report</string>

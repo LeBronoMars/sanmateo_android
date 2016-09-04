@@ -25,7 +25,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.adapters.IncidentImagesAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ForReviewIncident;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
 /**
  * Created by rsbulanon on 6/28/16.
@@ -50,7 +49,8 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.row_review_incident, parent, false);
+        final View v = LayoutInflater.from(parent.getContext()).inflate(R.layout
+                .row_for_review_incident, parent, false);
         final ViewHolder holder = new ViewHolder(v);
         return holder;
     }
@@ -63,6 +63,7 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
         @BindView(R.id.tvTimeAgo) TextView tvTimeAgo;
         @BindView(R.id.tvReportedBy) TextView tvReportedBy;
         @BindView(R.id.civReporterImage) CircleImageView civReporterImage;
+        @BindView(R.id.civMaliciousReportBy) CircleImageView civMaliciousReportBy;
         @BindView(R.id.rvImages) RecyclerView rvImages;
         @BindView(R.id.llBlock) LinearLayout llBlock;
         @BindView(R.id.llApprove) LinearLayout llApprove;
@@ -95,11 +96,19 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
             LogHelper.log("err","error in parsing date --> " + e.getMessage());
         }
 
-        AppConstants.PICASSO.load(incident.getReporterPicUrl())
+        /** load profile pic of user who created the incident report */
+        AppConstants.PICASSO.load(incident.getUploaderPicUrl())
                 .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .fit()
                 .into(holder.civReporterImage);
+
+        /** load profile pic of user who files malicious report about the incident */
+        AppConstants.PICASSO.load(incident.getReporterPicUrl())
+                .placeholder(R.drawable.placeholder_image)
+                .centerCrop()
+                .fit()
+                .into(holder.civMaliciousReportBy);
 
         if (incident.getIncidentImages().isEmpty()) {
             holder.rvImages.setVisibility(View.GONE);
@@ -127,12 +136,6 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
             holder.rvImages.setAdapter(adapter);
         }
 
-        holder.llUnblockReport.setVisibility(incident.getIncidentStatus().equals("blocked") ? View.VISIBLE : View.GONE);
-        holder.llApproveBlock.setVisibility(incident.getIncidentStatus().equals("blocked") ? View.GONE : View.VISIBLE);
-
-        holder.llBlock.setVisibility(incident.getIncidentStatus().equals("active") ? View.GONE : View.VISIBLE);
-        holder.llApprove.setVisibility(incident.getIncidentStatus().equals("active") ? View.GONE : View.VISIBLE);
-
         holder.llBlock.setOnClickListener(view -> {
             if (onReportListener != null) {
                 onReportListener.onUpdateReport(i,"Block");
@@ -148,6 +151,8 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
                 onReportListener.onUpdateReport(i,"Unblock");
             }
         });
+        holder.tvMaliciousReportBy.setText(incident.getReporterName());
+        holder.tvRemarks.setText(incident.getRemarks());
     }
 
     @Override

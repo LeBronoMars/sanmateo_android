@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.admin.ReviewIncidentsAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.admin.ForReviewIncidentAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.BlockIncidentReportDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -31,10 +31,10 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.ForReviewIncident;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 
 /**
  * Created by rsbulanon on 9/4/16.
@@ -43,12 +43,12 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
 
     @BindView(R.id.rvReviewIncidents) RecyclerView rvReviewIncidents;
     private ApiRequestHelper apiRequestHelper;
-    private IncidentsSingleton incidentsSingleton;
     private CurrentUserSingleton currentUserSingleton;
     private String token;
     private int selectedIndex;
     private BaseActivity activity;
     private String status = "for review";
+    private ArrayList<ForReviewIncident> forReviewIncidents = new ArrayList<>();
 
     public static ForReviewIncidentsDialogFragment newInstance() {
         final ForReviewIncidentsDialogFragment fragment = new ForReviewIncidentsDialogFragment();
@@ -61,16 +61,13 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
         ButterKnife.bind(this, view);
         activity = (BaseActivity)getActivity();
         apiRequestHelper = new ApiRequestHelper(this);
-        incidentsSingleton = IncidentsSingleton.getInstance();
         currentUserSingleton = CurrentUserSingleton.newInstance();
         token = currentUserSingleton.getCurrentUser().getToken();
 
         //check if there are new incidents needed to be fetched from api
-        if (PrefsHelper.getBoolean(getActivity(),"refresh_incidents") && incidentsSingleton
-                                    .getIncidents(status).size() > 0) {
-            apiRequestHelper.getLatestIncidents(token,incidentsSingleton
-                    .getIncidents("for approval").get(0).getIncidentId());
-        } else if (incidentsSingleton.getIncidents("for approval").size() == 0) {
+        if (PrefsHelper.getBoolean(getActivity(),"refresh_incidents") && forReviewIncidents.size() > 0) {
+            apiRequestHelper.getLatestIncidents(token,forReviewIncidents.get(0).getIncidentId());
+        } else if (forReviewIncidents.size() == 0) {
             //if incidents is empty, fetch it from api
             apiRequestHelper.getAllIncidentsForReview(token,0,null);
         }
@@ -79,11 +76,10 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
     }
 
     private void initIncidents() {
-        final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(getActivity(),
-                incidentsSingleton.getIncidents(status));
+        final ForReviewIncidentAdapter adapter = new ForReviewIncidentAdapter(getActivity(), forReviewIncidents);
         adapter.setOnReportListener((index, action) -> {
             selectedIndex = index;
-            final Incident incident = incidentsSingleton.getIncidents(status).get(index);
+            final ForReviewIncident incident = forReviewIncidents.get(index);
             if (action.equals("Block")) {
                 final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
                 fragment.setOnBlockReportListener(remarks -> {
@@ -143,27 +139,11 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                     if (json.has("action")) {
                         final String action = json.getString("action");
 
-                        /** new incident notification */
-                        if (action.equals("incident_approval") || action.equals("for review")) {
-                            LogHelper.log("api","must fetch latest incident reports");
-                            if (incidentsSingleton.getIncidents(status).size() == 0) {
-                                LogHelper.log("api","must get all STATUS --> " + status);
-                                apiRequestHelper.getAllIncidents(token,0,null,status);
-                            } else {
-                                apiRequestHelper.getLatestIncidents(token,
-                                        incidentsSingleton.getIncidents(status)
-                                                .get(0).getIncidentId());
-                            }
-                        }
+                        LogHelper.log("block","action ---> " + action);
                         rvReviewIncidents.getAdapter().notifyDataSetChanged();
                     }
                 } else if (map.containsKey("action")) {
-                    if (map.get("action").equals("newly approved report") && status.equals("active")) {
-                        /** add newly approved incident report to list of active reports */
-                        final Incident incident = (Incident)map.get("result");
-                        incidentsSingleton.getIncidents(status).add(0,incident);
-                        rvReviewIncidents.getAdapter().notifyDataSetChanged();
-                    }
+
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -190,17 +170,12 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
     @Override
     public void onApiRequestSuccess(final String action,final Object result) {
         activity.dismissCustomProgress();
-        if (action.equals(AppConstants.ACTION_GET_INCIDENTS) || action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
-            final ArrayList<Incident> incidents = (ArrayList<Incident>)result;
-            LogHelper.log("approval","success size --> " + incidents);
-            incidentsSingleton.getIncidents(status).addAll(0,incidents);
-
-            if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
-                PrefsHelper.setBoolean(getActivity(),"refresh_incidents",false);
-            }
+        if (action.equals(AppConstants.ACTION_GET_ALL_FOR_REVIEWS)) {
+            final ArrayList<ForReviewIncident> incidents = (ArrayList<ForReviewIncident>)result;
+            forReviewIncidents.addAll(0, incidents);
         } else {
-            final Incident incident = (Incident)result;
-            incidentsSingleton.getIncidents(status).set(selectedIndex, incident);
+            final ForReviewIncident incident = (ForReviewIncident)result;
+            forReviewIncidents.set(selectedIndex, incident);
             if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
                 activity.showToast("Malicious incident report successfully blocked");
             } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
@@ -208,15 +183,6 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
                 final Incident approvedReport = (Incident)result;
                 activity.showToast("Incident report successfully approved!");
-                /** transfer newly approved incident report to list of active reports */
-                if (status.equals("for approval")) {
-                    final HashMap<String,Object> map = new HashMap<>();
-                    map.put("action","newly approved report");
-                    map.put("result",approvedReport);
-                    BusSingleton.getInstance().post(map);
-                    incidentsSingleton.getIncidents(status).remove(selectedIndex);
-                    rvReviewIncidents.getAdapter().notifyDataSetChanged();
-                }
             }
         }
         rvReviewIncidents.getAdapter().notifyDataSetChanged();
