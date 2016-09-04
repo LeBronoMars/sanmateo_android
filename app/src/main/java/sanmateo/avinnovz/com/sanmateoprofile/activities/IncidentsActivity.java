@@ -137,6 +137,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         adapter.setOnShareAndReportListener(new IncidentsAdapter.OnShareAndReportListener() {
             @Override
             public void onShare(int position) {
+                LogHelper.log("fb","must share --> " + position);
                 if (isNetworkAvailable()) {
                     final Incident incident = incidentsSingleton.getIncidents(status).get(position);
                     final String imageUrl = incident.getImages().contains("###") ?
@@ -161,8 +162,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
                     if (ShareDialog.canShow(ShareLinkContent.class)) {
                         final ShareLinkContent linkContent = new ShareLinkContent.Builder()
                                 .setContentTitle(incident.getIncidentDescription())
-                                .setImageUrl(Uri.parse(imageUrl))
-                                .setContentUrl(Uri.parse("www.google.com"))
+                                .setImageUrl(Uri.parse(imageUrl.isEmpty() ? AppConstants.SAN_MATEO_LOGO : imageUrl))
                                 .setContentDescription(incident.getIncidentAddress())
                                 .build();
                         shareDialog.show(linkContent, AppConstants.IS_FACEBOOK_APP_INSTALLED

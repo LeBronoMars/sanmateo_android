@@ -76,6 +76,7 @@ public class SocialMediaActivity extends BaseActivity implements GraphRequest.Ca
                 @Override
                 public void onCancel() {
                     LogHelper.log("fb","on login cancelled");
+                    onBackPressed();
                 }
 
                 @Override

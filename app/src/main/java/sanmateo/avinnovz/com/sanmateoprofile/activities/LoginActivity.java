@@ -171,15 +171,16 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                 mp = new MediaPlayer();
                 final Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                        + R.raw.new_video_bg);
+                        + R.raw.san_mateo_avp);
                 try {
                     mp.setDataSource(LoginActivity.this, video);
+                    mp.start();
                 } catch (IOException e) {
+                    LogHelper.log("video","error inflating video background --> " + e.getMessage());
                     e.printStackTrace();
                 }
             } else {
-                mp = MediaPlayer.create(this, R.raw.new_video_bg);
-
+                mp = MediaPlayer.create(this, R.raw.bg);
             }
             mp.setDisplay(surfaceHolder);
 
@@ -220,11 +221,18 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
 
     @Override
     protected void onDestroy() {
-        if (mp != null) {
-            mp.stop();
-            mp.release();
-        }
         super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        mp.pause();
     }
 
     private void moveToHome() {

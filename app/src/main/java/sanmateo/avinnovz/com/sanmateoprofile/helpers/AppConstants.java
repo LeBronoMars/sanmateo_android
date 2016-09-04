@@ -22,6 +22,7 @@ public class AppConstants {
     public static ApiInterface API_INTERFACE = null;
     public static boolean IS_FACEBOOK_APP_INSTALLED = false;
 
+    public static String SAN_MATEO_LOGO = "https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/banners/san_mateo_logo.png";
     /** s3 configs */
     public static final String AWS_POOL_ID = "us-east-1:66c534a3-218e-4cfc-934c-c5f24b53a88a";
 

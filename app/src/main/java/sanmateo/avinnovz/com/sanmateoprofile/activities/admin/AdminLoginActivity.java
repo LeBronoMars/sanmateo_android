@@ -21,7 +21,6 @@ import butterknife.OnClick;
 import retrofit2.adapter.rxjava.HttpException;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.NewHomeActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.LoginDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
@@ -32,7 +31,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 
 /**
  * Created by rsbulanon on 6/22/16.
@@ -44,7 +42,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @BindView(R.id.surfaceView) SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
     private MediaPlayer mp;
-    private int video_bg = R.raw.new_video_bg;
+    private int video_bg = R.raw.san_mateo_avp;
     private ApiRequestHelper apiRequestHelper;
     private static final int REQUEST_PERMISSIONS = 1;
 

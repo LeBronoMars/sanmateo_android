@@ -85,7 +85,12 @@ public class DirectoriesAdapter extends BaseExpandableListAdapter {
         final TextView tvContact = (TextView)view.findViewById(R.id.tvContact);
         final TextView tvEmail = (TextView)view.findViewById(R.id.tvEmail);
         tvContact.setText(contacts.get(i));
-        tvEmail.setText(email.get(i));
+        if (email.size() > 0) {
+            tvEmail.setText(email.get(i));
+            tvEmail.setVisibility(View.VISIBLE);
+        } else {
+            tvEmail.setVisibility(View.GONE);
+        }
         tvContact.setOnClickListener(view1 -> {
             if (onDirectoryActionListener != null) {
                 onDirectoryActionListener.onCallDirectory(contacts.get(i));

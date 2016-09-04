@@ -6,8 +6,11 @@ import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
+import android.view.View;
+import android.widget.ImageView;
 
 import com.bignerdranch.expandablerecyclerview.Model.ParentObject;
+import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,6 +32,7 @@ public class Disaster101Activity extends BaseActivity {
 
     @BindView(R.id.viewPager) ViewPager viewPager;
     @BindView(R.id.tabLayout) TabLayout tabLayout;
+    @BindView(R.id.ivPaalala) ImageView ivPaalala;
     private ArrayList<Fragment> fragments = new ArrayList<>();
     private String[] titles = new String[]{"Earthquake", "Flood", "Tips"};
 
@@ -39,6 +43,16 @@ public class Disaster101Activity extends BaseActivity {
         ButterKnife.bind(this);
         setToolbarTitle("Disaster 101");
         initTabs();
+        AppConstants.PICASSO.load("https://s3-us-west-1.amazonaws.com/sanmateoprofileapp/banners/paalala.png")
+                .placeholder(R.drawable.placeholder_image)
+                .fit()
+                .into(ivPaalala, new Callback() {
+                    @Override
+                    public void onSuccess() {}
+
+                    @Override
+                    public void onError() {}
+                });
     }
 
     private void initTabs() {

@@ -71,7 +71,6 @@ import sanmateo.avinnovz.com.sanmateoprofile.services.PusherService;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.NewsSingleton;
-import sanmateo.avinnovz.com.sanmateoprofile.singletons.WaterLevelSingleton;
 
 /**
  * Created by rsbulanon on 7/12/16.
@@ -270,7 +269,7 @@ public class NewHomeActivity extends BaseActivity implements OnApiRequestListene
                         fragment.show(getFragmentManager(), "disaster menu");
                         break;
                     case R.id.menu_rate_us:
-                        showToast("rate us");
+                        showToast("Rate us feature coming soon...");
                         break;
                     case R.id.menu_change_pass:
                         changePassword();
