@@ -292,6 +292,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     public void onUploadFinished(String bucketName, String imageUrl) {
         if (bucketName.equals(AppConstants.BUCKET_INCIDENTS)) {
             filesToUploadCtr++;
+            uploadedFilesUrl.append(imageUrl+"###");
         }
         uploadImage();
     }

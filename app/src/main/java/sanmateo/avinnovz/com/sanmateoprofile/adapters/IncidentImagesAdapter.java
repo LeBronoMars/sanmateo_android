@@ -38,17 +38,19 @@ public class IncidentImagesAdapter extends RecyclerView.Adapter<IncidentImagesAd
 
     @Override
     public void onBindViewHolder(final ImageViewHolder holder, final int position) {
-        AppConstants.PICASSO.load(imageUrls.get(position))
-                .placeholder(R.drawable.placeholder_image)
-                .fit().centerCrop().into(holder.ivGallery);
-        holder.ivGallery.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
+        if (!imageUrls.get(position).isEmpty()) {
+            AppConstants.PICASSO.load(imageUrls.get(position))
+                    .placeholder(R.drawable.placeholder_image)
+                    .fit().centerCrop().into(holder.ivGallery);
+            holder.ivGallery.setOnClickListener(view -> {
                 if (onSelectImageListener != null) {
                     onSelectImageListener.onSelectedImage(position);
                 }
-            }
-        });
+            });
+            holder.ivGallery.setVisibility(View.VISIBLE);
+        } else {
+            holder.ivGallery.setVisibility(View.GONE);
+        }
     }
 
     @Override

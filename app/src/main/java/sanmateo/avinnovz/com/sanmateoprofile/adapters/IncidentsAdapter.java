@@ -21,7 +21,9 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.ImageFullViewActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
+import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 
@@ -34,11 +36,13 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
     private Context context;
     private IncidentsActivity activity;
     private OnShareAndReportListener onShareAndReportListener;
+    private CurrentUser currentUser;
 
     public IncidentsAdapter(final Context context, final ArrayList<Incident> incidents) {
         this.incidents = incidents;
         this.context = context;
         this.activity = (IncidentsActivity) context;
+        this.currentUser = DaoHelper.getCurrentUser();
     }
 
     @Override
@@ -105,38 +109,37 @@ public class IncidentsAdapter extends RecyclerView.Adapter<IncidentsAdapter.View
                 .fit()
                 .into(holder.civReporterImage);
 
-        final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
-        adapter.setOnSelectImageListener(new IncidentImagesAdapter.OnSelectImageListener() {
-            @Override
-            public void onSelectedImage(int position) {
+        if (incidentImages.isEmpty()) {
+            holder.rvImages.setVisibility(View.GONE);
+        } else {
+            final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
+            adapter.setOnSelectImageListener(position -> {
                 final Intent intent = new Intent(context, ImageFullViewActivity.class);
                 intent.putExtra("incident",incident);
                 intent.putExtra("selectedImagePosition",position);
                 activity.startActivity(intent);
                 activity.animateToLeft(activity);
-            }
-        });
+            });
+            holder.rvImages.setAdapter(adapter);
+            holder.rvImages.setVisibility(View.VISIBLE);
+        }
+        
+        holder.llReport.setVisibility(incident.getReporterId() == currentUser.getUserId() ?
+                                        View.GONE : View.VISIBLE);
 
         /** share via facebook */
-        holder.llShareViaFb.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onShareAndReportListener != null) {
-                    onShareAndReportListener.onShare(i);
-                }
+        holder.llShareViaFb.setOnClickListener(view -> {
+            if (onShareAndReportListener != null) {
+                onShareAndReportListener.onShare(i);
             }
         });
 
         /** report */
-        holder.llReport.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if (onShareAndReportListener != null) {
-                    onShareAndReportListener.onReport(i);
-                }
+        holder.llReport.setOnClickListener(view -> {
+            if (onShareAndReportListener != null) {
+                onShareAndReportListener.onReport(i);
             }
         });
-        holder.rvImages.setAdapter(adapter);
     }
 
     @Override

@@ -92,16 +92,6 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
             e.printStackTrace();
             LogHelper.log("err","error in parsing date --> " + e.getMessage());
         }
-        final ArrayList<String> incidentImages = new ArrayList<>();
-        /**
-         * if incident images contains '||' which acts as the delimiter
-         * split incident.getImages() using '||' to get the list of image urls
-         * */
-        if (incident.getImages().contains("###")) {
-            incidentImages.addAll(Arrays.asList(incident.getImages().split("###")));
-        } else {
-            incidentImages.add(incident.getImages());
-        }
 
         AppConstants.PICASSO.load(incident.getReporterPicUrl())
                 .placeholder(R.drawable.placeholder_image)
@@ -109,14 +99,31 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
                 .fit()
                 .into(holder.civReporterImage);
 
-        final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
-        adapter.setOnSelectImageListener(position -> {
-            final Intent intent = new Intent(context, ImageFullViewActivity.class);
-            intent.putExtra("incident",incident);
-            intent.putExtra("selectedImagePosition",position);
-            activity.startActivity(intent);
-            activity.animateToLeft(activity);
-        });
+        if (incident.getImages().isEmpty()) {
+            holder.rvImages.setVisibility(View.GONE);
+        } else {
+            holder.rvImages.setVisibility(View.VISIBLE);
+            final ArrayList<String> incidentImages = new ArrayList<>();
+            /**
+             * if incident images contains '||' which acts as the delimiter
+             * split incident.getImages() using '||' to get the list of image urls
+             * */
+            if (incident.getImages().contains("###")) {
+                incidentImages.addAll(Arrays.asList(incident.getImages().split("###")));
+            } else {
+                incidentImages.add(incident.getImages());
+            }
+
+            final IncidentImagesAdapter adapter = new IncidentImagesAdapter(context,incidentImages);
+            adapter.setOnSelectImageListener(position -> {
+                final Intent intent = new Intent(context, ImageFullViewActivity.class);
+                intent.putExtra("incident",incident);
+                intent.putExtra("selectedImagePosition",position);
+                activity.startActivity(intent);
+                activity.animateToLeft(activity);
+            });
+            holder.rvImages.setAdapter(adapter);
+        }
 
         holder.llUnblockReport.setVisibility(incident.getStatus().equals("blocked") ? View.VISIBLE : View.GONE);
         holder.llApproveBlock.setVisibility(incident.getStatus().equals("blocked") ? View.GONE : View.VISIBLE);
@@ -139,7 +146,6 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
                 onReportListener.onUpdateReport(i,"Unblock");
             }
         });
-        holder.rvImages.setAdapter(adapter);
     }
 
     @Override
