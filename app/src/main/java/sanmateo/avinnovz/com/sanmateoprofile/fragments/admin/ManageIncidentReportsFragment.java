@@ -96,7 +96,8 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
                                 " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
                             @Override
                             public void onConfirmed(String action) {
-                                apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
+                                apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),
+                                        remarks, incident.getStatus());
                             }
 
                             @Override

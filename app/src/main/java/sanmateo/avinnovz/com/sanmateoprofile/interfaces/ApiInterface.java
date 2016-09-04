@@ -145,13 +145,15 @@ public interface ApiInterface {
      * @param token represents the user that trying to make the request
      * @param incidentId identification of incident report
      * @param remarks brief description why the incident report must be blocked
+     * @param status status of remarks
      *
      * */
     @PUT("/api/v1/incidents/block/{incident_id}")
     @FormUrlEncoded
     Observable<Incident> blockReport(@Header("Authorization") String token,
                                      @Path("incident_id") int incidentId,
-                                     @Field("remarks") String remarks);
+                                     @Field("remarks") String remarks,
+                                     @Field("status") String status);
 
     /**
      * unblock a malicious incident report

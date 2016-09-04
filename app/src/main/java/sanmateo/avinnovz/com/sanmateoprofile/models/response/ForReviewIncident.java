@@ -28,6 +28,7 @@ public class ForReviewIncident implements Parcelable {
     @SerializedName("incident_id") int incidentId;
     @SerializedName("report_status") String reportStatus;
     @SerializedName("created_at") String createdAt;
+    @SerializedName("deleted_at") String deletedAt;
     @SerializedName("remarks") String remarks;
     @SerializedName("incident_type") String incidentType;
     @SerializedName("incident_description") String incidentDescription;
@@ -141,6 +142,10 @@ public class ForReviewIncident implements Parcelable {
         return incidentReportId;
     }
 
+    public String getDeletedAt() {
+        return deletedAt;
+    }
+
     @Override
     public int describeContents() {
         return 0;
@@ -166,6 +171,7 @@ public class ForReviewIncident implements Parcelable {
         parcel.writeInt(this.incidentId);
         parcel.writeString(this.reportStatus);
         parcel.writeString(this.createdAt);
+        parcel.writeString(this.deletedAt);
         parcel.writeString(this.remarks);
         parcel.writeString(this.incidentType);
         parcel.writeString(this.incidentDescription);
@@ -195,6 +201,7 @@ public class ForReviewIncident implements Parcelable {
         this.incidentId = in.readInt();
         this.reportStatus = in.readString();
         this.createdAt = in.readString();
+        this.deletedAt = in.readString();
         this.remarks = in.readString();
         this.incidentType = in.readString();
         this.incidentDescription = in.readString();

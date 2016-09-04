@@ -80,9 +80,11 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT, observable);
     }
 
-    public void blockMaliciousReport(final String token, final int incidentId, final String remarks) {
+    public void blockMaliciousReport(final String token, final int incidentId, final String remarks,
+                                     final String status) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_PUT_BLOCK_REPORT);
-        final Observable<Incident> observable = AppConstants.API_INTERFACE.blockReport(token,incidentId,remarks);
+        final Observable<Incident> observable = AppConstants.API_INTERFACE.blockReport(token,
+                                                incidentId, remarks, status);
         handleObservableResult(AppConstants.ACTION_PUT_BLOCK_REPORT, observable);
     }
 

@@ -87,7 +87,7 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                     @Override
                     public void onConfirmed(String action) {
                         apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),
-                                incident.getRemarks());
+                                incident.getRemarks(), incident.getIncidentStatus());
                     }
 
                     @Override
@@ -171,8 +171,6 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
             final ArrayList<ForReviewIncident> incidents = (ArrayList<ForReviewIncident>)result;
             forReviewIncidents.addAll(0, incidents);
         } else {
-            final ForReviewIncident incident = (ForReviewIncident)result;
-            forReviewIncidents.set(selectedIndex, incident);
             if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
                 activity.showToast("Malicious incident report successfully blocked");
                 forReviewIncidents.remove(selectedIndex);

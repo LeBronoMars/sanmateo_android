@@ -43,13 +43,15 @@ public class ManageIncidentReportsActivity extends BaseActivity {
 
     private void initViewPager() {
         /** set up viewpager and tab layout */
-        tabNames.add("Active Reports");
+        tabNames.add("Active");
         tabNames.add("For Approvals");
         tabNames.add("For Reviews");
+        tabNames.add("Blocked");
 
         fragments.add(ManageIncidentReportsFragment.newInstance("active"));
         fragments.add(ManageIncidentReportsFragment.newInstance("for approval"));
         fragments.add(ForReviewIncidentsDialogFragment.newInstance());
+        fragments.add(ManageIncidentReportsFragment.newInstance("blocked"));
 
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);
@@ -68,6 +70,10 @@ public class ManageIncidentReportsActivity extends BaseActivity {
                         /** new incident notification */
                         if (action.equals("incident_approval")) {
                             viewPager.setCurrentItem(1);
+                        } else if (action.equals("for review")) {
+                            viewPager.setCurrentItem(2);
+                        } else if (action.equals("block report")) {
+                            viewPager.setCurrentItem(3);
                         }
                     }
                 } else if (map.containsKey("action")) {
