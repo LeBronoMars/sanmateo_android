@@ -148,7 +148,7 @@ public class ForReviewIncidentAdapter extends RecyclerView.Adapter<ForReviewInci
         });
         holder.llUnblockReport.setOnClickListener(view -> {
             if (onReportListener != null) {
-                onReportListener.onUpdateReport(i,"Unblock");
+                onReportListener.onUpdateReport(i,"Disapprove");
             }
         });
         holder.tvMaliciousReportBy.setText(incident.getReporterName());

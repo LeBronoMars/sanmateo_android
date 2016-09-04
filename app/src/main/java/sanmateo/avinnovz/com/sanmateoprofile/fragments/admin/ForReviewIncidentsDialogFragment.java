@@ -80,22 +80,18 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
         adapter.setOnReportListener((index, action) -> {
             selectedIndex = index;
             final ForReviewIncident incident = forReviewIncidents.get(index);
-            if (action.equals("Block")) {
-                final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
-                fragment.setOnBlockReportListener(remarks -> {
-                    fragment.dismiss();
-                    activity.showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
-                            " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
-                        @Override
-                        public void onConfirmed(String action) {
-                            apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
-                        }
+            if (action.equals("Approve")) {
+                activity.showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+                        " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
+                    @Override
+                    public void onConfirmed(String action) {
+                        apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),
+                                incident.getRemarks());
+                    }
 
-                        @Override
-                        public void onCancelled(String action) {}
-                    });
+                    @Override
+                    public void onCancelled(String action) {}
                 });
-                fragment.show(getActivity().getFragmentManager(),"block report");
             } else {
                 activity.showConfirmDialog("", action +" Incident Report", "You are about to "+ action.toLowerCase()
                                 +" this incident report, are you sure you want to proceed?",

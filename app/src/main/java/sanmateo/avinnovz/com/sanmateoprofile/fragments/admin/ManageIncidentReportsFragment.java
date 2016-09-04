@@ -88,18 +88,26 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
             final Incident incident = incidentsSingleton.getIncidents(status).get(index);
             if (action.equals("Block")) {
                 final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
-                fragment.setOnBlockReportListener(remarks -> {
-                    fragment.dismiss();
-                    activity.showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
-                            " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
-                        @Override
-                        public void onConfirmed(String action) {
-                            apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
-                        }
+                fragment.setOnBlockReportListener(new BlockIncidentReportDialogFragment.OnBlockReportListener() {
+                    @Override
+                    public void onBlockReport(String remarks) {
+                        fragment.dismiss();
+                        activity.showConfirmDialog("", "Block Incident Report", "You are about to block this incident report," +
+                                " are you sure you want to proceed?", "Yes", "No", new OnConfirmDialogListener() {
+                            @Override
+                            public void onConfirmed(String action) {
+                                apiRequestHelper.blockMaliciousReport(token,incident.getIncidentId(),remarks);
+                            }
 
-                        @Override
-                        public void onCancelled(String action) {}
-                    });
+                            @Override
+                            public void onCancelled(String action) {}
+                        });
+                    }
+
+                    @Override
+                    public void onCancelReport() {
+                        fragment.dismiss();
+                    }
                 });
                 fragment.show(getActivity().getFragmentManager(),"block report");
             } else {

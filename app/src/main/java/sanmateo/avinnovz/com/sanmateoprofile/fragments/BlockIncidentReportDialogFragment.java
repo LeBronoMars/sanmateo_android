@@ -71,8 +71,16 @@ public class BlockIncidentReportDialogFragment extends DialogFragment {
         }
     }
 
+    @OnClick(R.id.btnCancelReport)
+    public void cancelReport() {
+        if (onBlockReportListener != null) {
+            onBlockReportListener.onCancelReport();
+        }
+    }
+
     public interface OnBlockReportListener {
         void onBlockReport(final String remarks);
+        void onCancelReport();
     }
 
     public void setOnBlockReportListener(OnBlockReportListener onBlockReportListener) {
