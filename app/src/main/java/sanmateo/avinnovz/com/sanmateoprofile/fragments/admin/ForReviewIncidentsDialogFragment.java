@@ -131,7 +131,9 @@ public class ForReviewIncidentsDialogFragment extends Fragment implements OnApiR
                     if (json.has("action")) {
                         final String action = json.getString("action");
                         LogHelper.log("block","action ---> " + action);
-                        apiRequestHelper.getForReviewReportById(token,json.getInt("id"));
+                        if (action.equals(status)) {
+                            apiRequestHelper.getForReviewReportById(token,json.getInt("id"));
+                        }
                     }
                 } else if (map.containsKey("action")) {
 

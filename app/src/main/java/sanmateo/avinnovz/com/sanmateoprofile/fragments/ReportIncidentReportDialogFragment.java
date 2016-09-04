@@ -63,7 +63,7 @@ public class ReportIncidentReportDialogFragment extends DialogFragment {
         final String remarks = etRemarks.getText().toString().trim();
 
         if (remarks.isEmpty()) {
-            activity.setError(etRemarks, AppConstants.WARN_CONNECTION);
+            activity.setError(etRemarks, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onReportIncidentListener != null) {
                 onReportIncidentListener.onReportIncident(remarks);

@@ -125,9 +125,6 @@ public class ReviewIncidentsAdapter extends RecyclerView.Adapter<ReviewIncidents
             holder.rvImages.setAdapter(adapter);
         }
 
-        holder.llUnblockReport.setVisibility(incident.getStatus().equals("blocked") ? View.VISIBLE : View.GONE);
-        holder.llApproveBlock.setVisibility(incident.getStatus().equals("blocked") ? View.GONE : View.VISIBLE);
-
         holder.llBlock.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
         holder.llApprove.setVisibility(incident.getStatus().equals("active") ? View.GONE : View.VISIBLE);
 

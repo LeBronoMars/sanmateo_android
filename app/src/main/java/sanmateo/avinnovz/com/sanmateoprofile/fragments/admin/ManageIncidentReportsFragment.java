@@ -165,8 +165,19 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
                                         incidentsSingleton.getIncidents(status)
                                                 .get(0).getIncidentId());
                             }
+                        } else if (action.equals("block report")) {
+                            LogHelper.log("nn","must remove report --> " + json.getInt("id"));
+                            final int toRemoveIncidentId = json.getInt("id");
+                            for (int i = 0 ; i < incidentsSingleton.getIncidents(status).size(); i++) {
+                                final Incident incident = incidentsSingleton.getIncidents(status).get(i);
+                                if (incident.getIncidentId() == toRemoveIncidentId) {
+                                    incidentsSingleton.getIncidents(status).remove(i);
+                                }
+                            }
                         }
                         rvReviewIncidents.getAdapter().notifyDataSetChanged();
+                    } else {
+                        LogHelper.log("nn","no action --> " + json.toString());
                     }
                 } else if (map.containsKey("action")) {
                     if (map.get("action").equals("newly approved report") && status.equals("active")) {
@@ -177,6 +188,7 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
                     }
                 }
             } catch (JSONException e) {
+                LogHelper.log("nn","err --> " + e.getMessage());
                 e.printStackTrace();
             }
         });
@@ -213,6 +225,8 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
             final Incident incident = (Incident)result;
             incidentsSingleton.getIncidents(status).set(selectedIndex, incident);
             if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
+                incidentsSingleton.getIncidents(status).remove(selectedIndex);
+                rvReviewIncidents.getAdapter().notifyDataSetChanged();
                 activity.showToast("Malicious incident report successfully blocked");
             } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
                 activity.showToast("Incident report successfully unblocked!");

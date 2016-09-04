@@ -69,8 +69,9 @@ public class PusherService extends Service {
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         final Pusher pusher = new Pusher("d37253507ae4d71dee6b",options);
+
         /** listen to public channel */
-        final Channel publicChannel = pusher.subscribe("client");
+        final Channel publicChannel = pusher.subscribe("clients");
         publicChannel.bind("san_mateo_event", (channelName, eventName, data) -> {
             /** manage, construct and display local push notification */
             try {
@@ -88,24 +89,21 @@ public class PusherService extends Service {
                                 json.getString("title"),json.getString("content"), null);
                     } else if (action.equals("block report")) {
                         /** new incident notification */
-                        LogHelper.log("pusher","must delete incident report");
+                        LogHelper.log("pusher","must delete incident report --> " + json.toString());
                         final int reportedBy = Integer.valueOf(json.getString("reported_by"));
                         if (currentUserSingleton.getCurrentUser().getUserId() == reportedBy) {
                             LogHelper.log("pusher","Show notification for blocked report");
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     "Your report was blocked by the admin",json.getString("remarks"),null);
-
-                            /** removed blocked incident from list of active incident reports
-                             *  incidents singleton */
-                            final int toRemoveIncidentId = Integer.valueOf(json.getString("id"));
-                            for (int i = 0 ; i < incidentsSingleton.getIncidents("active").size(); i++) {
-                                final Incident incident = incidentsSingleton.getIncidents("active").get(i);
-                                if (incident.getIncidentId() == toRemoveIncidentId) {
-                                    incidentsSingleton.getIncidents("active").remove(i);
-                                }
+                        }
+                        /** removed blocked incident from list of active incident reports
+                         *  incidents singleton */
+                        final int toRemoveIncidentId = Integer.valueOf(json.getString("id"));
+                        for (int i = 0 ; i < incidentsSingleton.getIncidents("active").size(); i++) {
+                            final Incident incident = incidentsSingleton.getIncidents("active").get(i);
+                            if (incident.getIncidentId() == toRemoveIncidentId) {
+                                incidentsSingleton.getIncidents("active").remove(i);
                             }
-                        } else {
-                            LogHelper.log("pusher","must delete only blocked report");
                         }
                     } else if (action.equals("news created")) {
                         LogHelper.log("pusher","news created");
