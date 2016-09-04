@@ -54,9 +54,9 @@
         <activity android:name=".activities.WaterLevelMonitoringActivity"
             android:screenOrientation="portrait"/>
 
-        <!-- alert list -->
-        <activity android:name=".activities.WaterAlertListActivity"
-            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.admin.ManageIncidentReportsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <activity android:name=".activities.admin.ManageGalleryActivity"
             android:screenOrientation="portrait"/>

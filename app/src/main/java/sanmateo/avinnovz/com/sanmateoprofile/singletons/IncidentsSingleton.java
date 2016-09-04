@@ -9,7 +9,9 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
  */
 public class IncidentsSingleton {
 
-    private ArrayList<Incident> incidents = new ArrayList<>();
+    private ArrayList<Incident> active = new ArrayList<>();
+    private ArrayList<Incident> forApprovals = new ArrayList<>();
+    private ArrayList<Incident> forReviews = new ArrayList<>();
 
     private static IncidentsSingleton INCIDENTS = new IncidentsSingleton();
 
@@ -19,12 +21,13 @@ public class IncidentsSingleton {
         return INCIDENTS;
     }
 
-    public ArrayList<Incident> getIncidents() {
-        return incidents;
-    }
-
-    public void setIncidents(ArrayList<Incident> incidents) {
-        this.incidents.clear();
-        this.incidents.addAll(incidents);
+    public ArrayList<Incident> getIncidents(final String status) {
+        if (status.equals("active")) {
+            return active;
+        } else if (status.equals("for approval")) {
+            return forApprovals;
+        } else (status.equals("for reviews")) {
+            return forReviews;
+        }
     }
 }

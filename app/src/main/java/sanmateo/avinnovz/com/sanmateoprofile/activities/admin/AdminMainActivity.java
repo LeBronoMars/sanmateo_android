@@ -281,7 +281,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
         final HomeMenuAdapter adapter = new HomeMenuAdapter(this,homeMenus);
         adapter.setOnSelectHomeMenuListener(position -> {
             if (position == 0) {
-                moveToOtherActivity(ReviewIncidentsActivity.class);
+                moveToOtherActivity(ManageIncidentReportsActivity.class);
             } else if (position == 1) {
                 moveToOtherActivity(NewsEventsManagementActivity.class);
             } else if (position == 2) {
