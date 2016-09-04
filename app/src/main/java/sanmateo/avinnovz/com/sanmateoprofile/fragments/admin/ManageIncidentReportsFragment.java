@@ -32,13 +32,14 @@ import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnConfirmDialogListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
+import sanmateo.avinnovz.com.sanmateoprofile.singletons.BusSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 
 /**
  * Created by rsbulanon on 9/4/16.
  */
-public class ActiveIncidentReports extends Fragment implements OnApiRequestListener {
+public class ManageIncidentReportsFragment extends Fragment implements OnApiRequestListener {
 
     @BindView(R.id.rvReviewIncidents) RecyclerView rvReviewIncidents;
     private ApiRequestHelper apiRequestHelper;
@@ -47,9 +48,11 @@ public class ActiveIncidentReports extends Fragment implements OnApiRequestListe
     private String token;
     private int selectedIndex;
     private BaseActivity activity;
+    private String status;
 
-    public static ActiveIncidentReports newInstance() {
-        final ActiveIncidentReports fragment = new ActiveIncidentReports();
+    public static ManageIncidentReportsFragment newInstance(final String status) {
+        final ManageIncidentReportsFragment fragment = new ManageIncidentReportsFragment();
+        fragment.status = status;
         return fragment;
     }
 
@@ -64,23 +67,25 @@ public class ActiveIncidentReports extends Fragment implements OnApiRequestListe
         token = currentUserSingleton.getCurrentUser().getToken();
 
         //check if there are new incidents needed to be fetched from api
-        if (PrefsHelper.getBoolean(getActivity(),"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
+        if (PrefsHelper.getBoolean(getActivity(),"refresh_incidents") && incidentsSingleton
+                                    .getIncidents(status).size() > 0) {
             apiRequestHelper.getLatestIncidents(token,incidentsSingleton
-                    .getIncidents().get(0).getIncidentId());
-        } else if (incidentsSingleton.getIncidents().size() == 0) {
+                    .getIncidents("for approval").get(0).getIncidentId());
+        } else if (incidentsSingleton.getIncidents("for approval").size() == 0) {
             //if incidents is empty, fetch it from api
-            LogHelper.log("api","must get all");
-            apiRequestHelper.getAllIncidents(token,0,null,"active");
+            LogHelper.log("approval",status + " must get all");
+            apiRequestHelper.getAllIncidents(token,0,null,status);
         }
         initIncidents();
         return view;
     }
 
     private void initIncidents() {
-        final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(getActivity(),incidentsSingleton.getIncidents());
+        final ReviewIncidentsAdapter adapter = new ReviewIncidentsAdapter(getActivity(),
+                incidentsSingleton.getIncidents(status));
         adapter.setOnReportListener((index, action) -> {
             selectedIndex = index;
-            final Incident incident = incidentsSingleton.getIncidents().get(index);
+            final Incident incident = incidentsSingleton.getIncidents(status).get(index);
             if (action.equals("Block")) {
                 final BlockIncidentReportDialogFragment fragment = BlockIncidentReportDialogFragment.newInstance();
                 fragment.setOnBlockReportListener(remarks -> {
@@ -119,27 +124,49 @@ public class ActiveIncidentReports extends Fragment implements OnApiRequestListe
         rvReviewIncidents.setAdapter(adapter);
     }
 
+    @Override
+    public void onPause() {
+        BusSingleton.getInstance().unregister(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        BusSingleton.getInstance().register(this);
+        super.onResume();
+    }
+
     @Subscribe
     public void handleApiResponse(final HashMap<String,Object> map) {
         getActivity().runOnUiThread(() -> {
             try {
-                final JSONObject json = new JSONObject(map.get("data").toString());
-                if (json.has("action")) {
-                    final String action = json.getString("action");
+                if (map.containsKey("data")) {
+                    final JSONObject json = new JSONObject(map.get("data").toString());
+                    if (json.has("action")) {
+                        final String action = json.getString("action");
 
-                    /** new incident notification */
-                    if (action.equals("incident_approval")) {
-                        LogHelper.log("api","must fetch latest incident reports");
-                        if (incidentsSingleton.getIncidents().size() == 0) {
-                            //if incidents is empty, fetch it from api
-                            LogHelper.log("api","must get all");
-                            apiRequestHelper.getAllIncidents(token,0,null,"active");
-                        } else {
-                            apiRequestHelper.getLatestIncidents(token,
-                                    incidentsSingleton.getIncidents().get(0).getIncidentId());
+                        /** new incident notification */
+                        if (action.equals("incident_approval")) {
+                            LogHelper.log("api","must fetch latest incident reports");
+                            if (incidentsSingleton.getIncidents(status).size() == 0) {
+                                //if incidents is empty, fetch it from api
+                                LogHelper.log("api","must get all");
+                                apiRequestHelper.getAllIncidents(token,0,null,status);
+                            } else {
+                                apiRequestHelper.getLatestIncidents(token,
+                                        incidentsSingleton.getIncidents(status)
+                                                .get(0).getIncidentId());
+                            }
                         }
+                        rvReviewIncidents.getAdapter().notifyDataSetChanged();
                     }
-                    rvReviewIncidents.getAdapter().notifyDataSetChanged();
+                } else if (map.containsKey("action")) {
+                    if (map.get("action").equals("newly approved report") && status.equals("active")) {
+                        /** add newly approved incident report to list of active reports */
+                        final Incident incident = (Incident)map.get("result");
+                        incidentsSingleton.getIncidents(status).add(0,incident);
+                        rvReviewIncidents.getAdapter().notifyDataSetChanged();
+                    }
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -168,21 +195,31 @@ public class ActiveIncidentReports extends Fragment implements OnApiRequestListe
         activity.dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_GET_INCIDENTS) || action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
             final ArrayList<Incident> incidents = (ArrayList<Incident>)result;
-            LogHelper.log("api","success size --> " + incidents);
-            incidentsSingleton.getIncidents().addAll(0,incidents);
+            LogHelper.log("approval","success size --> " + incidents);
+            incidentsSingleton.getIncidents(status).addAll(0,incidents);
 
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(getActivity(),"refresh_incidents",false);
             }
         } else {
             final Incident incident = (Incident)result;
-            incidentsSingleton.getIncidents().set(selectedIndex, incident);
+            incidentsSingleton.getIncidents(status).set(selectedIndex, incident);
             if (action.equals(AppConstants.ACTION_PUT_BLOCK_REPORT)) {
                 activity.showToast("Malicious incident report successfully blocked");
             } else if (action.equals(AppConstants.ACTION_PUT_UNBLOCK_REPORT)) {
                 activity.showToast("Incident report successfully unblocked!");
             } else if (action.equals(AppConstants.ACTION_PUT_APPROVE_REPORT)) {
+                final Incident approvedReport = (Incident)result;
                 activity.showToast("Incident report successfully approved!");
+                /** transfer newly approved incident report to list of active reports */
+                if (status.equals("for approval")) {
+                    final HashMap<String,Object> map = new HashMap<>();
+                    map.put("action","newly approved report");
+                    map.put("result",approvedReport);
+                    BusSingleton.getInstance().post(map);
+                    incidentsSingleton.getIncidents(status).remove(selectedIndex);
+                    rvReviewIncidents.getAdapter().notifyDataSetChanged();
+                }
             }
         }
         rvReviewIncidents.getAdapter().notifyDataSetChanged();

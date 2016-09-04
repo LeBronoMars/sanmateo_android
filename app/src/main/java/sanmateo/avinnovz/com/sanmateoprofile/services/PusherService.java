@@ -95,12 +95,13 @@ public class PusherService extends Service {
                             NotificationHelper.displayNotification(id,PusherService.this,
                                     "Your report was blocked by the admin",json.getString("remarks"),null);
 
-                            /** removed blocked incident from incidents singleton */
+                            /** removed blocked incident from list of active incident reports
+                             *  incidents singleton */
                             final int toRemoveIncidentId = Integer.valueOf(json.getString("id"));
-                            for (int i = 0 ; i < incidentsSingleton.getIncidents().size(); i++) {
-                                final Incident incident = incidentsSingleton.getIncidents().get(i);
+                            for (int i = 0 ; i < incidentsSingleton.getIncidents("active").size(); i++) {
+                                final Incident incident = incidentsSingleton.getIncidents("active").get(i);
                                 if (incident.getIncidentId() == toRemoveIncidentId) {
-                                    incidentsSingleton.getIncidents().remove(i);
+                                    incidentsSingleton.getIncidents("active").remove(i);
                                 }
                             }
                         } else {

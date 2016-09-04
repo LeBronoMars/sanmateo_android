@@ -26,7 +26,7 @@ public class IncidentsSingleton {
             return active;
         } else if (status.equals("for approval")) {
             return forApprovals;
-        } else (status.equals("for reviews")) {
+        } else {
             return forReviews;
         }
     }

@@ -7,8 +7,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferListener;
-import com.amazonaws.mobileconnectors.s3.transferutility.TransferState;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -39,6 +37,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.PrefsHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
+import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.ApiError;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Incident;
 import sanmateo.avinnovz.com.sanmateoprofile.singletons.CurrentUserSingleton;
@@ -47,7 +46,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.singletons.IncidentsSingleton;
 /**
  * Created by rsbulanon on 6/28/16.
  */
-public class IncidentsActivity extends BaseActivity implements OnApiRequestListener {
+public class IncidentsActivity extends BaseActivity implements OnApiRequestListener, OnS3UploadListener {
 
     @BindView(R.id.rvIncidents) RecyclerView rvIncidents;
     @BindView(R.id.btnAdd) FloatingActionButton btnAdd;
@@ -61,6 +60,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     private ArrayList<File> filesToUpload = new ArrayList<>();
     private StringBuilder uploadedFilesUrl = new StringBuilder();
     private CallbackManager shareCallBackManager;
+    private String status = "active";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +68,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         setToolbarTitle("Incidents");
         setContentView(R.layout.activity_incidents);
         ButterKnife.bind(this);
+        initAmazonS3Helper(this);
         amazonS3Helper = new AmazonS3Helper(this);
         apiRequestHelper = new ApiRequestHelper(this);
         incidentsSingleton = IncidentsSingleton.getInstance();
@@ -76,9 +77,9 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         shareCallBackManager = CallbackManager.Factory.create();
 
         //check if there are new incidents needed to be fetched from api
-        if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents().size() > 0) {
-            apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
-        } else if (incidentsSingleton.getIncidents().size() == 0) {
+        if (PrefsHelper.getBoolean(this,"refresh_incidents") && incidentsSingleton.getIncidents(status).size() > 0) {
+            apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents(status).get(0).getIncidentId());
+        } else if (incidentsSingleton.getIncidents(status).size() == 0) {
             //if incidents is empty, fetch it from api
             LogHelper.log("api","must get all");
             apiRequestHelper.getAllIncidents(token,0,null,"active");
@@ -106,15 +107,17 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         if (action.equals(AppConstants.ACTION_GET_INCIDENTS) || action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
             final ArrayList<Incident> incidents = (ArrayList<Incident>)result;
             LogHelper.log("api","success size --> " + incidents);
-            incidentsSingleton.getIncidents().addAll(0,incidents);
+            incidentsSingleton.getIncidents(status).addAll(0,incidents);
             rvIncidents.getAdapter().notifyDataSetChanged();
             if (action.equals(AppConstants.ACTION_GET_LATEST_INCIDENTS)) {
                 PrefsHelper.setBoolean(this,"refresh_incidents",false);
             }
-        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT) ||
-                action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
-            showConfirmDialog("","Malicious Report","You have successfully filed a complaint about this " +
+        } else if (action.equals(AppConstants.ACTION_POST_REPORT_MALICIOUS_INCIDENT)) {
+            showConfirmDialog("","Malicious Incident Report","You have successfully filed a complaint about this " +
                     "incident report.","Close","",null);
+        } else if (action.equals(AppConstants.ACTION_POST_INCIDENT_REPORT)) {
+            showConfirmDialog("","Incident Report","You have successfully filed an incident report" +
+                    ". Admins will review it first for publication.","Close","",null);
         }
     }
 
@@ -130,12 +133,12 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     }
 
     private void initIncidents() {
-        final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents());
+        final IncidentsAdapter adapter = new IncidentsAdapter(this,incidentsSingleton.getIncidents(status));
         adapter.setOnShareAndReportListener(new IncidentsAdapter.OnShareAndReportListener() {
             @Override
             public void onShare(int position) {
                 if (isNetworkAvailable()) {
-                    final Incident incident = incidentsSingleton.getIncidents().get(position);
+                    final Incident incident = incidentsSingleton.getIncidents(status).get(position);
                     final String imageUrl = incident.getImages().contains("###") ?
                             incident.getImages().split("###")[0] : "";
                     final ShareDialog shareDialog = new ShareDialog(IncidentsActivity.this);
@@ -172,7 +175,7 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
             @Override
             public void onReport(int position) {
-                final Incident incident = incidentsSingleton.getIncidents().get(position);
+                final Incident incident = incidentsSingleton.getIncidents(status).get(position);
                 final ReportIncidentReportDialogFragment fragment = ReportIncidentReportDialogFragment.newInstance();
                 fragment.setOnReportIncidentListener(new ReportIncidentReportDialogFragment.OnReportIncidentListener() {
                     @Override
@@ -197,30 +200,28 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
 
     @Subscribe
     public void handleApiResponse(final HashMap<String,Object> map) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    final JSONObject json = new JSONObject(map.get("data").toString());
-                    if (json.has("action")) {
-                        final String action = json.getString("action");
+        runOnUiThread(() -> {
+            try {
+                final JSONObject json = new JSONObject(map.get("data").toString());
+                if (json.has("action")) {
+                    final String action = json.getString("action");
 
-                        /** new incident notification */
-                        if (action.equals("new incident")) {
-                            LogHelper.log("api","must fetch latest incident reports");
-                            if (incidentsSingleton.getIncidents().size() == 0) {
-                                //if incidents is empty, fetch it from api
-                                LogHelper.log("api","must get all");
-                                apiRequestHelper.getAllIncidents(token,0,null,null);
-                            } else {
-                                apiRequestHelper.getLatestIncidents(token,incidentsSingleton.getIncidents().get(0).getIncidentId());
-                            }
+                    /** new incident notification */
+                    if (action.equals("new incident")) {
+                        LogHelper.log("api","must fetch latest incident reports");
+                        if (incidentsSingleton.getIncidents(status).size() == 0) {
+                            //if incidents is empty, fetch it from api
+                            LogHelper.log("api","must get all");
+                            apiRequestHelper.getAllIncidents(token,0,null,"active");
+                        } else {
+                            apiRequestHelper.getLatestIncidents(token,incidentsSingleton
+                                    .getIncidents(status).get(0).getIncidentId());
                         }
-                        rvIncidents.getAdapter().notifyDataSetChanged();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                    rvIncidents.getAdapter().notifyDataSetChanged();
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -232,18 +233,20 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
             @Override
             public void onFileReport(String incidentDescription, String incidentLocation,
                                      String incidentType, final ArrayList<File> files) {
-                LogHelper.log("s3","MUST UPLOAD FILES TO AWS S3 --> " + files.size());
                 fragment.dismiss();
-                bundle.putString("incidentDescription",incidentDescription);
-                bundle.putString("incidentLocation",incidentLocation);
-                bundle.putString("incidentType",incidentType);
                 if (files.size() > 0) {
+                    bundle.putString("incidentDescription",incidentDescription);
+                    bundle.putString("incidentLocation",incidentLocation);
+                    bundle.putString("incidentType",incidentType);
                     filesToUpload.clear();
                     filesToUpload.addAll(files);
                     filesToUploadCtr = 0;
                     uploadedFilesUrl.setLength(0);
-                    showCustomProgress("Processing Images, Please wait...");
-                    uploadImageToS3();
+                    uploadImage();
+                } else {
+                    apiRequestHelper.fileIncidentReport(token,incidentLocation,
+                            incidentDescription,incidentType, 1,1,
+                            currentUserSingleton.getCurrentUser().getUserId(), "");
                 }
             }
 
@@ -261,32 +264,10 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
         fragment.show(getFragmentManager(),"file incident report");
     }
 
-    private void uploadImageToS3() {
+    private void uploadImage() {
         if (filesToUploadCtr < filesToUpload.size()) {
-            amazonS3Helper.uploadImage(AppConstants.BUCKET_INCIDENTS,filesToUpload.get(filesToUploadCtr)).setTransferListener(new TransferListener() {
-                @Override
-                public void onStateChanged(int id, TransferState state) {
-                    if (state.name().equals("COMPLETED")) {
-                        uploadedFilesUrl.append(amazonS3Helper.getResourceUrl(
-                                AppConstants.BUCKET_INCIDENTS,filesToUpload.get(filesToUploadCtr).getName())+"###");
-                        if (filesToUploadCtr < filesToUpload.size()) {
-                            filesToUploadCtr++;
-                            uploadImageToS3();
-                        }
-                    }
-                }
-
-                @Override
-                public void onProgressChanged(int id, long bytesCurrent, long bytesTotal) {
-                    updateCustomProgress("Uploading image " + (filesToUploadCtr+1) + "/"
-                            + filesToUpload.size() + " - " + bytesCurrent + "/" + bytesTotal);
-                }
-
-                @Override
-                public void onError(int id, Exception ex) {
-
-                }
-            });
+            uploadImageToS3(AppConstants.BUCKET_INCIDENTS,filesToUpload.get(filesToUploadCtr),
+                    filesToUploadCtr+1,filesToUpload.size());
         } else {
             for (File f : filesToUpload) {
                 f.delete();
@@ -305,5 +286,13 @@ public class IncidentsActivity extends BaseActivity implements OnApiRequestListe
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         shareCallBackManager.onActivityResult(requestCode, resultCode, data);
         super.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onUploadFinished(String bucketName, String imageUrl) {
+        if (bucketName.equals(AppConstants.BUCKET_INCIDENTS)) {
+            filesToUploadCtr++;
+        }
+        uploadImage();
     }
 }

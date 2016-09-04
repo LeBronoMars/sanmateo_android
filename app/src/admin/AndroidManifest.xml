@@ -31,10 +31,6 @@
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:screenOrientation="portrait"/>
 
-        <!-- review incidents activity -->
-        <activity android:name=".activities.admin.ReviewIncidentsActivity"
-            android:screenOrientation="portrait"/>
-
         <activity android:name=".activities.admin.NewsEventsManagementActivity"
             android:screenOrientation="portrait"/>
 

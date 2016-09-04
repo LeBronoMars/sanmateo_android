@@ -58,9 +58,9 @@ public class CustomProgressBarDialogFragment extends DialogFragment {
         if (max == 0) {
             progressBar.setVisibility(View.GONE);
         } else {
-            tvProgress.setText("Uploading " + current + "/" + max + ", Please wait...");
             progressBar.setMax(max);
         }
+        tvProgress.setText("Uploading " + current + "/" + total + ", Please wait...");
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(view);

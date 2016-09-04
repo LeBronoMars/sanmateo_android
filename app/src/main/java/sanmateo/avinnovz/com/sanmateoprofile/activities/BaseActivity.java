@@ -259,14 +259,14 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
 
     @Override
     protected void onPause() {
-        super.onPause();
         BusSingleton.getInstance().unregister(this);
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
         BusSingleton.getInstance().register(this);
+        super.onResume();
     }
 
     @Override

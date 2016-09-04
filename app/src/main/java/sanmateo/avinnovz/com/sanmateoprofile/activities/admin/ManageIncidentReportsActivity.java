@@ -18,9 +18,8 @@ import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.TabAdapter;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ActiveIncidentReports;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ForApprovalIncidentFragment;
-import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ReviewIncidentsFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.ManageIncidentReportsFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 
 /**
  * Created by rsbulanon on 9/4/16.
@@ -47,9 +46,9 @@ public class ManageIncidentReportsActivity extends BaseActivity {
         tabNames.add("For Approvals");
         tabNames.add("For Reviews");
 
-        fragments.add(ActiveIncidentReports.newInstance());
-        fragments.add(ForApprovalIncidentFragment.newInstance());
-        fragments.add(ReviewIncidentsFragment.newInstance());
+        fragments.add(ManageIncidentReportsFragment.newInstance("active"));
+        fragments.add(ManageIncidentReportsFragment.newInstance("for approval"));
+        fragments.add(ManageIncidentReportsFragment.newInstance("for reviews"));
 
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);
@@ -60,16 +59,23 @@ public class ManageIncidentReportsActivity extends BaseActivity {
     public void handleApiResponse(final HashMap<String,Object> map) {
         runOnUiThread(() -> {
             try {
-                final JSONObject json = new JSONObject(map.get("data").toString());
-                if (json.has("action")) {
-                    final String action = json.getString("action");
+                if (map.containsKey("data")) {
+                    final JSONObject json = new JSONObject(map.get("data").toString());
+                    if (json.has("action")) {
+                        final String action = json.getString("action");
 
-                    /** new incident notification */
-                    if (action.equals("incident_approval")) {
-                        viewPager.setCurrentItem(1);
+                        /** new incident notification */
+                        if (action.equals("incident_approval")) {
+                            viewPager.setCurrentItem(1);
+                        }
+                    }
+                } else if (map.containsKey("action")) {
+                    if (map.get("action").equals("newly approved report")) {
+                        viewPager.setCurrentItem(0);
                     }
                 }
             } catch (JSONException e) {
+                LogHelper.log("ii","error ---> " + e.getMessage());
                 e.printStackTrace();
             }
         });
