@@ -146,11 +146,10 @@ public class ManageIncidentReportsFragment extends Fragment implements OnApiRequ
                         final String action = json.getString("action");
 
                         /** new incident notification */
-                        if (action.equals("incident_approval")) {
+                        if (action.equals("incident_approval") || action.equals("for review")) {
                             LogHelper.log("api","must fetch latest incident reports");
                             if (incidentsSingleton.getIncidents(status).size() == 0) {
-                                //if incidents is empty, fetch it from api
-                                LogHelper.log("api","must get all");
+                                LogHelper.log("api","must get all STATUS --> " + status);
                                 apiRequestHelper.getAllIncidents(token,0,null,status);
                             } else {
                                 apiRequestHelper.getLatestIncidents(token,

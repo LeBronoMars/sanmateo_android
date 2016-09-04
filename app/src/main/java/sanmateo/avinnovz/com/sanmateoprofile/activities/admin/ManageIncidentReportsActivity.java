@@ -48,7 +48,7 @@ public class ManageIncidentReportsActivity extends BaseActivity {
 
         fragments.add(ManageIncidentReportsFragment.newInstance("active"));
         fragments.add(ManageIncidentReportsFragment.newInstance("for approval"));
-        fragments.add(ManageIncidentReportsFragment.newInstance("for reviews"));
+        fragments.add(ManageIncidentReportsFragment.newInstance("for review"));
 
         viewPager.setAdapter(new TabAdapter(getSupportFragmentManager(), fragments, tabNames));
         tabLayout.setupWithViewPager(viewPager);
