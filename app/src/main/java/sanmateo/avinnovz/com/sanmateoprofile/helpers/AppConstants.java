@@ -17,7 +17,7 @@ public class AppConstants {
     //public static final String BASE_URL = "http://192.168.1.7:9000";
     //public static final String BASE_URL = "http://192.168.10.6:9000";
     //public static final String BASE_URL = "http://192.168.43.172:8080";
-    //public static final String BASE_URL = "http://54.169.17.222:8080";
+    //public static final String BASE_URL = "http://54.169.17.222:7000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
     public static boolean IS_FACEBOOK_APP_INSTALLED = false;

@@ -120,7 +120,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyCTMcvMqx440t4N5t-khlZZwEOVDhkLPYE"/>
+            android:value="AIzaSyB3_Lcl_OWrxkRaU5yJZrGGdyIOPdV04bI"/>
 
         <!-- amazon s3 config -->
         <service
