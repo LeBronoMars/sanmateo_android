@@ -53,6 +53,7 @@ import sanmateo.avinnovz.com.sanmateoprofile.fragments.BannerFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.ChangePasswordDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.DisasterMgtMenuDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.SanMateoBannerFragment;
+import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.WaterLevelNotifDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiErrorHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppBarStateListener;
@@ -237,7 +238,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                                 @Override
                                 public void onConfirmed(String action) {
                                     DaoHelper.deleteCurrentUser();
-                                    startActivity(new Intent(AdminMainActivity.this, LoginActivity.class));
+                                    startActivity(new Intent(AdminMainActivity.this, AdminLoginActivity.class));
                                     finish();
                                     animateToRight(AdminMainActivity.this);
                                 }
@@ -287,7 +288,18 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
             } else if (position == 2) {
                 moveToOtherActivity(PublicAnnouncementsActivity.class);
             } else if (position == 3) {
-                moveToOtherActivity(WaterLevelMonitoringActivity.class);
+                final WaterLevelNotifDialogFragment fragment = WaterLevelNotifDialogFragment.newInstance();
+                fragment.setOnWaterLevelNotificationListener(new WaterLevelNotifDialogFragment.OnWaterLevelNotificationListener() {
+                    @Override
+                    public void onAnnounceNotif(String area, double level) {
+                        apiRequestHelper.createWaterLevelNotification(token, area, level);
+                    }
+
+                    @Override
+                    public void onCancel() {
+
+                    }
+                });
             } else if (position == 4) {
                 moveToOtherActivity(ManageGalleryActivity.class);
             } else if (position == 5) {
@@ -327,6 +339,8 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
             showCustomProgress("Changing password, Please wait...");
         } else if (action.equals(AppConstants.ACTION_PUT_CHANGE_PROFILE_PIC)) {
             showCustomProgress("Changing your profile pic, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
+            showCustomProgress("Sending water level notification, Please wait...");
         }
     }
 
@@ -347,6 +361,8 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
             fileUri = null;
             PicassoHelper.loadImageFromURL(currentUserSingleton.getCurrentUser().getPicUrl(),
                     profilePicSize, Color.TRANSPARENT,ivProfileImage,pbLoadImage);
+        } else if (action.equals(AppConstants.ACTION_POST_WATER_LEVEL_NOTIFS)) {
+            showToast("Water level notification sent!");
         }
     }
 

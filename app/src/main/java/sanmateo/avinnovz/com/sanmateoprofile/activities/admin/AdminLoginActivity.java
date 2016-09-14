@@ -40,22 +40,19 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @BindView(R.id.btnSignIn) Button btnSignIn;
     @BindView(R.id.btnCreateAccount) Button btnCreateAccount;
     @BindView(R.id.surfaceView) SurfaceView surfaceView;
-    private SurfaceHolder surfaceHolder;
-    private MediaPlayer mp;
-    private int video_bg = R.raw.san_mateo_avp;
     private ApiRequestHelper apiRequestHelper;
     private static final int REQUEST_PERMISSIONS = 1;
+    private SurfaceHolder surfaceHolder;
+    private MediaPlayer mp;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
-        AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
-        apiRequestHelper = new ApiRequestHelper(this);
 
         btnCreateAccount.setVisibility(View.GONE);
-        mp = new MediaPlayer();
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
@@ -70,6 +67,15 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
             requestPermissions(requiredPermission, REQUEST_PERMISSIONS);
         } else {
             initialize();
+        }
+    }
+
+    private void initialize() {
+        if (!DaoHelper.haCurrentUser()) {
+            AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
+            apiRequestHelper = new ApiRequestHelper(this);
+        } else {
+            moveToHome();
         }
     }
 
@@ -99,9 +105,8 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         dismissCustomProgress();
         if (action.equals(AppConstants.ACTION_LOGIN)) {
             final AuthResponse authResponse = (AuthResponse)result;
-            /** dont allow regular user to use the admin app */
             if (authResponse.getUserLevel().equals("Regular User")) {
-                showConfirmDialog("","Login Error","Invalid account!","Close","",null);
+                showSnackbar(btnSignIn, AppConstants.WARN_INVALID_ACCOUNT);
             } else {
                 DaoHelper.saveCurrentUser(authResponse);
                 moveToHome();
@@ -112,6 +117,7 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
         dismissCustomProgress();
+        handleApiException(t);
         LogHelper.log("err","error in ---> " + action + " cause ---> " + t.getMessage());
         if (t instanceof HttpException) {
             if (action.equals(AppConstants.ACTION_LOGIN)) {
@@ -119,66 +125,6 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
                 showConfirmDialog(action,"Login Failed", apiError.getMessage(),"Close","",null);
             }
         }
-    }
-
-    @Override
-    public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        final Uri video = Uri.parse("android.resource://" + getPackageName() + "/" + video_bg);
-
-        try {
-            mp.setDataSource(this,video);
-            mp.setDisplay(surfaceHolder);
-            mp.prepare();
-            mp.setLooping(true);
-
-            final Display display = getWindowManager().getDefaultDisplay();
-            final Point size = new Point();
-            display.getSize(size);
-
-            //Get the SurfaceView layout parameters
-            final android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-
-            //Set the width of the SurfaceView to the width of the screen
-            lp.width = size.x;
-
-            //Set the height of the SurfaceView to match the aspect ratio of the video
-            //be sure to cast these as floats otherwise the calculation will likely be 0
-            //lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
-            lp.height = size.y;
-
-            //Commit the layout parameters
-            surfaceView.setLayoutParams(lp);
-
-            //Start video
-            mp.start();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-    }
-
-    private void initialize() {
-        if (!DaoHelper.haCurrentUser()) {
-            AppConstants.IS_FACEBOOK_APP_INSTALLED = isFacebookInstalled();
-            apiRequestHelper = new ApiRequestHelper(this);
-        } else {
-            moveToHome();
-        }
-    }
-
-    private void moveToHome() {
-        startActivity(new Intent(this, AdminMainActivity.class));
-        animateToLeft(this);
-        finish();
     }
 
     @Override
@@ -214,5 +160,83 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
                 }
                 break;
         }
+    }
+
+    @Override
+    public void surfaceCreated(final SurfaceHolder surfaceHolder) {
+        if (mp == null) {
+            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
+                mp = new MediaPlayer();
+                final Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
+                        + R.raw.san_mateo_avp);
+                try {
+                    mp.setDataSource(AdminLoginActivity.this, video);
+                    mp.start();
+                } catch (IOException e) {
+                    LogHelper.log("video","error inflating video background --> " + e.getMessage());
+                    e.printStackTrace();
+                }
+            } else {
+                mp = MediaPlayer.create(this, R.raw.san_mateo_avp);
+            }
+            mp.setDisplay(surfaceHolder);
+
+
+            final Display display = getWindowManager().getDefaultDisplay();
+            final Point size = new Point();
+            display.getSize(size);
+
+            //Get the SurfaceView layout parameters
+            final android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
+
+            //Set the width of the SurfaceView to the width of the screen
+            lp.width = size.x;
+
+            //Set the height of the SurfaceView to match the aspect ratio of the video
+            //be sure to cast these as floats otherwise the calculation will likely be 0
+            //lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
+            lp.height = size.y;
+
+            //Commit the layout parameters
+            surfaceView.setLayoutParams(lp);
+
+            //Start video
+            mp.start();
+            mp.setLooping(true);
+        }
+    }
+
+    @Override
+    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
+
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (mp != null) {
+            mp.pause();
+        }
+    }
+
+    private void moveToHome() {
+        startActivity(new Intent(this, AdminMainActivity.class));
+        animateToLeft(this);
+        finish();
     }
 }

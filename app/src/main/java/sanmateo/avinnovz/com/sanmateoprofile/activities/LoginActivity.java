@@ -232,7 +232,9 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
     @Override
     protected void onPause() {
         super.onPause();
-        mp.pause();
+        if (mp != null) {
+            mp.pause();
+        }
     }
 
     private void moveToHome() {
