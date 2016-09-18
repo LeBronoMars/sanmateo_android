@@ -7,7 +7,7 @@ import com.google.gson.annotations.SerializedName;
  */
 public class Photo {
 
-    @SerializedName("id") private String id;
+    @SerializedName("id") private int id;
     @SerializedName("created_at") private String createdAt;
     @SerializedName("updated_at")  private String updatedAt;
     @SerializedName("deleted_at") private String deletedAt;
@@ -15,7 +15,7 @@ public class Photo {
     @SerializedName("image_url") private String imageUrl;
     private String description;
 
-    public String getId() {
+    public int getId() {
         return id;
     }
 

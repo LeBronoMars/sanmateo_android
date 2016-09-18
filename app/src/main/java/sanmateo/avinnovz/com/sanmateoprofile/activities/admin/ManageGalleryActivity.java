@@ -33,6 +33,7 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
     private String token;
     private ArrayList<Photo> photos = new ArrayList<>();
     private Bundle bundle = new Bundle();
+    private int selectedIndex;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +45,39 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
         token = currentUserSingleton.getCurrentUser().getToken();
         apiRequestHelper = new ApiRequestHelper(this);
         apiRequestHelper.getPhotos(token);
-        rvGalleries.setAdapter(new PhotosAdapter(this, photos));
+        final PhotosAdapter adapter = new PhotosAdapter(this, photos);
+        adapter.setOnSelectImageListener(position -> {
+            selectedIndex = position;
+            final AddGalleryDialogFragment fragment = AddGalleryDialogFragment
+                                                .newInstance(photos.get(selectedIndex));
+            fragment.setOnCreateUpdateGalleryListener(new AddGalleryDialogFragment.OnCreateUpdateGalleryListener() {
+                @Override
+                public void onCreateUpdateOfficial(String title, String desc, String imageUrl, File fileToUpload) {
+                    fragment.dismiss();
+                    if (isNetworkAvailable()) {
+                        if (fileToUpload != null) {
+                            bundle.putBoolean("update", true);
+                            bundle.putInt("id", photos.get(position).getId());
+                            bundle.putString("title", title);
+                            bundle.putString("desc", desc);
+                            deleteImage(AppConstants.BUCKET_ROOT, photos.get(position).getImageUrl());
+                            uploadImageToS3(AppConstants.BUCKET_GALLERY, fileToUpload, 1, 1);
+                        } else {
+                            apiRequestHelper.updateGallery(token, photos.get(position).getId(), title, desc, imageUrl);
+                        }
+                    } else {
+                        showToast(AppConstants.WARN_CONNECTION);
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    fragment.dismiss();
+                }
+            });
+            fragment.show(getFragmentManager(), "gallery");
+        });
+        rvGalleries.setAdapter(adapter);
         rvGalleries.setLayoutManager(new LinearLayoutManager(this));
         setToolbarTitle("Manage Gallery");
         initAmazonS3Helper(this);
@@ -56,6 +89,8 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
             showCustomProgress("Loading galleries, Please wait...");
         } else if (action.equals(AppConstants.ACTION_POST_CREATE_GALLERY)) {
             showCustomProgress("Creating gallery, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_PUT_UPDATE_GALLERY)) {
+            showCustomProgress("Updating gallery, Pleasei wait...");
         }
     }
 
@@ -65,9 +100,12 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
         if (action.equals(AppConstants.ACTION_GET_PHOTOS)) {
             photos.clear();
             photos.addAll((ArrayList<Photo>)result);
-        } else if (action.equals(AppConstants.ACTION_GET_GALLERY_PHOTOS)) {
+        } else if (action.equals(AppConstants.ACTION_POST_CREATE_GALLERY)) {
             final Photo photo = (Photo) result;
             photos.add(0,photo);
+        } else if (action.equals(AppConstants.ACTION_PUT_UPDATE_GALLERY)) {
+            final Photo photo = (Photo) result;
+            photos.set(selectedIndex, photo);
         }
         rvGalleries.getAdapter().notifyDataSetChanged();
     }
@@ -80,13 +118,14 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
 
     @OnClick(R.id.btnAdd)
     public void addGallery() {
-        final AddGalleryDialogFragment fragment = AddGalleryDialogFragment.newInstance();
+        final AddGalleryDialogFragment fragment = AddGalleryDialogFragment.newInstance(null);
         fragment.setOnCreateUpdateGalleryListener(new AddGalleryDialogFragment.OnCreateUpdateGalleryListener() {
             @Override
             public void onCreateUpdateOfficial(String title, String desc, String imageUrl, File fileToUpload) {
                 fragment.dismiss();
                 if (isNetworkAvailable()) {
                     if (fileToUpload != null) {
+                        bundle.putBoolean("update", false);
                         bundle.putString("title", title);
                         bundle.putString("desc", desc);
                         uploadImageToS3(AppConstants.BUCKET_GALLERY, fileToUpload, 1, 1);
@@ -109,8 +148,14 @@ public class ManageGalleryActivity extends BaseActivity implements OnApiRequestL
     @Override
     public void onUploadFinished(String bucketName, String imageUrl) {
         if (bucketName.equals(AppConstants.BUCKET_GALLERY)) {
-            apiRequestHelper.createGallery(token, bundle.getString("title"), bundle.getString("desc"),
-                    imageUrl);
+            if (bundle.getBoolean("update")) {
+                apiRequestHelper.updateGallery(token, bundle.getInt("id"),
+                        bundle.getString("title"), bundle.getString("desc"),
+                        imageUrl);
+            } else {
+                apiRequestHelper.createGallery(token, bundle.getString("title"), bundle.getString("desc"),
+                        imageUrl);
+            }
         }
     }
 }

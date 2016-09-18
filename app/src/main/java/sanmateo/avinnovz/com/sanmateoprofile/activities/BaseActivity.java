@@ -461,15 +461,15 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
     public List<LocalGallery> toLocalGallery(List<Photo> photoList) {
         List<LocalGallery> localGalleryList = new ArrayList<>();
         for (Photo p: photoList) {
-            String id = p.getId();
+            int id = p.getId();
             String createdAt = p.getCreatedAt();
             String updatedAt = p.getUpdatedAt();
             String deletedAt = p.getDeletedAt();
             String title = p.getTitle();
             String imageUrl = p.getImageUrl();
             String description = p.getDescription();
-            localGalleryList.add(new LocalGallery(null, id, createdAt, updatedAt, deletedAt, title,
-                    imageUrl, description));
+            localGalleryList.add(new LocalGallery(null, String.valueOf(id), createdAt,
+                    updatedAt, deletedAt, title, imageUrl, description));
         }
 
         return localGalleryList;

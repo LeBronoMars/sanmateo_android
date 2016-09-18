@@ -36,6 +36,7 @@ public class AppConstants {
     public static final String ACTION_PUT_APPROVE_REPORT = "approve incident report";
     public static final String ACTION_POST_NEWS = "create news";
     public static final String ACTION_POST_CREATE_GALLERY = "create gallery";
+    public static final String ACTION_PUT_UPDATE_GALLERY = "update gallery";
     public static final String ACTION_GET_NEWS = "get news";
     public static final String ACTION_GET_NEWS_BY_ID = "get news by id";
     public static final String ACTION_GET_ANNOUNCEMENTS = "get all announcements";

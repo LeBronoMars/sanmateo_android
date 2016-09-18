@@ -355,6 +355,14 @@ public interface ApiInterface {
                                     @Field("description") String description,
                                     @Field("image_url") String imageUrl);
 
+    @PUT("/api/v1/galleries/{id}")
+    @FormUrlEncoded
+    Observable<Photo> updateGallery(@Header("Authorization") String token,
+                                    @Path("id") int id,
+                                    @Field("title") String title,
+                                    @Field("description") String description,
+                                    @Field("image_url") String imageUrl);
+
     /**
      * get all list of active officials
      *

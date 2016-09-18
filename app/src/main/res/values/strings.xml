@@ -216,7 +216,7 @@
 
     <string name="municipality_of_san_mateo">Municipality of San Mateo</string>
 
-    <string name="create_gallery_header">Create gallery</string>
+    <string name="create_gallery_header">Create gallery record</string>
     <string name="gallery_title">Gallery Title</string>
     <string name="gallery_description">Gallery Description</string>
     <string name="enter_gallery_url">Enter image url</string>

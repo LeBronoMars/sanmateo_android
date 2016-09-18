@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.rey.material.widget.Button;
 
@@ -26,12 +27,14 @@ import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Photo;
 
 /**
  * Created by rsbulanon on 8/24/16.
  */
 public class AddGalleryDialogFragment extends DialogFragment {
 
+    @BindView(R.id.tvHeader) TextView tvHeader;
     @BindView(R.id.etTitle) EditText etTitle;
     @BindView(R.id.etDescription) EditText etDescription;
     @BindView(R.id.etImageURL) EditText etImageURL;
@@ -45,9 +48,11 @@ public class AddGalleryDialogFragment extends DialogFragment {
     private OnCreateUpdateGalleryListener onCreateUpdateGalleryListener;
     private static final int SELECT_IMAGE = 1;
     private File fileToUpload = null;
+    private Photo photo;
 
-    public static AddGalleryDialogFragment newInstance() {
+    public static AddGalleryDialogFragment newInstance(final Photo photo) {
         final AddGalleryDialogFragment fragment = new AddGalleryDialogFragment();
+        fragment.photo = photo;
         return fragment;
     }
 
@@ -63,6 +68,15 @@ public class AddGalleryDialogFragment extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
         view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_create_gallery, null);
         ButterKnife.bind(this, view);
+        if (photo != null) {
+            etTitle.setText(photo.getTitle());
+            etDescription.setText(photo.getDescription());
+            tvHeader.setText("Update gallery record");
+            btnCreate.setText("UPDATE");
+            AppConstants.PICASSO.load(photo.getImageUrl()).fit().centerCrop().into(ivImagePreview);
+            rlImagePreview.setVisibility(View.VISIBLE);
+            llManualInput.setVisibility(View.GONE);
+        }
         activity = (BaseActivity) getActivity();
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);

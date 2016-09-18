@@ -107,7 +107,7 @@ public class DaoHelper {
     public static void saveFromGalleryPhotos(ArrayList<Photo> galleryPhotos) {
         DAO_LOCAL_GALLERY.deleteAll();
         for (Photo gp: galleryPhotos) {
-            String id = gp.getId();
+            int id = gp.getId();
             String createdAt = gp.getCreatedAt();
             String updatedAt = gp.getUpdatedAt();
             String deletedAt = gp.getDeletedAt();
@@ -115,7 +115,7 @@ public class DaoHelper {
             String imageUrl = gp.getImageUrl();
             String description = gp.getDescription();
 
-            DAO_LOCAL_GALLERY.insert(new LocalGallery(null, id, createdAt, updatedAt, deletedAt,
+            DAO_LOCAL_GALLERY.insert(new LocalGallery(null, String.valueOf(id), createdAt, updatedAt, deletedAt,
                     title, imageUrl, description));
         }
     }
