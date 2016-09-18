@@ -201,12 +201,12 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_CREATE_OFFICIAL_RECORD, observable);
     }
 
-    public void updateOfficial(final String token, final String firstName, final String lastName,
+    public void updateOfficial(final String token, final int id, final String firstName, final String lastName,
                                final String nickName, final String position, final String background,
                                final String picurl) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_UPDATE_OFFICIAL_RECORD);
         final Observable<Official> observable = AppConstants.API_INTERFACE.updateOfficialRecord(token,
-                firstName,lastName,nickName, position, background, picurl);
+                id, firstName,lastName,nickName, position, background, picurl);
         handleObservableResult(AppConstants.ACTION_UPDATE_OFFICIAL_RECORD, observable);
     }
 

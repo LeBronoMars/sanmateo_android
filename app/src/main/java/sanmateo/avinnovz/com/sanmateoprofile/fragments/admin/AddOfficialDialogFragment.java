@@ -20,6 +20,7 @@ import com.rey.material.widget.Button;
 
 import java.io.File;
 import java.util.Calendar;
+import java.util.UUID;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -117,14 +118,14 @@ public class AddOfficialDialogFragment extends DialogFragment {
             activity.setError(etPosition, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onCreateNewsListener != null) {
-                onCreateNewsListener.onCreateUpdateOfficial(official == null,firstName,lastName,nickName,
+                onCreateNewsListener.onCreateUpdateOfficial(firstName,lastName,nickName,
                                                 position,background, picUrl, fileToUpload);
             }
         }
     }
 
     public interface OnCreateOfficialListener {
-        void onCreateUpdateOfficial(final boolean update, final String firstName, final String lastName,
+        void onCreateUpdateOfficial(final String firstName, final String lastName,
                                     final String nickName, final String position, final String background,
                                     final String picUrl, final File fileToUpload);
         void onCancel();
@@ -150,7 +151,7 @@ public class AddOfficialDialogFragment extends DialogFragment {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == activity.RESULT_OK) {
             if (requestCode == SELECT_IMAGE) {
-                final String fileName = "official_profile_pic_"+ activity.getSDF().format(Calendar.getInstance().getTime());
+                final String fileName = UUID.randomUUID().toString();
                 fileToUpload = null;
                 fileToUpload = activity.getFile(data.getData(),fileName+".jpg");
                 AppConstants.PICASSO.load(fileToUpload).fit().centerCrop().into(ivImagePreview);

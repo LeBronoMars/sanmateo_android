@@ -55,29 +55,31 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList, null);
         adapter.setOnSelectOfficialListener((position, official) -> {
             this.selectedPosition = position;
+            LogHelper.log("aa", "must update official with id of --> " + official.getId());
             final AddOfficialDialogFragment addOfficialDialogFragment = AddOfficialDialogFragment.newInstance(official);
             addOfficialDialogFragment.setOnCreateNewsListener(new AddOfficialDialogFragment.OnCreateOfficialListener() {
                 @Override
-                public void onCreateUpdateOfficial(boolean update, String firstName, String lastName,
+                public void onCreateUpdateOfficial(String firstName, String lastName,
                                                    String nickName, String position, String background,
                                                    String picUrl, File fileToUpload) {
                     addOfficialDialogFragment.dismiss();
                     if (isNetworkAvailable()) {
                         if (fileToUpload != null) {
-                            bundle.putBoolean("update",update);
-                            bundle.putString("firstName",firstName);
-                            bundle.putString("lastName",lastName);
-                            bundle.putString("nickName",nickName);
-                            bundle.putString("position",position);
-                            bundle.putString("background",background);
-                            bundle.putString("picUrl",picUrl);
+                            bundle.putBoolean("update", true);
+                            bundle.putString("firstName", firstName);
+                            bundle.putString("lastName", lastName);
+                            bundle.putString("nickName", nickName);
+                            bundle.putString("position", position);
+                            bundle.putString("background", background);
+                            bundle.putString("picUrl", picUrl);
+                            bundle.putInt("id", official.getId());
                             if (official.getPic() != null && !official.getPic().isEmpty()) {
-                                deleteImage(AppConstants.BUCKET_OFFICIALS_PIC, official.getPic());
+                                deleteImage(AppConstants.BUCKET_ROOT, official.getPic());
                             }
                             uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
                         } else {
-                            apiRequestHelper.updateOfficial(token,firstName,lastName,nickName,
-                                    position, background, picUrl);
+                            apiRequestHelper.updateOfficial(token, official.getId(), firstName,
+                                    lastName,nickName, position, background, picUrl);
                         }
                     } else {
                         showToast(AppConstants.WARN_CONNECTION);
@@ -109,25 +111,26 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         addOfficialDialogFragment.setOnCreateNewsListener(new AddOfficialDialogFragment.OnCreateOfficialListener() {
 
             @Override
-            public void onCreateUpdateOfficial(boolean update, String firstName, String lastName,
+            public void onCreateUpdateOfficial(String firstName, String lastName,
                                                String nickName, String position, String background,
                                                String picUrl, File fileToUpload) {
-                if (fileToUpload != null) {
-                    bundle.putBoolean("update",update);
-                    bundle.putString("firstName",firstName);
-                    bundle.putString("lastName",lastName);
-                    bundle.putString("nickName",nickName);
-                    bundle.putString("position",position);
-                    bundle.putString("background",background);
-                    bundle.putString("picUrl",picUrl);
-                    uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
-                } else {
-                    if (isNetworkAvailable()) {
+                addOfficialDialogFragment.dismiss();
+                if (isNetworkAvailable()) {
+                    if (fileToUpload != null) {
+                        bundle.putBoolean("update", false);
+                        bundle.putString("firstName",firstName);
+                        bundle.putString("lastName",lastName);
+                        bundle.putString("nickName",nickName);
+                        bundle.putString("position",position);
+                        bundle.putString("background",background);
+                        bundle.putString("picUrl",picUrl);
+                        uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
+                    } else {
                         apiRequestHelper.createOfficial(token,firstName,lastName,nickName,position,
                                 officialList.size()+1,background,picUrl);
-                    } else {
-                        showToast(AppConstants.WARN_CONNECTION);
                     }
+                } else {
+                    showToast(AppConstants.WARN_CONNECTION);
                 }
             }
 
@@ -145,6 +148,8 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
             showCustomProgress("Fetching list of officials, Please wait...");
         } else if (action.equals(AppConstants.ACTION_CREATE_OFFICIAL_RECORD)) {
             showCustomProgress("Creating official record, Please wait...");
+        } else if (action.equals(AppConstants.ACTION_UPDATE_OFFICIAL_RECORD)) {
+            showCustomProgress("Updating official record, Please wait...");
         }
     }
 
@@ -179,7 +184,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         if (bucketName.equals(AppConstants.BUCKET_OFFICIALS_PIC)) {
             if (bundle.getBoolean("update")) {
                 /** update record */
-                apiRequestHelper.updateOfficial(token,bundle.getString("firstName"),
+                apiRequestHelper.updateOfficial(token, bundle.getInt("id"), bundle.getString("firstName"),
                         bundle.getString("lastName"),bundle.getString("nickName"),bundle.getString("position"),
                         bundle.getString("background"),imageUrl);
             } else {

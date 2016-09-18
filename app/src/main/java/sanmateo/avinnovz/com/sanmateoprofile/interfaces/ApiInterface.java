@@ -370,16 +370,16 @@ public interface ApiInterface {
                                               @Field("background") String background,
                                               @Field("pic") String pic);
 
-    @PUT("/api/v1/official/{id}")
+    @PUT("/api/v1/officials/{id}")
     @FormUrlEncoded
     Observable<Official> updateOfficialRecord(@Header("Authorization") String token,
+                                              @Path("id") int id,
                                               @Field("first_name") String firstName,
                                               @Field("last_name") String lastName,
                                               @Field("nick_name") String nickName,
                                               @Field("position") String position,
                                               @Field("background") String background,
                                               @Field("pic") String pic);
-
 
     /**
      * get all water level by area
