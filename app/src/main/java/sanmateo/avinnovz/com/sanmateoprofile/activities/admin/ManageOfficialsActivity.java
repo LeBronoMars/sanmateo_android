@@ -14,7 +14,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsRecyclerViewAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.AdminOfficialsRecyclerViewAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.AddOfficialDialogFragment;
@@ -57,7 +57,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     }
 
     private void initOfficialsListing() {
-        final OfficialsRecyclerViewAdapter adapter = new OfficialsRecyclerViewAdapter(officialList, this);
+        final AdminOfficialsRecyclerViewAdapter adapter = new AdminOfficialsRecyclerViewAdapter(officialList, this);
         rvOfficials.setAdapter(adapter);
         rvOfficials.setHasFixedSize(true);
 

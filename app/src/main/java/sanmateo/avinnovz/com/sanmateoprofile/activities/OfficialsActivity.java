@@ -10,17 +10,19 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.OfficialsRecyclerViewAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.AdminOfficialsRecyclerViewAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.UserOfficialsRecyclerViewAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
- * Created by ctmanalo on 7/7/16.
+ * Created by rsbulanon on 9/15/16.
  */
 public class OfficialsActivity extends BaseActivity implements OnApiRequestListener{
 
@@ -28,7 +30,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     private CurrentUser currentUser;
     private String token;
     private ApiRequestHelper apiRequestHelper;
-    private ArrayList<LocalOfficial> officialList = new ArrayList<>();
+    private ArrayList<Official> officialList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +45,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     }
 
     private void initOfficialsListing() {
-        final OfficialsRecyclerViewAdapter adapter = new OfficialsRecyclerViewAdapter(officialList,null);
+        final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList,null);
         adapter.setOnSelectOfficialListener(official -> {
             final Intent intent = new Intent(OfficialsActivity.this, OfficialFullInfoActivity.class);
             intent.putExtra("localOfficial", official);
@@ -51,7 +53,6 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
         });
         rvOfficials.setAdapter(adapter);
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
-        officialList.addAll(DaoHelper.getAllOfficials());
 
         if (officialList.size() > 0) {
             rvOfficials.getAdapter().notifyDataSetChanged();
@@ -70,27 +71,15 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
-        if (action.equals(AppConstants.ACTION_GET_OFFICIALS)) {
-            final ArrayList<Official> officials = (ArrayList<Official>)result;
-            for (Official o : officials) {
-                addOfficialToList(o);
-            }
-        }
+        officialList.addAll((ArrayList<Official>)result);
+        LogHelper.log("official", "success ---> " + officialList.size());
         rvOfficials.getAdapter().notifyDataSetChanged();
     }
 
     @Override
     public void onApiRequestFailed(String action, Throwable t) {
+        LogHelper.log("official", "error ---> " + t.getMessage());
         dismissCustomProgress();
         handleApiException(t);
-    }
-
-    private void addOfficialToList(final Official o) {
-        final LocalOfficial localOfficial = new LocalOfficial(null,
-                o.getId(),o.getCreatedAt(),o.getUpdatedAt(),o.getDeletedAt(),
-                o.getFirstName(),o.getLastName(),o.getNickName(),o.getPosition(),
-                o.getZindex(),o.getBackground(),o.getPic(),o.getStatus());
-        DaoHelper.createOfficial(localOfficial);
-        officialList.add(localOfficial);
     }
 }

@@ -2,10 +2,12 @@ package sanmateo.avinnovz.com.sanmateoprofile.models.response;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 /**
  * Created by rsbulanon on 8/23/16.
  */
-public class Official {
+public class Official implements Serializable {
 
     private int id;
     @SerializedName("created_at") private String createdAt;

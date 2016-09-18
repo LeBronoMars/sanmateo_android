@@ -12,31 +12,28 @@ import android.widget.TextView;
 import com.squareup.picasso.Callback;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
-import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.ItemTouchHelperViewHolder;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 
 /**
  * Created by rsbulanon on 8/23/16.
  */
-public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<OfficialsRecyclerViewAdapter.OfficialHolder>
-                                            implements ItemTouchHelperAdapter {
+public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserOfficialsRecyclerViewAdapter.OfficialHolder> {
 
-    private ArrayList<LocalOfficial> officials;
+    private ArrayList<Official> officials;
     private final OnStartDragListener mDragStartListener;
     private OnSelectOfficialListener onSelectOfficialListener;
 
-    public OfficialsRecyclerViewAdapter(ArrayList<LocalOfficial> officials,OnStartDragListener dragStartListener) {
+    public UserOfficialsRecyclerViewAdapter(ArrayList<Official> officials, OnStartDragListener dragStartListener) {
         this.officials = officials;
         this.mDragStartListener = dragStartListener;
     }
@@ -79,7 +76,7 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
 
     @Override
     public void onBindViewHolder(OfficialHolder holder, final int i) {
-        final LocalOfficial official = officials.get(i);
+        final Official official = officials.get(i);
         final String nickName = official.getNickName().isEmpty() ? " " : " '"+official.getNickName()+"' ";
         holder.tvOfficialName.setText(official.getFirstName() + nickName + official.getLastName());
         holder.tvPosition.setText(official.getPosition());
@@ -113,38 +110,8 @@ public class OfficialsRecyclerViewAdapter extends RecyclerView.Adapter<Officials
         super.onAttachedToRecyclerView(recyclerView);
     }
 
-    @Override
-    public boolean onItemMove(int fromPosition, int toPosition) {
-        if (mDragStartListener != null) {
-            LogHelper.log("swap","from pos --> " + fromPosition + " to pos --> " + toPosition);
-            final int fromZIndex = officials.get(fromPosition).getZindex();
-            final int toZIndex = officials.get(toPosition).getZindex();
-            Collections.swap(officials, fromPosition, toPosition);
-            notifyItemMoved(fromPosition, toPosition);
-            final LocalOfficial fromOfficial = officials.get(fromPosition);
-            final LocalOfficial toOfficial = officials.get(toPosition);
-
-            fromOfficial.setZindex(toZIndex);
-            toOfficial.setZindex(fromZIndex);
-
-            DaoHelper.updateOfficial(fromOfficial);
-            DaoHelper.updateOfficial(toOfficial);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public void onItemDismiss(int position) {
-        if (mDragStartListener != null) {
-            officials.remove(position);
-            notifyItemRemoved(position);
-        }
-    }
-
     public interface OnSelectOfficialListener {
-        void onSelectedOfficial(final LocalOfficial localOfficial);
+        void onSelectedOfficial(final Official localOfficial);
     }
 
     public void setOnSelectOfficialListener(OnSelectOfficialListener onSelectOfficialListener) {

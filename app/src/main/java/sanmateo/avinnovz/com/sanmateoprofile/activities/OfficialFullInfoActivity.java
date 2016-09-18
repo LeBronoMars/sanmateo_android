@@ -13,7 +13,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
  * Created by rsbulanon on 9/3/16.
@@ -32,13 +32,34 @@ public class OfficialFullInfoActivity extends BaseActivity {
         setContentView(R.layout.activity_official_full_info);
         ButterKnife.bind(this);
         setToolbarTitle("San Mateo Officials");
-        final LocalOfficial official = (LocalOfficial)getIntent().getSerializableExtra("localOfficial");
-        final String nickName = official.getNickName().isEmpty() ? " " : " '"+official.getNickName()+"' ";
-        tvOfficialName.setText(official.getFirstName() + nickName + official.getLastName());
-        tvPosition.setText(official.getPosition());
+        String fullName;
+        String lastName;
+        String nickName;
+        String position;
+        String background;
+        String picUrl;
+
+        if (getIntent().getSerializableExtra("localOfficial") instanceof LocalOfficial) {
+            final LocalOfficial official = (LocalOfficial) getIntent().getSerializableExtra("localOfficial");
+            nickName = official.getNickName().isEmpty() ? " " : " '"+official.getNickName()+"' ";
+            fullName = official.getFirstName() + nickName + official.getLastName();
+            position = official.getPosition();
+            background = official.getBackground();
+            picUrl = official.getPic();
+        } else {
+            final Official official = (Official) getIntent().getSerializableExtra("localOfficial");
+            nickName = official.getNickName().isEmpty() ? " " : " '"+official.getNickName()+"' ";
+            fullName = official.getFirstName() + nickName + official.getLastName();
+            position = official.getPosition();
+            background = official.getBackground();
+            picUrl = official.getPic();
+        }
+
+        tvOfficialName.setText(fullName);
+        tvPosition.setText(position);
         pbLoadImage.setVisibility(View.VISIBLE);
-        tvBackground.setText(official.getBackground());
-        AppConstants.PICASSO.load(official.getPic())
+        tvBackground.setText(background);
+        AppConstants.PICASSO.load(picUrl)
                 .placeholder(R.drawable.placeholder_image)
                 .centerCrop()
                 .fit()
