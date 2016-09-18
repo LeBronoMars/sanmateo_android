@@ -36,6 +36,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
         setContentView(R.layout.activity_officials);
         ButterKnife.bind(this);
         setToolbarTitle("Officials");
+        isOnline();
         currentUser = DaoHelper.getCurrentUser();
         token = currentUser.getToken();
         apiRequestHelper = new ApiRequestHelper(this);

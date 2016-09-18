@@ -636,5 +636,33 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
             LogHelper.log("shake","on shake initialized!");
         }
     }
+
+    public void isOnline() {
+        if (!isNetworkAvailable()) {
+            showConfirmDialog("", "Officials", AppConstants.WARN_CONNECTION, "Close", "", new OnConfirmDialogListener() {
+                @Override
+                public void onConfirmed(String action) {
+                    redirectToLogin();
+                }
+
+                @Override
+                public void onCancelled(String action) {
+
+                }
+            });
+        }
+    }
+
+    private void redirectToLogin() {
+        Intent intent;
+        if (BuildConfig.FLAVOR.equals("admin")) {
+            intent = new Intent(this, AdminLoginActivity.class);
+        } else {
+            intent = new Intent(this, LoginActivity.class);
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        animateToRight(this);
+    }
 }
 
