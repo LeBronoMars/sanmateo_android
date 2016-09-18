@@ -348,6 +348,13 @@ public interface ApiInterface {
     @GET("/api/v1/galleries")
     Observable<ArrayList<Photo>> getPhotos(@Header("Authorization") String token);
 
+    @POST("/api/v1/gallery")
+    @FormUrlEncoded
+    Observable<Photo> createGallery(@Header("Authorization") String token,
+                                    @Field("title") String title,
+                                    @Field("description") String description,
+                                    @Field("image_url") String imageUrl);
+
     /**
      * get all list of active officials
      *

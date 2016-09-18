@@ -35,6 +35,7 @@ public class AppConstants {
     public static final String ACTION_PUT_UNBLOCK_REPORT = "unblock malicious report";
     public static final String ACTION_PUT_APPROVE_REPORT = "approve incident report";
     public static final String ACTION_POST_NEWS = "create news";
+    public static final String ACTION_POST_CREATE_GALLERY = "create gallery";
     public static final String ACTION_GET_NEWS = "get news";
     public static final String ACTION_GET_NEWS_BY_ID = "get news by id";
     public static final String ACTION_GET_ANNOUNCEMENTS = "get all announcements";
@@ -81,6 +82,7 @@ public class AppConstants {
     public static final String BUCKET_INCIDENTS = BUCKET_ROOT + "/incidents";
     public static final String BUCKET_PROFILE_PIC = BUCKET_ROOT + "/profilepics";
     public static final String BUCKET_OFFICIALS_PIC = BUCKET_ROOT + "/officials";
+    public static final String BUCKET_GALLERY = BUCKET_ROOT + "/gallery";
     public static final String BUCKET_NEWS = BUCKET_ROOT + "/news";
 
     /** prefs key */

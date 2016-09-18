@@ -115,6 +115,12 @@ public class ApiRequestHelper {
         handleObservableResult(AppConstants.ACTION_POST_NEWS, observable);
     }
 
+    public void createGallery(final String token, final String title, final String desc, final String url) {
+        onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_POST_CREATE_GALLERY);
+        final Observable<Photo> observable = AppConstants.API_INTERFACE.createGallery(token,title,desc,url);
+        handleObservableResult(AppConstants.ACTION_POST_CREATE_GALLERY, observable);
+    }
+
     public void getNewsById(final String token, final int id) {
         onApiRequestListener.onApiRequestBegin(AppConstants.ACTION_GET_NEWS_BY_ID);
         final Observable<News> observable = AppConstants.API_INTERFACE.getNewsById(token,id);
