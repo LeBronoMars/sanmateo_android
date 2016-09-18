@@ -133,5 +133,9 @@ public class DaoHelper {
     public static void updateOfficial(final LocalOfficial localOfficial) {
         DAO_LOCAL_OFFICIAL.update(localOfficial);
     }
+
+    public static void deleteAllOfficial() {
+        DAO_LOCAL_OFFICIAL.deleteAll();
+    }
 }
 

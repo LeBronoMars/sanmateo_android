@@ -63,6 +63,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
 
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
         officialList.addAll(DaoHelper.getAllOfficials());
+
         if (officialList.size() > 0) {
             rvOfficials.getAdapter().notifyDataSetChanged();
         } else {
@@ -117,6 +118,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     @Override
     public void onApiRequestSuccess(String action, Object result) {
         dismissCustomProgress();
+        DaoHelper.deleteAllOfficial();
         if (action.equals(AppConstants.ACTION_GET_OFFICIALS)) {
             final ArrayList<Official> officials = (ArrayList<Official>)result;
             for (Official o : officials) {

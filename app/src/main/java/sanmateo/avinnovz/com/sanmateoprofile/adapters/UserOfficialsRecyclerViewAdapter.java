@@ -81,23 +81,26 @@ public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserO
         holder.tvOfficialName.setText(official.getFirstName() + nickName + official.getLastName());
         holder.tvPosition.setText(official.getPosition());
         holder.pbLoadImage.setVisibility(View.VISIBLE);
-        AppConstants.PICASSO.load(official.getPic())
-                .placeholder(R.drawable.placeholder_image)
-                .centerCrop()
-                .fit()
-                .into(holder.civPic, new Callback() {
-                    @Override
-                    public void onSuccess() {
-                        LogHelper.log("pic","ON LOAD SUCCESS --> " + official.getFirstName());
-                        holder.pbLoadImage.setVisibility(View.GONE);
-                    }
+        if (official.getPic() != null && !official.getPic().isEmpty()) {
+            holder.pbLoadImage.setVisibility(View.VISIBLE);
+            AppConstants.PICASSO.load(official.getPic())
+                    .placeholder(R.drawable.placeholder_image)
+                    .centerCrop()
+                    .fit()
+                    .into(holder.civPic, new Callback() {
+                        @Override
+                        public void onSuccess() {
+                            LogHelper.log("pic","ON LOAD SUCCESS --> " + official.getFirstName());
+                            holder.pbLoadImage.setVisibility(View.GONE);
+                        }
 
-                    @Override
-                    public void onError() {
-                        LogHelper.log("pic","ON LOAD FAILED --> " + official.getFirstName());
-                        holder.pbLoadImage.setVisibility(View.GONE);
-                    }
-                });
+                        @Override
+                        public void onError() {
+                            LogHelper.log("pic","ON LOAD FAILED --> " + official.getFirstName());
+                            holder.pbLoadImage.setVisibility(View.GONE);
+                        }
+                    });
+        }
         holder.cvRoot.setOnClickListener(v -> {
             if (onSelectOfficialListener != null) {
                 onSelectOfficialListener.onSelectedOfficial(official);
