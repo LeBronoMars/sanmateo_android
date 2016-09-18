@@ -80,8 +80,9 @@ public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserO
         final String nickName = official.getNickName().isEmpty() ? " " : " '"+official.getNickName()+"' ";
         holder.tvOfficialName.setText(official.getFirstName() + nickName + official.getLastName());
         holder.tvPosition.setText(official.getPosition());
-        holder.pbLoadImage.setVisibility(View.VISIBLE);
+
         if (official.getPic() != null && !official.getPic().isEmpty()) {
+            holder.pbLoadImage.setVisibility(View.VISIBLE);
             holder.pbLoadImage.setVisibility(View.VISIBLE);
             AppConstants.PICASSO.load(official.getPic())
                     .placeholder(R.drawable.placeholder_image)
@@ -100,6 +101,8 @@ public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserO
                             holder.pbLoadImage.setVisibility(View.GONE);
                         }
                     });
+        } else {
+            holder.pbLoadImage.setVisibility(View.GONE);
         }
         holder.cvRoot.setOnClickListener(v -> {
             if (onSelectOfficialListener != null) {

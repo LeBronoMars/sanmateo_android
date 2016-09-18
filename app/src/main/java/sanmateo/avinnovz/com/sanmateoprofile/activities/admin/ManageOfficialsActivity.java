@@ -14,15 +14,13 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.adapters.AdminOfficialsRecyclerViewAdapter;
+import sanmateo.avinnovz.com.sanmateoprofile.adapters.UserOfficialsRecyclerViewAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
-import sanmateo.avinnovz.com.sanmateoprofile.dao.LocalOfficial;
 import sanmateo.avinnovz.com.sanmateoprofile.fragments.admin.AddOfficialDialogFragment;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.ApiRequestHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.SimpleItemTouchHelperCallback;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
@@ -39,7 +37,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     private CurrentUser currentUser;
     private String token;
     private ApiRequestHelper apiRequestHelper;
-    private ArrayList<LocalOfficial> officialList = new ArrayList<>();
+    private ArrayList<Official> officialList = new ArrayList<>();
     private Bundle bundle = new Bundle();
     private ItemTouchHelper mItemTouchHelper;
 
@@ -57,22 +55,17 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     }
 
     private void initOfficialsListing() {
-        final AdminOfficialsRecyclerViewAdapter adapter = new AdminOfficialsRecyclerViewAdapter(officialList, this);
+        final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList, this);
         rvOfficials.setAdapter(adapter);
         rvOfficials.setHasFixedSize(true);
 
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
-        officialList.addAll(DaoHelper.getAllOfficials());
 
         if (officialList.size() > 0) {
             rvOfficials.getAdapter().notifyDataSetChanged();
         } else {
             apiRequestHelper.getOfficials(token);
         }
-
-        final ItemTouchHelper.Callback callback = new SimpleItemTouchHelperCallback(adapter);
-        mItemTouchHelper = new ItemTouchHelper(callback);
-        mItemTouchHelper.attachToRecyclerView(rvOfficials);
     }
 
     @OnClick(R.id.btnAdd)
@@ -148,12 +141,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     }
 
     private void addOfficialToList(final Official o) {
-        final LocalOfficial localOfficial = new LocalOfficial(null,
-                o.getId(),o.getCreatedAt(),o.getUpdatedAt(),o.getDeletedAt(),
-                o.getFirstName(),o.getLastName(),o.getNickName(),o.getPosition(),
-                o.getZindex(),o.getBackground(),o.getPic(),o.getStatus());
-        DaoHelper.createOfficial(localOfficial);
-        officialList.add(localOfficial);
+        officialList.add(o);
     }
 
     @Override

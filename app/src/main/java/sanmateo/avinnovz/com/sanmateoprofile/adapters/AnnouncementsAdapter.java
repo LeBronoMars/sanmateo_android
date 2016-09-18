@@ -5,8 +5,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.text.ParseException;
@@ -18,10 +16,8 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Announcement;
-import sanmateo.avinnovz.com.sanmateoprofile.models.response.News;
 
 /**
  * Created by rsbulanon on 6/28/16.
