@@ -2,18 +2,10 @@ package sanmateo.avinnovz.com.sanmateoprofile.activities.admin;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Point;
-import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.Display;
-import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.widget.Button;
-
-import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,16 +27,12 @@ import sanmateo.avinnovz.com.sanmateoprofile.models.response.AuthResponse;
 /**
  * Created by rsbulanon on 6/22/16.
  */
-public class AdminLoginActivity extends BaseActivity implements OnApiRequestListener, SurfaceHolder.Callback {
+public class AdminLoginActivity extends BaseActivity implements OnApiRequestListener {
 
     @BindView(R.id.btnSignIn) Button btnSignIn;
     @BindView(R.id.btnCreateAccount) Button btnCreateAccount;
-    @BindView(R.id.surfaceView) SurfaceView surfaceView;
     private ApiRequestHelper apiRequestHelper;
     private static final int REQUEST_PERMISSIONS = 1;
-    private SurfaceHolder surfaceHolder;
-    private MediaPlayer mp;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,8 +41,6 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         ButterKnife.bind(this);
 
         btnCreateAccount.setVisibility(View.GONE);
-        surfaceHolder = surfaceView.getHolder();
-        surfaceHolder.addCallback(this);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             final String[] requiredPermission = new String[]{
@@ -163,60 +149,6 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     }
 
     @Override
-    public void surfaceCreated(final SurfaceHolder surfaceHolder) {
-        if (mp == null) {
-            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
-                mp = new MediaPlayer();
-                final Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
-                        + R.raw.san_mateo_avp);
-                try {
-                    mp.setDataSource(AdminLoginActivity.this, video);
-                    mp.start();
-                } catch (IOException e) {
-                    LogHelper.log("video","error inflating video background --> " + e.getMessage());
-                    e.printStackTrace();
-                }
-            } else {
-                mp = MediaPlayer.create(this, R.raw.san_mateo_avp);
-            }
-            mp.setDisplay(surfaceHolder);
-
-
-            final Display display = getWindowManager().getDefaultDisplay();
-            final Point size = new Point();
-            display.getSize(size);
-
-            //Get the SurfaceView layout parameters
-            final android.view.ViewGroup.LayoutParams lp = surfaceView.getLayoutParams();
-
-            //Set the width of the SurfaceView to the width of the screen
-            lp.width = size.x;
-
-            //Set the height of the SurfaceView to match the aspect ratio of the video
-            //be sure to cast these as floats otherwise the calculation will likely be 0
-            //lp.height = (int) (((float)videoHeight / (float)videoWidth) * (float)size.x);
-            lp.height = size.y;
-
-            //Commit the layout parameters
-            surfaceView.setLayoutParams(lp);
-
-            //Start video
-            mp.start();
-            mp.setLooping(true);
-        }
-    }
-
-    @Override
-    public void surfaceChanged(SurfaceHolder surfaceHolder, int i, int i1, int i2) {
-
-    }
-
-    @Override
-    public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
-
-    }
-
-    @Override
     protected void onDestroy() {
         super.onDestroy();
     }
@@ -229,9 +161,6 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
     @Override
     protected void onPause() {
         super.onPause();
-        if (mp != null) {
-            mp.pause();
-        }
     }
 
     private void moveToHome() {

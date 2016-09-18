@@ -52,6 +52,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
         rvOfficials.setAdapter(adapter);
         rvOfficials.setLayoutManager(new LinearLayoutManager(this));
         officialList.addAll(DaoHelper.getAllOfficials());
+
         if (officialList.size() > 0) {
             rvOfficials.getAdapter().notifyDataSetChanged();
         } else {

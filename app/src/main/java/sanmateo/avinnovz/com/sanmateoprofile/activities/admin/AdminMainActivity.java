@@ -42,10 +42,8 @@ import sanmateo.avinnovz.com.sanmateoprofile.activities.GlobalDisasterActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.HotlinesActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.InformationActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.LoginActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.TyphoonWatchActivity;
-import sanmateo.avinnovz.com.sanmateoprofile.activities.WaterLevelMonitoringActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.BannerAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.adapters.HomeMenuAdapter;
 import sanmateo.avinnovz.com.sanmateoprofile.dao.CurrentUser;
@@ -211,8 +209,20 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                             } else if (position == 1) {
                                 moveToOtherActivity(TyphoonWatchActivity.class);
                             } else if (position == 2) {
-                                moveToOtherActivity(WaterLevelMonitoringActivity.class);
-                            } else if (position == 3) {
+                                final WaterLevelNotifDialogFragment fragment = WaterLevelNotifDialogFragment.newInstance();
+                                fragment.setOnWaterLevelNotificationListener(new WaterLevelNotifDialogFragment.OnWaterLevelNotificationListener() {
+                                    @Override
+                                    public void onAnnounceNotif(String area, double level) {
+                                        fragment.dismiss();
+                                        apiRequestHelper.createWaterLevelNotification(token, area, level);
+                                    }
+
+                                    @Override
+                                    public void onCancel() {
+
+                                    }
+                                });
+                                fragment.show(getFragmentManager(), "water level");                            } else if (position == 3) {
                                 moveToOtherActivity(GlobalDisasterActivity.class);
                             } else if (position == 4) {
                                 moveToOtherActivity(HotlinesActivity.class);
@@ -292,6 +302,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
                 fragment.setOnWaterLevelNotificationListener(new WaterLevelNotifDialogFragment.OnWaterLevelNotificationListener() {
                     @Override
                     public void onAnnounceNotif(String area, double level) {
+                        fragment.dismiss();
                         apiRequestHelper.createWaterLevelNotification(token, area, level);
                     }
 
@@ -300,6 +311,7 @@ public class AdminMainActivity extends BaseActivity implements OnApiRequestListe
 
                     }
                 });
+                fragment.show(getFragmentManager(), "water level");
             } else if (position == 4) {
                 moveToOtherActivity(ManageGalleryActivity.class);
             } else if (position == 5) {
