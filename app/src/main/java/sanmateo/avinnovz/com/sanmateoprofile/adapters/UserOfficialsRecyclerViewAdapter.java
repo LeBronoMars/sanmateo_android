@@ -106,7 +106,7 @@ public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserO
         }
         holder.cvRoot.setOnClickListener(v -> {
             if (onSelectOfficialListener != null) {
-                onSelectOfficialListener.onSelectedOfficial(official);
+                onSelectOfficialListener.onSelectedOfficial(i, official);
             }
         });
     }
@@ -117,7 +117,7 @@ public class UserOfficialsRecyclerViewAdapter extends RecyclerView.Adapter<UserO
     }
 
     public interface OnSelectOfficialListener {
-        void onSelectedOfficial(final Official localOfficial);
+        void onSelectedOfficial(final int position, final Official localOfficial);
     }
 
     public void setOnSelectOfficialListener(OnSelectOfficialListener onSelectOfficialListener) {

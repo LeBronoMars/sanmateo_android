@@ -45,7 +45,7 @@ public class OfficialsActivity extends BaseActivity implements OnApiRequestListe
 
     private void initOfficialsListing() {
         final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList,null);
-        adapter.setOnSelectOfficialListener(official -> {
+        adapter.setOnSelectOfficialListener((position, official) -> {
             final Intent intent = new Intent(OfficialsActivity.this, OfficialFullInfoActivity.class);
             intent.putExtra("localOfficial", official);
             startActivity(intent);

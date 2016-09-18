@@ -40,6 +40,8 @@ public class AdminLoginActivity extends BaseActivity implements OnApiRequestList
         setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
 
+        isOnline();
+
         btnCreateAccount.setVisibility(View.GONE);
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {

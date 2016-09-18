@@ -642,7 +642,8 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
             showConfirmDialog("", "Officials", AppConstants.WARN_CONNECTION, "Close", "", new OnConfirmDialogListener() {
                 @Override
                 public void onConfirmed(String action) {
-                    redirectToLogin();
+                    finish();
+                    System.exit(0);
                 }
 
                 @Override
@@ -651,18 +652,6 @@ public class BaseActivity extends AppCompatActivity implements ShakeDetector.Lis
                 }
             });
         }
-    }
-
-    private void redirectToLogin() {
-        Intent intent;
-        if (BuildConfig.FLAVOR.equals("admin")) {
-            intent = new Intent(this, AdminLoginActivity.class);
-        } else {
-            intent = new Intent(this, LoginActivity.class);
-        }
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-        animateToRight(this);
     }
 }
 

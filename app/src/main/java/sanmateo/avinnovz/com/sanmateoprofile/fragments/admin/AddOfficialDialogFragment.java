@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.rey.material.widget.Button;
 
 import java.io.File;
 import java.util.Calendar;
@@ -24,12 +27,14 @@ import butterknife.OnClick;
 import sanmateo.avinnovz.com.sanmateoprofile.R;
 import sanmateo.avinnovz.com.sanmateoprofile.activities.BaseActivity;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.AppConstants;
+import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
  * Created by rsbulanon on 8/24/16.
  */
 public class AddOfficialDialogFragment extends DialogFragment {
 
+    @BindView(R.id.tvHeader) TextView tvHeader;
     @BindView(R.id.etFirstName) EditText etFirstName;
     @BindView(R.id.etLastName) EditText etLastName;
     @BindView(R.id.etNickName) EditText etNickName;
@@ -39,15 +44,18 @@ public class AddOfficialDialogFragment extends DialogFragment {
     @BindView(R.id.llManualInput) LinearLayout llManualInput;
     @BindView(R.id.rlImagePreview) RelativeLayout rlImagePreview;
     @BindView(R.id.ivImagePreview) ImageView ivImagePreview;
+    @BindView(R.id.btnCreate) Button btnCreate;
     private View view;
     private Dialog mDialog;
     private BaseActivity activity;
     private OnCreateOfficialListener onCreateNewsListener;
     private static final int SELECT_IMAGE = 1;
     private File fileToUpload = null;
+    private Official official;
 
-    public static AddOfficialDialogFragment newInstance() {
+    public static AddOfficialDialogFragment newInstance(Official official) {
         final AddOfficialDialogFragment fragment = new AddOfficialDialogFragment();
+        fragment.official = official;
         return fragment;
     }
 
@@ -64,6 +72,24 @@ public class AddOfficialDialogFragment extends DialogFragment {
         view = getActivity().getLayoutInflater().inflate(R.layout.dialog_fragment_create_official, null);
         ButterKnife.bind(this, view);
         activity = (BaseActivity) getActivity();
+
+        /** in edit mode */
+        if (official != null) {
+            tvHeader.setText("Update official record");
+            etFirstName.setText(official.getFirstName());
+            etLastName.setText(official.getLastName());
+            etNickName.setText(official.getNickName());
+            etPosition.setText(official.getPosition());
+            etBackground.setText(official.getBackground());
+            btnCreate.setText("UPDATE");
+
+            if (official.getPic() != null || !official.getPic().isEmpty()) {
+                AppConstants.PICASSO.load(official.getPic()).fit().centerCrop().into(ivImagePreview);
+                rlImagePreview.setVisibility(View.VISIBLE);
+                llManualInput.setVisibility(View.GONE);
+            }
+        }
+
         mDialog = new Dialog(getActivity());
         mDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         mDialog.setContentView(view);
@@ -91,16 +117,16 @@ public class AddOfficialDialogFragment extends DialogFragment {
             activity.setError(etPosition, AppConstants.WARN_FIELD_REQUIRED);
         } else {
             if (onCreateNewsListener != null) {
-                onCreateNewsListener.onCreateNews(firstName,lastName,nickName,
+                onCreateNewsListener.onCreateUpdateOfficial(official == null,firstName,lastName,nickName,
                                                 position,background, picUrl, fileToUpload);
             }
         }
     }
 
     public interface OnCreateOfficialListener {
-        void onCreateNews(final String firstName, final String lastName, final String nickName,
-                          final String position, final String background, final String picUrl,
-                          final File fileToUpload);
+        void onCreateUpdateOfficial(final boolean update, final String firstName, final String lastName,
+                                    final String nickName, final String position, final String background,
+                                    final String picUrl, final File fileToUpload);
         void onCancel();
     }
 

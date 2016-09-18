@@ -13,11 +13,8 @@ public class AppConstants {
     /** static instance of Picasso */
     public static Picasso PICASSO = null;
 
-    //public static final String BASE_URL = "http://192.168.1.2:7000";
-    //public static final String BASE_URL = "http://192.168.1.7:9000";
-    //public static final String BASE_URL = "http://192.168.10.6:9000";
-    //public static final String BASE_URL = "http://192.168.43.172:8080";
-    public static final String BASE_URL = "http://54.169.17.222:7000";
+    //public static final String BASE_URL = "http://54.169.17.222:7000";
+    public static final String BASE_URL = "http://192.168.10.10:7000";
     public static Retrofit RETROFIT = null;
     public static ApiInterface API_INTERFACE = null;
     public static boolean IS_FACEBOOK_APP_INSTALLED = false;
@@ -53,6 +50,7 @@ public class AppConstants {
     public static final String ACTION_GET_GALLERY_PHOTOS = "get all gallery photo";
     public static final String ACTION_GET_OFFICIALS = "get all official";
     public static final String ACTION_CREATE_OFFICIAL_RECORD = "create official record";
+    public static final String ACTION_UPDATE_OFFICIAL_RECORD = "update official record";
     public static final String ACTION_GET_WATER_LEVEL_BY_AREA = "get all water levels by area";
     public static final String ACTION_GET_ALL_FOR_REVIEWS = "get all for reviews";
     public static final String ACTION_DELETE_DISAPPROVE_MALICIOUS_REPORT = "disapprove malicious report";

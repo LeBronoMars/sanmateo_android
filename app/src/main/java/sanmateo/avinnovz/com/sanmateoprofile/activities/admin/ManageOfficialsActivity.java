@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.helper.ItemTouchHelper;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -23,15 +22,13 @@ import sanmateo.avinnovz.com.sanmateoprofile.helpers.DaoHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.helpers.LogHelper;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnApiRequestListener;
 import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnS3UploadListener;
-import sanmateo.avinnovz.com.sanmateoprofile.interfaces.OnStartDragListener;
 import sanmateo.avinnovz.com.sanmateoprofile.models.response.Official;
 
 /**
  * Created by rsbulanon on 8/23/16.
  */
 public class ManageOfficialsActivity extends BaseActivity implements OnApiRequestListener,
-                                                                    OnS3UploadListener,
-                                                                    OnStartDragListener {
+                                                                    OnS3UploadListener {
 
     @BindView(R.id.rvOfficials) RecyclerView rvOfficials;
     private CurrentUser currentUser;
@@ -39,7 +36,7 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     private ApiRequestHelper apiRequestHelper;
     private ArrayList<Official> officialList = new ArrayList<>();
     private Bundle bundle = new Bundle();
-    private ItemTouchHelper mItemTouchHelper;
+    private int selectedPosition;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -55,7 +52,45 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     }
 
     private void initOfficialsListing() {
-        final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList, this);
+        final UserOfficialsRecyclerViewAdapter adapter = new UserOfficialsRecyclerViewAdapter(officialList, null);
+        adapter.setOnSelectOfficialListener((position, official) -> {
+            this.selectedPosition = position;
+            final AddOfficialDialogFragment addOfficialDialogFragment = AddOfficialDialogFragment.newInstance(official);
+            addOfficialDialogFragment.setOnCreateNewsListener(new AddOfficialDialogFragment.OnCreateOfficialListener() {
+                @Override
+                public void onCreateUpdateOfficial(boolean update, String firstName, String lastName,
+                                                   String nickName, String position, String background,
+                                                   String picUrl, File fileToUpload) {
+                    addOfficialDialogFragment.dismiss();
+                    if (isNetworkAvailable()) {
+                        if (fileToUpload != null) {
+                            bundle.putBoolean("update",update);
+                            bundle.putString("firstName",firstName);
+                            bundle.putString("lastName",lastName);
+                            bundle.putString("nickName",nickName);
+                            bundle.putString("position",position);
+                            bundle.putString("background",background);
+                            bundle.putString("picUrl",picUrl);
+                            if (official.getPic() != null && !official.getPic().isEmpty()) {
+                                deleteImage(AppConstants.BUCKET_OFFICIALS_PIC, official.getPic());
+                            }
+                            uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
+                        } else {
+                            apiRequestHelper.updateOfficial(token,firstName,lastName,nickName,
+                                    position, background, picUrl);
+                        }
+                    } else {
+                        showToast(AppConstants.WARN_CONNECTION);
+                    }
+                }
+
+                @Override
+                public void onCancel() {
+                    addOfficialDialogFragment.dismiss();
+                }
+            });
+            addOfficialDialogFragment.show(getFragmentManager(),"add official");
+        });
         rvOfficials.setAdapter(adapter);
         rvOfficials.setHasFixedSize(true);
 
@@ -70,14 +105,15 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
 
     @OnClick(R.id.btnAdd)
     public void addNewOfficial() {
-        final AddOfficialDialogFragment addOfficialDialogFragment = AddOfficialDialogFragment.newInstance();
+        final AddOfficialDialogFragment addOfficialDialogFragment = AddOfficialDialogFragment.newInstance(null);
         addOfficialDialogFragment.setOnCreateNewsListener(new AddOfficialDialogFragment.OnCreateOfficialListener() {
+
             @Override
-            public void onCreateNews(String firstName, String lastName, String nickName,
-                                     String position, String background, String picUrl,
-                                     File fileToUpload) {
-                addOfficialDialogFragment.dismiss();
+            public void onCreateUpdateOfficial(boolean update, String firstName, String lastName,
+                                               String nickName, String position, String background,
+                                               String picUrl, File fileToUpload) {
                 if (fileToUpload != null) {
+                    bundle.putBoolean("update",update);
                     bundle.putString("firstName",firstName);
                     bundle.putString("lastName",lastName);
                     bundle.putString("nickName",nickName);
@@ -86,14 +122,18 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
                     bundle.putString("picUrl",picUrl);
                     uploadImageToS3(AppConstants.BUCKET_OFFICIALS_PIC, fileToUpload,1,1);
                 } else {
-                    apiRequestHelper.createOfficial(token,firstName,lastName,nickName,position,
-                            officialList.size()+1,background,picUrl);
+                    if (isNetworkAvailable()) {
+                        apiRequestHelper.createOfficial(token,firstName,lastName,nickName,position,
+                                officialList.size()+1,background,picUrl);
+                    } else {
+                        showToast(AppConstants.WARN_CONNECTION);
+                    }
                 }
             }
 
             @Override
             public void onCancel() {
-
+                addOfficialDialogFragment.dismiss();
             }
         });
         addOfficialDialogFragment.show(getFragmentManager(),"add official");
@@ -120,6 +160,9 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
         } else if (action.equals(AppConstants.ACTION_CREATE_OFFICIAL_RECORD)) {
             final Official official = (Official)result;
             addOfficialToList(official);
+        } else if (action.equals(AppConstants.ACTION_UPDATE_OFFICIAL_RECORD)) {
+            final Official official = (Official) result;
+            officialList.set(selectedPosition, official);
         }
         rvOfficials.getAdapter().notifyDataSetChanged();
     }
@@ -134,18 +177,21 @@ public class ManageOfficialsActivity extends BaseActivity implements OnApiReques
     @Override
     public void onUploadFinished(String bucketName, String imageUrl) {
         if (bucketName.equals(AppConstants.BUCKET_OFFICIALS_PIC)) {
-            apiRequestHelper.createOfficial(token,bundle.getString("firstName"),
-                    bundle.getString("lastName"),bundle.getString("nickName"),bundle.getString("position"),
-                    officialList.size()+1,bundle.getString("background"),imageUrl);
+            if (bundle.getBoolean("update")) {
+                /** update record */
+                apiRequestHelper.updateOfficial(token,bundle.getString("firstName"),
+                        bundle.getString("lastName"),bundle.getString("nickName"),bundle.getString("position"),
+                        bundle.getString("background"),imageUrl);
+            } else {
+                /** create record */
+                apiRequestHelper.createOfficial(token,bundle.getString("firstName"),
+                        bundle.getString("lastName"),bundle.getString("nickName"),bundle.getString("position"),
+                        officialList.size()+1,bundle.getString("background"),imageUrl);
+            }
         }
     }
 
     private void addOfficialToList(final Official o) {
         officialList.add(o);
-    }
-
-    @Override
-    public void onStartDrag(RecyclerView.ViewHolder viewHolder) {
-        mItemTouchHelper.startDrag(viewHolder);
     }
 }

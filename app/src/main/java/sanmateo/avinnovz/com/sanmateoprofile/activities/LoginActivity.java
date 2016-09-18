@@ -49,6 +49,22 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         setContentView(R.layout.activity_login_with_video);
         ButterKnife.bind(this);
 
+        if (!isNetworkAvailable()) {
+            showConfirmDialog("", "San Mateo Admin App", AppConstants.WARN_CONNECTION, "Close", "",
+                    new OnConfirmDialogListener() {
+                        @Override
+                        public void onConfirmed(String action) {
+                            finish();
+                            System.exit(0);
+                        }
+
+                        @Override
+                        public void onCancelled(String action) {
+
+                        }
+                    });
+        }
+
         surfaceHolder = surfaceView.getHolder();
         surfaceHolder.addCallback(this);
 
