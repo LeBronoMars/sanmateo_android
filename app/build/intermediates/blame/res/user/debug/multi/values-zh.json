@@ -1,0 +1,26 @@
+[
+    {
+        "outputFile": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/incremental/mergeUserDebugResources/merged.dir/values-zh/values-zh.xml",
+        "map": [
+            {
+                "to": {
+                    "startLine": 2,
+                    "startColumn": 4,
+                    "startOffset": 55,
+                    "endColumn": 38,
+                    "endOffset": 89
+                },
+                "from": {
+                    "file": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/values-zh/values-zh.xml",
+                    "position": {
+                        "startLine": 4,
+                        "startColumn": 4,
+                        "startOffset": 164,
+                        "endColumn": 38,
+                        "endOffset": 198
+                    }
+                }
+            }
+        ]
+    }
+]

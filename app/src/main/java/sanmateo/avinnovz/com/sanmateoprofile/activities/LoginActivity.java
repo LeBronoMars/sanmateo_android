@@ -186,11 +186,12 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
         if (mp == null) {
             if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT) {
                 mp = new MediaPlayer();
+                LogHelper.log("video", "play video");
                 final Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
                         + R.raw.san_mateo_avp);
                 try {
                     mp.setDataSource(LoginActivity.this, video);
-                    mp.start();
+                    mp.prepare();
                 } catch (IOException e) {
                     LogHelper.log("video","error inflating video background --> " + e.getMessage());
                     e.printStackTrace();
@@ -199,7 +200,6 @@ public class LoginActivity extends BaseActivity implements OnApiRequestListener,
                 mp = MediaPlayer.create(this, R.raw.san_mateo_avp);
             }
             mp.setDisplay(surfaceHolder);
-
 
             final Display display = getWindowManager().getDefaultDisplay();
             final Point size = new Point();

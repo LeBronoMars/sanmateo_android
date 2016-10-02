@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/anim-v21/design_appbar_state_list_animator.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/anim-v21/design_appbar_state_list_animator.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/anim-v21/bs_list_item_in.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/anim-v21/bs_list_item_in.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/anim-v21/design_bottom_sheet_slide_out.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/anim-v21/design_bottom_sheet_slide_out.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/anim-v21/design_bottom_sheet_slide_in.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/anim-v21/design_bottom_sheet_slide_in.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/anim-v21/bs_list_layout_anim_in.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/anim-v21/bs_list_layout_anim_in.xml"
+    }
+]

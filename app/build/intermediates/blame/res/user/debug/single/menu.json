@@ -1,0 +1,14 @@
+[
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/menu/menu_water_level.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/menu/menu_water_level.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/menu/menu_upload_image.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/menu/menu_upload_image.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/menu/menu_side_drawer.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/menu/menu_side_drawer.xml"
+    }
+]

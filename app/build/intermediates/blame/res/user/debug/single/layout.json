@@ -1,0 +1,646 @@
+[
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_bar_title_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_bar_title_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_white_large.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_white_large.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_white_small.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_white_small.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/com_facebook_tooltip_bubble.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/com_facebook_tooltip_bubble.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_activity_chooser_view_list_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_activity_chooser_view_list_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_photo_detail.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_photo_detail.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_spinner.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_spinner.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_image_fullview.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_image_fullview.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_admin_login.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_admin_login.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_image_preview.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_image_preview.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/map_tourist_spots.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/map_tourist_spots.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_popup_menu_item_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_popup_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_custom_progress.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_custom_progress.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_screen_simple_overlay_action_mode.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_screen_simple_overlay_action_mode.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_media_action.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_media_action.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_typhoon_watch.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_typhoon_watch.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_screen_toolbar.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_screen_toolbar.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_fb_feeds.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_fb_feeds.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/select_dialog_multichoice_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/select_dialog_multichoice_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_create_announcement.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_create_announcement.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_create_news.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_create_news.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_directories.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_directories.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/com_facebook_device_auth_dialog_fragment.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/com_facebook_device_auth_dialog_fragment.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_dialog_title_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_dialog_title_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dp_example.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.3/res/layout/dp_example.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_water_alert_list.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_water_alert_list.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_files_to_upload.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_files_to_upload.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/support_simple_spinner_dropdown_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/support_simple_spinner_dropdown_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_report_incident_report.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_report_incident_report.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_search_dropdown_item_icons_2line.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_search_dropdown_item_icons_2line.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_alert_dialog_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_alert_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_review_incident.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_review_incident.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/map_govt_agencies.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/map_govt_agencies.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_login.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_login.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_review_incidents.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_review_incidents.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_manage_incident_reports.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_manage_incident_reports.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_activity_chooser_view.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_activity_chooser_view.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_menu.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_menu.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_history.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_history.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_login_with_video.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_login_with_video.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_directories.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_directories.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_spinner_dropdown.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_spinner_dropdown.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_water_level_notif.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_water_level_notif.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_hotlines_card.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_hotlines_card.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/navigation_header.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/navigation_header.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_big_media_narrow.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_big_media_narrow.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_marker_details.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_marker_details.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_blue_large.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_blue_large.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_image_full_view.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_image_full_view.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_list_menu_item_checkbox.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_list_menu_item_checkbox.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/header_directories.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/header_directories.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/bs_list_entry.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/layout/bs_list_entry.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_lines.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_lines.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_alert_level.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_alert_level.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_announcements.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_announcements.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_disaster_101.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_disaster_101.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_disaster_mgmt.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_disaster_mgmt.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/bs_header.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/layout/bs_header.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_list_menu_item_radio.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_list_menu_item_radio.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_info.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_info.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_menu_item_action_area.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_menu_item_action_area.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_change_password.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_change_password.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_gallery.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_gallery.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_information.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_information.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_bottom_sheet_dialog.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_bottom_sheet_dialog.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_mayor_message.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_mayor_message.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_layout_snackbar_include.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_layout_snackbar_include.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_officials.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_officials.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_list_menu_item_icon.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_list_menu_item_icon.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_bar_up_container.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_bar_up_container.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_manage_officials.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_manage_officials.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_incident.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_incident.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_news_event_management.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_news_event_management.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_create_official.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_create_official.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_login.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_login.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_screen_simple.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_screen_simple.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_manage_gallery.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_manage_gallery.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_popup_menu_header_item_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_popup_menu_header_item_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_image.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_image.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_disaster_101.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_disaster_101.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_item_subheader.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_item_subheader.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_screen_content_include.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_screen_content_include.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/bs_list_divider.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/layout/bs_list_divider.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_cpr.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_cpr.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_select_dialog_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_select_dialog_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_panic_settings.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_panic_settings.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/incident_image.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/incident_image.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_banner.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_banner.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_collapsable_map.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_collapsable_map.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_media_cancel_action.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_media_cancel_action.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_search_view.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_search_view.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_create_gallery.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_create_gallery.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_official_full_info.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_official_full_info.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/com_facebook_activity_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/com_facebook_activity_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_menu_item_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_block_incident_report.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_block_incident_report.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_item_header.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_item_header.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_custom_progress_bar.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_custom_progress_bar.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_social_media.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_social_media.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_alert_level.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_alert_level.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_blue_round.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_blue_round.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_news_full_preview.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_news_full_preview.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_cpr.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_cpr.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_mode_bar.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_mode_bar.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_map.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_map.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_error_confirm.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_error_confirm.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_registration.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_registration.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_item_separator.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_item_separator.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_part_chronometer.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_part_chronometer.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_layout_snackbar.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_layout_snackbar.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_media.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_media.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/bs_grid_entry.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/layout/bs_grid_entry.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_app_marker.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_app_marker.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_water_level_monitoring.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_water_level_monitoring.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_news.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_news.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_for_review_incident.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_for_review_incident.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_home_menu.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_home_menu.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_water_level.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_water_level.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/select_dialog_item_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/select_dialog_item_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_public_announcements.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_public_announcements.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_official.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_official.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/contact_no_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/contact_no_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_main.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_main.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_emergency_kit.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_emergency_kit.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_incident_image_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_incident_image_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/sdp_example.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.3/res/layout/sdp_example.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_locations.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_locations.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_officials.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_officials.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_govt_info.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_govt_info.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_photos.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_photos.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_disaster_menu.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_disaster_menu.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_card_hotline.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_card_hotline.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_expanded_menu_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_expanded_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_layout_tab_icon.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_layout_tab_icon.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_menu_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_menu_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_incidents.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_incidents.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/com_facebook_login_fragment.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/com_facebook_login_fragment.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/select_dialog_singlechoice_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_etext_si_mayor.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_etext_si_mayor.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_gallery.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_gallery.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_news_events_mgmt.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_news_events_mgmt.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_alert_dialog_button_bar_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_alert_dialog_button_bar_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_bar_view_list_nav_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_bar_view_list_nav_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_panic_contacts.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_panic_contacts.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_white_round.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_white_round.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/activity_new_map.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/activity_new_map.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_part_time.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_part_time.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/dialog_fragment_file_incident_report.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/dialog_fragment_file_incident_report.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_action_mode_close_item_material.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_action_mode_close_item_material.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/map_locations.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/map_locations.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_navigation_menu_item.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_navigation_menu_item.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_title.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_title.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/row_emergency_kit.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/row_emergency_kit.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/fragment_san_mateo.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/fragment_san_mateo.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/messenger_button_send_blue_small.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/res/layout/messenger_button_send_blue_small.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/design_layout_tab_text.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/res/layout/design_layout_tab_text.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/notification_template_big_media.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/notification_template_big_media.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/abc_list_menu_item_layout.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/res/layout/abc_list_menu_item_layout.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/map_municipal.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/res/layout/map_municipal.xml"
+    },
+    {
+        "merged": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/res/merged/user/debug/layout/bottom_sheet_dialog.xml",
+        "source": "/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/res/layout/bottom_sheet_dialog.xml"
+    }
+]

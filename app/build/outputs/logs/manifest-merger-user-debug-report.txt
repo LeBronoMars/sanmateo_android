@@ -1,0 +1,84 @@
+-- Merging decision tree log ---
+manifest
+ADDED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml:2:1-5:12
+	package
+		ADDED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml:3:5-52
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/AndroidManifest.xml
+	android:versionName
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml
+		ADDED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml:2:1-5:12
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/AndroidManifest.xml
+	xmlns:android
+		ADDED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml:2:11-69
+	android:versionCode
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml
+		ADDED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml:2:1-5:12
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/AndroidManifest.xml
+uses-sdk
+INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml reason: use-sdk injection requested
+MERGED from [com.android.support:multidex:1.0.1] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/multidex/1.0.1/AndroidManifest.xml:18:5-42
+MERGED from [com.bignerdranch.android:expandablerecyclerview:1.0.3] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.bignerdranch.android/expandablerecyclerview/1.0.3/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:recyclerview-v7:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/recyclerview-v7/24.0.0/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-v4:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/AndroidManifest.xml:21:5-23:54
+MERGED from [com.android.support:design:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:appcompat-v7:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/AndroidManifest.xml:21:5-23:78
+MERGED from [com.android.support:support-vector-drawable:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0/AndroidManifest.xml:21:5-43
+MERGED from [com.android.support:animated-vector-drawable:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0/AndroidManifest.xml:20:5-44
+MERGED from [com.jakewharton:butterknife:8.1.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.jakewharton/butterknife/8.1.0/AndroidManifest.xml:5:5-43
+MERGED from [io.reactivex:rxandroid:1.2.1] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/io.reactivex/rxandroid/1.2.1/AndroidManifest.xml:19:5-43
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/uk.co.chrisjenx/calligraphy/2.2.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.intuit.sdp:sdp-android:1.0.3] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.intuit.sdp/sdp-android/1.0.3/AndroidManifest.xml:7:5-9:41
+MERGED from [com.wang.avi:library:1.0.5] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.wang.avi/library/1.0.5/AndroidManifest.xml:7:5-9:41
+MERGED from [com.github.rey5137:material:1.2.2.1-SNAPSHOT] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.github.rey5137/material/1.2.2.1-SNAPSHOT/AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:cardview-v7:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/24.0.0/AndroidManifest.xml:20:5-43
+MERGED from [de.hdodenhof:circleimageview:2.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/2.0.0/AndroidManifest.xml:5:5-7:41
+MERGED from [com.cocosw:bottomsheet:1.2.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/AndroidManifest.xml:7:5-9:41
+MERGED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:24:5-26:41
+MERGED from [com.android.support:customtabs:23.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/customtabs/23.4.0/AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:26:5-42
+MERGED from [com.google.android.gms:play-services-base:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-base/8.4.0/AndroidManifest.xml:18:5-42
+MERGED from [com.google.android.gms:play-services-basement:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/AndroidManifest.xml:18:5-42
+	tools:overrideLibrary
+		ADDED from [com.android.support:support-v4:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/AndroidManifest.xml:23:9-51
+	android:targetSdkVersion
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/AndroidManifest.xml
+		INJECTED from /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/AndroidManifest.xml
+application
+MERGED from [com.bignerdranch.android:expandablerecyclerview:1.0.3] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.bignerdranch.android/expandablerecyclerview/1.0.3/AndroidManifest.xml:11:5-14:19
+MERGED from [com.android.support:support-v4:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/support-v4/24.0.0/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:design:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/design/24.0.0/AndroidManifest.xml:22:5-20
+MERGED from [com.android.support:appcompat-v7:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/24.0.0/AndroidManifest.xml:25:5-20
+MERGED from [com.android.support:support-vector-drawable:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/support-vector-drawable/24.0.0/AndroidManifest.xml:23:5-20
+MERGED from [com.android.support:animated-vector-drawable:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/animated-vector-drawable/24.0.0/AndroidManifest.xml:22:5-20
+MERGED from [uk.co.chrisjenx:calligraphy:2.2.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/uk.co.chrisjenx/calligraphy/2.2.0/AndroidManifest.xml:11:5-20
+MERGED from [com.android.support:cardview-v7:24.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/cardview-v7/24.0.0/AndroidManifest.xml:22:5-20
+MERGED from [de.hdodenhof:circleimageview:2.0.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/de.hdodenhof/circleimageview/2.0.0/AndroidManifest.xml:9:5-20
+MERGED from [com.cocosw:bottomsheet:1.2.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.cocosw/bottomsheet/1.2.0/AndroidManifest.xml:11:5-20
+MERGED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:28:5-38:19
+MERGED from [com.android.support:customtabs:23.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.android.support/customtabs/23.4.0/AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:27:5-20
+MERGED from [com.google.android.gms:play-services-basement:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/AndroidManifest.xml:20:5-24:19
+activity#com.facebook.FacebookActivity
+MERGED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:29:9-32:75
+activity#com.facebook.CustomTabActivity
+MERGED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:33:9-36:20
+activity#com.facebook.CustomTabMainActivity
+ADDED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:37:9-71
+	android:name
+		ADDED from [com.facebook.android:facebook-android-sdk:4.15.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.facebook.android/facebook-android-sdk/4.15.0/AndroidManifest.xml:37:19-68
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+MERGED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:20:5-78
+uses-permission#android.permission.INTERNET
+MERGED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:21:5-66
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:22:5-24:33
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:23:8-40
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-maps/8.4.0/AndroidManifest.xml:24:8-31
+meta-data#com.google.android.gms.version
+MERGED from [com.google.android.gms:play-services-basement:8.4.0] /Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/build/intermediates/exploded-aar/com.google.android.gms/play-services-basement/8.4.0/AndroidManifest.xml:21:9-23:69

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="sanmateo.avinnovz.com.sanmateoprofile.user"
+    android:versionCode="3"
+    android:versionName="1.2" >
+
+    <uses-sdk
+        android:minSdkVersion="16"
+        android:targetSdkVersion="24" />
+
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.RECEIVE_SMS" />
+    <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
+
+    <uses-feature
+        android:glEsVersion="0x00020000"
+        android:required="true" />
+
+    <application
+        android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.BaseApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme" >
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.LoginActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.RegistrationActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.MainActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.NoActionBar" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.GalleryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.IncidentsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.ImageFullViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.DirectoriesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.InformationActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.MapActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.NewMapActivty"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.HistoryActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.OfficialsActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.GovtInfoActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.NewHomeActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.NewsFullPreviewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.admin.PublicAnnouncementsActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.TyphoonWatchActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.WaterLevelMonitoringActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.AlertLevelActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.GlobalDisasterActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.HotlinesActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.EmergencyKitActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.CprActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.Disaster101Activity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.SocialMediaActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="sanmateo.avinnovz.com.sanmateoprofile.activities.OfficialFullInfoActivity"
+            android:screenOrientation="portrait" />
+
+        <!-- google maps -->
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyB3_Lcl_OWrxkRaU5yJZrGGdyIOPdV04bI" />
+
+        <!-- amazon s3 config -->
+        <service
+            android:name="com.amazonaws.mobileconnectors.s3.transferutility.TransferService"
+            android:enabled="true" />
+
+        <!-- pusher service -->
+        <service android:name="sanmateo.avinnovz.com.sanmateoprofile.services.PusherService" />
+
+        <!-- facebook config -->
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider1183940438317855"
+            android:exported="true" />
+
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/fb_app_id" />
+        <!-- end of facebook configs -->
+
+        <meta-data
+            android:name="io.fabric.ApiKey"
+            android:value="36188b6c462943800edb301bf7c8a92f9cd15c2f" />
+
+        <activity
+            android:name="com.facebook.CustomTabActivity"
+            android:exported="true" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="@string/fb_app_id" />
+            </intent-filter>
+        </activity>
+        <activity android:name="com.facebook.CustomTabMainActivity" />
+    </application>
+
+</manifest>

@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<merger version="3"><dataSet config="main"><source path="/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/main/jniLibs"/></dataSet><dataSet config="user"><source path="/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/user/jniLibs"/></dataSet><dataSet config="debug"><source path="/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/debug/jniLibs"/></dataSet><dataSet config="userDebug"><source path="/Users/rsbulanon/Github/SanMateo/SanMateoProfile/app/src/userDebug/jniLibs"/></dataSet></merger>
